@@ -19,6 +19,9 @@ cProjectManager::cProjectManager() {
 	}
 }
 
+cProjectManager::~cProjectManager() {
+}
+
 bool cProjectManager::LoadScene(std::string name) {
 	DEBUG_PRINT("cProjectManager::LoadScene(%s)\n", name.c_str());
 

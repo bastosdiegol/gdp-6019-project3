@@ -32,5 +32,7 @@ public:
 	/// <returns>True if loading was successful</returns>
 	bool LoadScene(std::string name);
 	bool SaveScene(std::string name);
+
+	friend class cProjectUI;
 };
 
