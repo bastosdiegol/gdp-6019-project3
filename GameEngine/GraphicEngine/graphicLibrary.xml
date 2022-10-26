@@ -1,0 +1,12 @@
+<graphicLibrary>
+	<scene title="">
+		<model path="" title="" >
+			<mesh id="" >
+				<position x="" y="" z="" />
+				<translate x="" y="" z="" />
+				<rotate x="" y="" z="" />
+				<scale x="" y="" z="" />
+			</mesh>
+		</model>
+	</scene>
+</graphicLibrary>
