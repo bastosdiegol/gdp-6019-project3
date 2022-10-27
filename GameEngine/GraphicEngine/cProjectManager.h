@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
-#include <imgui_impl_opengl3_loader.h>
+#include <glad/glad.h>
 
 #include "cScene.h"
 #include "cVAOManager.h"

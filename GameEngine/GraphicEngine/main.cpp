@@ -1,11 +1,11 @@
 #include <glad/glad.h>
-#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
-#include <imgui.h>
-#include <imgui_impl_glfw.h>
-#include <imgui_impl_opengl3.h>
+#include <glm/glm.hpp>
 #include <iostream>
 
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
 #include "cProjectManager.h"
 #include "cProjectUI.h"
 #include "cShaderManager.h"
@@ -39,20 +39,22 @@ int main(int argc, char* argv[]) {
 	if (!glfwInit())
 		exit(EXIT_FAILURE);
 
+	const char* glsl_version = "#version 460";
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+
 	// Create window
-	GLFWwindow* window = glfwCreateWindow(1280, 720, "Game Engine", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(1280, 720, "Game Engine", nullptr, nullptr);
 	if (!window) {
 		glfwTerminate();
 		exit(EXIT_FAILURE);
 	}
 
-	const char* glsl_version = "#version 100";
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-
 	glfwSetKeyCallback(window, key_callback);
 	glfwMakeContextCurrent(window);
-	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+	if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
+		return 2;
+	}
 	glfwSwapInterval(1);
 
 	cShaderManager* pTheShaderManager = new cShaderManager();
@@ -74,7 +76,8 @@ int main(int argc, char* argv[]) {
 
 	pTheShaderManager->useShaderProgram("Shader_1");
 	shaderID = pTheShaderManager->getIDFromFriendlyName("Shader_1");
-	//glUseProgram(shaderID);
+	//glGetError();
+	glUseProgram(shaderID);
 
 	// Setup ImGui context
 	IMGUI_CHECKVERSION();
@@ -83,8 +86,9 @@ int main(int argc, char* argv[]) {
 	// Setup ImGui style
 	ImGui::StyleColorsDark();
 	// Setup Platform/Renderer backends
-	ImGui_ImplGlfw_InitForOpenGL(window, true);
-	ImGui_ImplOpenGL3_Init(glsl_version);
+	if (!ImGui_ImplGlfw_InitForOpenGL(window, true) || !ImGui_ImplOpenGL3_Init(glsl_version)) {
+		return 3;
+	}
 
 	// Creates my Project Manager
 	cProjectManager* g_ProjectManager = new cProjectManager();
@@ -123,8 +127,12 @@ int main(int argc, char* argv[]) {
 
 	delete g_ProjectManager;
 
-	glfwDestroyWindow(window);
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 
+	glfwDestroyWindow(window);
 	glfwTerminate();
+
 	exit(EXIT_SUCCESS);
 }

@@ -1,5 +1,4 @@
-#include <imgui.h>
-
+#include "imgui/imgui.h"
 #include "cProjectUI.h"
 
 void cProjectUI::renderUI() {
@@ -94,13 +93,13 @@ void cProjectUI::renderMeshUI() {
 							  m_projectManager->m_selectedMesh->m_position.z };
 		ImGui::Text("Position");
 		// Position Input
-		if (ImGui::InputFloat3("##PositionInput", pos3f, "%.2f")) {
+		if (ImGui::InputFloat3("X Y Z##PositionInput", pos3f, "%.2f")) {
 			m_projectManager->m_selectedMesh->m_position.x = pos3f[0];
 			m_projectManager->m_selectedMesh->m_position.y = pos3f[1];
 			m_projectManager->m_selectedMesh->m_position.z = pos3f[2];
 		}
 		// Position Slider
-		if (ImGui::SliderFloat3("##PositionSlider", pos3f, -100, +100, "%.2f")) {
+		if (ImGui::SliderFloat3("X Y Z##PositionSlider", pos3f, -100, +100, "%.2f")) {
 			m_projectManager->m_selectedMesh->m_position.x = pos3f[0];
 			m_projectManager->m_selectedMesh->m_position.y = pos3f[1];
 			m_projectManager->m_selectedMesh->m_position.z = pos3f[2];
@@ -111,13 +110,13 @@ void cProjectUI::renderMeshUI() {
 								  m_projectManager->m_selectedMesh->m_rotation.z };
 		ImGui::Text("Rotation");
 		// Rotation Input
-		if (ImGui::InputFloat3("##RotationInput", rot3f, "%.2f")) {
+		if (ImGui::InputFloat3("X Y Z##RotationInput", rot3f, "%.2f")) {
 			m_projectManager->m_selectedMesh->m_rotation.x = rot3f[0];
 			m_projectManager->m_selectedMesh->m_rotation.y = rot3f[1];
 			m_projectManager->m_selectedMesh->m_rotation.z = rot3f[2];
 		}
 		// Rotation Slider
-		if (ImGui::SliderFloat3("##RotationSlider", rot3f, -100, +100, "%.2f")) {
+		if (ImGui::SliderFloat3("X Y Z##RotationSlider", rot3f, -100, +100, "%.2f")) {
 			m_projectManager->m_selectedMesh->m_rotation.x = rot3f[0];
 			m_projectManager->m_selectedMesh->m_rotation.y = rot3f[1];
 			m_projectManager->m_selectedMesh->m_rotation.z = rot3f[2];
@@ -134,7 +133,7 @@ void cProjectUI::renderMeshUI() {
 								  m_projectManager->m_selectedMesh->m_RGBA_colour.b,
 								  m_projectManager->m_selectedMesh->m_RGBA_colour.a};
 		// RGB Picker
-		if (ImGui::ColorEdit4("##RGB", col4f, ImGuiColorEditFlags_Float)) {
+		if (ImGui::ColorEdit4("R G B A##RGB", col4f, ImGuiColorEditFlags_Float)) {
 			m_projectManager->m_selectedMesh->m_RGBA_colour.r = col4f[0];
 			m_projectManager->m_selectedMesh->m_RGBA_colour.g = col4f[1];
 			m_projectManager->m_selectedMesh->m_RGBA_colour.b = col4f[2];

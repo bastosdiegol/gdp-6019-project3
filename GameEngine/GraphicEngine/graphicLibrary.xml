@@ -46,15 +46,24 @@
 		</light>
 	</scene>
 	<scene title="Scene 02">
-		<model path="" title="" >
-			<mesh id="" >
-				<position x="0.0f" y="0.0f" z="0.0f" />
+		<model path="assets/objects/SM_Prop_Brazier_01.ply" title="Brazier" >
+			<mesh id="Brazier 01" >
+				<position x="7.0f" y="8.0f" z="9.0f" />
 				<rotate x="0.0f" y="0.0f" z="0.0f" />
-				<useColor value="true" />
+				<useColor value="false" />
 				<color r="0.0f" g="0.0f" b="0.0f" />
 				<scale value="1.0f" />
 				<isWireframe value="0" />
 				<visible value="1" />
+			</mesh>
+			<mesh id="Brazier 02" >
+				<position x="8.0f" y="7.0f" z="6.0f" />
+				<rotate x="0.0f" y="0.0f" z="0.0f" />
+				<useColor value="0" />
+				<color r="0.0f" g="0.0f" b="0.0f" />
+				<scale value="1.0f" />
+				<isWireframe value="0" />
+				<visible value="0" />
 			</mesh>
 		</model>
 		<light title="">
