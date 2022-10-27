@@ -12,6 +12,7 @@ class cProjectManager {
 private:
 	std::vector<std::string>	m_vScenes;
 	cScene*						m_selectedScene;
+	cMeshObject*				m_selectedMesh;
 	cVAOManager*				m_VAOManager;
 
 	/// <summary>

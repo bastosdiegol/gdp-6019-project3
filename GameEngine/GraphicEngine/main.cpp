@@ -10,6 +10,15 @@
 #include "cProjectUI.h"
 #include "cShaderManager.h"
 
+#ifdef _DEBUG
+#define DEBUG_LOG_ENABLED
+#endif
+#ifdef DEBUG_LOG_ENABLED
+#define DEBUG_PRINT(x, ...) printf(x, __VA_ARGS__)
+#else
+#define DEBUG_PRINT(x)
+#endif
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 
 }
@@ -60,7 +69,7 @@ int main(int argc, char* argv[]) {
 		std::cout << "Because: " << theLastError << std::endl;
 		return -1;
 	} else {
-		std::cout << "Compiled shader OK." << std::endl;
+		DEBUG_PRINT("Compiled shader OK.");
 	}
 
 	pTheShaderManager->useShaderProgram("Shader_1");
@@ -98,6 +107,7 @@ int main(int argc, char* argv[]) {
 
 		g_projectUI.renderUI();
 		g_projectUI.renderSceneUI();
+		g_projectUI.renderMeshUI();
 
 		// Rendering
 		ImGui::Render();

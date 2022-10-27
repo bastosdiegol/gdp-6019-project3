@@ -18,7 +18,7 @@ public:
 	/// To the GPU (Shader)
 	/// </summary>
 	/// <returns></returns>
-	bool PrepareNewModel(std::string friendlyName,
+	cModel* PrepareNewModel(std::string friendlyName,
 						 std::string filePath);
 	/// <summary>
 	/// Binds now the Model Data to the Shader
@@ -29,8 +29,8 @@ public:
 	/// <returns></returns>
 	bool LoadModelIntoVAO(cModel* drawInfo);
 
-	bool FindDrawInfoByModelName(std::string filename,
-		cModel* drawInfo);
+	//bool FindDrawInfoByModelName(std::string filename,
+	//	cModel* drawInfo);
 
 	//std::string getLastError(bool bAndClear = true);
 

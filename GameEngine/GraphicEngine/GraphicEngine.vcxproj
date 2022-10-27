@@ -145,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cMeshObject.cpp" />
     <ClCompile Include="cModel.cpp" />
     <ClCompile Include="cPlyFileReader.cpp" />
     <ClCompile Include="cProjectManager.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cMeshObject.h" />
     <ClInclude Include="cModel.h" />
     <ClInclude Include="cPlyFileReader.h" />
     <ClInclude Include="cProjectManager.h" />
@@ -184,6 +186,7 @@
   <ItemGroup>
     <None Include="assets\shaders\fragmentShader01.glsl" />
     <None Include="assets\shaders\vertexShader01.glsl" />
+    <None Include="imgui.ini" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

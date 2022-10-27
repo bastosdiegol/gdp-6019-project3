@@ -11,8 +11,12 @@ public:
 	/// </summary>
 	void renderUI();
 	/// <summary>
-	/// After a scene is being selected. This method will open the scene windows
+	/// After a scene is selected, this method will draw the scene info
 	/// </summary>
 	void renderSceneUI();
+	/// <summary>
+	/// After a mesh is selected, this method will draw the mesh info
+	/// </summary>
+	void renderMeshUI();
 };
 

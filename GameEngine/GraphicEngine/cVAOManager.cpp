@@ -30,16 +30,18 @@ cVAOManager::~cVAOManager() {
 		delete itModel->second;
 }
 
-bool cVAOManager::PrepareNewModel(std::string friendlyName, std::string filePath) {
+cModel* cVAOManager::PrepareNewModel(std::string friendlyName, std::string filePath) {
 	DEBUG_PRINT("cVAOManager::PrepareNewModel(%s, %s)\n", friendlyName.c_str(), filePath.c_str());
 	cModel* newModel = new cModel();
 	newModel->meshName = friendlyName;
 	// Reads the Ply file
 	m_plyReader->loadMeshFromFile(filePath);
+	// Sets number of Vertices
+	newModel->numberOfVertices = m_plyReader->m_numberOfVertices;
 	// Creates the struct which will host all vertices
 	newModel->pVertices = new sVertex[newModel->numberOfVertices];
 	// Now copy the information from the PLY to the model class
-	for (unsigned int index = 0; index != newModel->numberOfVertices; index++) {
+	for (unsigned int index = 0; index != m_plyReader->m_numberOfVertices; index++) {
 
 		newModel->pVertices[index].x = m_plyReader->pTheModelArray[index].x;
 		newModel->pVertices[index].y = m_plyReader->pTheModelArray[index].y;
@@ -54,6 +56,8 @@ bool cVAOManager::PrepareNewModel(std::string friendlyName, std::string filePath
 		newModel->pVertices[index].nz = m_plyReader->pTheModelArray[index].nz;
 
 	}
+	// Sets Number of Triangles
+	newModel->numberOfTriangles = m_plyReader->m_numberOfTriangles;
 	// Final Number of Indices to be drawn
 	newModel->numberOfIndices = newModel->numberOfTriangles * 3;
 	// Creates the struct which will host all vertices of each triangle
@@ -82,7 +86,7 @@ bool cVAOManager::PrepareNewModel(std::string friendlyName, std::string filePath
 
 	this->m_mapModels.try_emplace(newModel->meshName, newModel);
 
-	return true;
+	return newModel;
 }
 
 bool cVAOManager::LoadModelIntoVAO(cModel* drawInfo) {
@@ -148,19 +152,19 @@ bool cVAOManager::LoadModelIntoVAO(cModel* drawInfo) {
 	return true;
 }
 
-bool cVAOManager::FindDrawInfoByModelName(
-		std::string filename,
-		cModel* drawInfo) {
-	DEBUG_PRINT("cVAOManager::FindDrawInfoByModelName(%s)\n", filename.c_str());
-
-	std::map<std::string, cModel*>::iterator
-		itDrawInfo = this->m_mapModels.find( filename );
-
-	// Checks if it's the end of the map
-	if ( itDrawInfo == this->m_mapModels.end() ) {
-		return false;
-	}
-	// Found it
-	drawInfo = itDrawInfo->second;
-	return true;
-}
+//bool cVAOManager::FindDrawInfoByModelName(
+//		std::string filename,
+//		cModel* drawInfo) {
+//	DEBUG_PRINT("cVAOManager::FindDrawInfoByModelName(%s)\n", filename.c_str());
+//
+//	std::map<std::string, cModel*>::iterator
+//		itDrawInfo = this->m_mapModels.find( filename );
+//
+//	// Checks if it's the end of the map
+//	if ( itDrawInfo == this->m_mapModels.end() ) {
+//		return false;
+//	}
+//	// Found it
+//	drawInfo = itDrawInfo->second;
+//	return true;
+//}
