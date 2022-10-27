@@ -145,10 +145,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cModel.cpp" />
     <ClCompile Include="cPlyFileReader.cpp" />
     <ClCompile Include="cProjectManager.cpp" />
     <ClCompile Include="cProjectUI.cpp" />
     <ClCompile Include="cScene.cpp" />
+    <ClCompile Include="cVAOManager.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
@@ -160,10 +162,12 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cModel.h" />
     <ClInclude Include="cPlyFileReader.h" />
     <ClInclude Include="cProjectManager.h" />
     <ClInclude Include="cProjectUI.h" />
     <ClInclude Include="cScene.h" />
+    <ClInclude Include="cVAOManager.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_glfw.h" />

@@ -23,8 +23,6 @@ cPlyFileReader::cPlyFileReader() {
 
 cPlyFileReader::~cPlyFileReader() {
 	DEBUG_PRINT("PlyFileReader::~PlyFileReader()\n");
-	delete[] pTheModelArray;
-	delete[] pTheModelTriangleArray;
 }
 
 void cPlyFileReader::loadMeshFromFile(std::string file_location) {

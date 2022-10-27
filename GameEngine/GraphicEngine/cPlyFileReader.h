@@ -39,7 +39,6 @@ public:
     cPlyFileReader();
     ~cPlyFileReader();
 
-private:
     /// <summary>
     /// Reads a Mesh File and store its Header, Vertices and Faces on a struct in memory
     /// </summary>

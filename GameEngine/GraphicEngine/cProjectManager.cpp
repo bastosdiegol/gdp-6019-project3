@@ -17,9 +17,13 @@ cProjectManager::cProjectManager() {
 		std::cout << "Project Save File named: #" << PROJECT_SAVE_FILE << " could not be loaded. Ending the application." << std::endl;
 		exit(-1);
 	}
+	m_VAOManager = new cVAOManager();
 }
 
 cProjectManager::~cProjectManager() {
+	DEBUG_PRINT("cProjectManager::~cProjectManager()\n");
+	delete m_selectedScene;
+	delete m_VAOManager;
 }
 
 bool cProjectManager::LoadScene(std::string name) {
@@ -59,6 +63,7 @@ bool cProjectManager::LoadScene(std::string name) {
 																	   , modelNode.attribute("title").value());
 				// Adds new model to the Model List
 				// TODO: Calls VAO Manager to Create a new Model
+				this->m_VAOManager->PrepareNewModel(modelNode.attribute("title").value(), modelNode.attribute("path").value());
 				// TODO: Change it from String Vector to an Model Vector
 				newScene->m_vModels.push_back(modelNode.attribute("title").value());
 			}

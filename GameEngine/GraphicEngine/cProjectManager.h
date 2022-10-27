@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "cScene.h"
+#include "cVAOManager.h"
 
 #define PROJECT_SAVE_FILE "graphicLibrary.xml"
 
@@ -10,6 +11,7 @@ class cProjectManager {
 private:
 	std::vector<std::string>	m_vScenes;
 	cScene*						m_selectedScene;
+	cVAOManager*				m_VAOManager;
 
 	/// <summary>
 	/// Loads the PROJECT_SAVE_FILE and stores all scenes available to be loaded

@@ -1,6 +1,6 @@
 <graphicsLibrary>
 	<scene title="Scene 01">
-		<model path="assets/dragon/SM_Env_Bone_Skull_02.fbx" title="Dragon Skull" >
+		<model path="assets/dragon/SM_Env_Bone_Skull_02.ply" title="Dragon Skull" >
 			<mesh id="" >
 				<position x="" y="" z="" />
 				<translate x="" y="" z="" />
@@ -8,7 +8,15 @@
 				<scale x="" y="" z="" />
 			</mesh>
 		</model>
-		<model path="assets/objects/SM_Prop_Brazier_01.fbx" title="Brazier" >
+		<model path="assets/dragon/SM_Env_Bone_Rigcage_01.ply" title="Dragon Rib" >
+			<mesh id="" >
+				<position x="" y="" z="" />
+				<translate x="" y="" z="" />
+				<rotate x="" y="" z="" />
+				<scale x="" y="" z="" />
+			</mesh>
+		</model>
+		<model path="assets/objects/SM_Prop_Brazier_01.ply" title="Brazier" >
 			<mesh id="" >
 				<position x="" y="" z="" />
 				<translate x="" y="" z="" />
