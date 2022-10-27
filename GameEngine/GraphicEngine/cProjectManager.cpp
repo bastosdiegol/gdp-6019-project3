@@ -1,6 +1,7 @@
-#include "cProjectManager.h"
 #include <pugixml/pugixml.hpp>
 #include <iostream>
+
+#include "cProjectManager.h"
 
 #ifdef _DEBUG
 #define DEBUG_LOG_ENABLED
@@ -61,16 +62,26 @@ bool cProjectManager::LoadScene(std::string name) {
 				modelNode = modelNode.next_sibling("model")) {
 				DEBUG_PRINT("	<model path=\"%s\" title=\"%s\" \\> \n", modelNode.attribute("path").value()
 																	   , modelNode.attribute("title").value());
+				// Checks if parameters provided by XML are safe
+				if ((std::strcmp(modelNode.attribute("path").value(), "") == 0
+					|| std::strcmp(modelNode.attribute("title").value(), "") == 0)) {
+					continue;
+				}
 				// Adds new model to the Model List
 				// TODO: Calls VAO Manager to Create a new Model
 				this->m_VAOManager->PrepareNewModel(modelNode.attribute("title").value(), modelNode.attribute("path").value());
-				// TODO: Change it from String Vector to an Model Vector
+				// TODO: Model != Mesh (To remember)
+				// TODO: Change it from String Vector to an MeshObject Vector
 				newScene->m_vModels.push_back(modelNode.attribute("title").value());
 			}
 		}
 	}	
 
 	return true;
+}
+
+void cProjectManager::SetShaderID(GLuint shaderID) {
+	this->m_VAOManager->m_shaderID = shaderID;
 }
 
 bool cProjectManager::LoadSaveFile() {

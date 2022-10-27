@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <imgui_impl_opengl3_loader.h>
 
 #include "cScene.h"
 #include "cVAOManager.h"
@@ -34,6 +35,11 @@ public:
 	/// <returns>True if loading was successful</returns>
 	bool LoadScene(std::string name);
 	bool SaveScene(std::string name);
+	/// <summary>
+	/// Sets the Shader ID into cVAOManager
+	/// </summary>
+	/// <param name="shaderID">GLuint Shader ID generated</param>
+	void SetShaderID(GLuint shaderID);
 
 	friend class cProjectUI;
 };

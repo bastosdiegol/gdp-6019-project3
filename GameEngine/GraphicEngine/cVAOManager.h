@@ -7,6 +7,7 @@
 
 class cVAOManager {
 public:
+	GLuint m_shaderID;
 	// Default Constructor
 	cVAOManager();
 	// Destructor
@@ -26,8 +27,7 @@ public:
 	/// <param name="drawInfo">Model Vertices n Triangles</param>
 	/// <param name="shaderProgramID">Shader ID</param>
 	/// <returns></returns>
-	bool LoadModelIntoVAO(cModel* drawInfo,
-						  unsigned int shaderProgramID);
+	bool LoadModelIntoVAO(cModel* drawInfo);
 
 	bool FindDrawInfoByModelName(std::string filename,
 		cModel* drawInfo);

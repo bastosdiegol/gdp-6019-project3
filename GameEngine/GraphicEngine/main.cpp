@@ -2,11 +2,13 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 #include <imgui.h>
-
-#include "cProjectManager.h"
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
+#include <iostream>
+
+#include "cProjectManager.h"
 #include "cProjectUI.h"
+#include "cShaderManager.h"
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 
@@ -17,6 +19,11 @@ static void error_callback(int error, const char* description) {
 }
 
 int main(int argc, char* argv[]) {
+
+	GLuint vertex_buffer = 0;
+	GLuint shaderID = 0;
+	GLint vpos_location = 0;
+	GLint vcol_location = 0;
 
 	glfwSetErrorCallback(error_callback);
 
@@ -39,6 +46,27 @@ int main(int argc, char* argv[]) {
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	glfwSwapInterval(1);
 
+	cShaderManager* pTheShaderManager = new cShaderManager();
+
+	cShaderManager::cShader vertexShader01;
+	cShaderManager::cShader fragmentShader01;
+
+	vertexShader01.fileName = "assets/shaders/vertexShader01.glsl";
+	fragmentShader01.fileName = "assets/shaders/fragmentShader01.glsl";
+
+	if (!pTheShaderManager->createProgramFromFile("Shader_1", vertexShader01, fragmentShader01)) {
+		std::cout << "Didn't compile shaders" << std::endl;
+		std::string theLastError = pTheShaderManager->getLastError();
+		std::cout << "Because: " << theLastError << std::endl;
+		return -1;
+	} else {
+		std::cout << "Compiled shader OK." << std::endl;
+	}
+
+	pTheShaderManager->useShaderProgram("Shader_1");
+	shaderID = pTheShaderManager->getIDFromFriendlyName("Shader_1");
+	//glUseProgram(shaderID);
+
 	// Setup ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -51,6 +79,8 @@ int main(int argc, char* argv[]) {
 
 	// Creates my Project Manager
 	cProjectManager* g_ProjectManager = new cProjectManager();
+	g_ProjectManager->SetShaderID(shaderID);
+	
 	// Creates my Project Manager UI - ImGui Window
 	cProjectUI g_projectUI(g_ProjectManager);
 

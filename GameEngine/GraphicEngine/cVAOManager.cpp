@@ -17,6 +17,7 @@
 cVAOManager::cVAOManager() {
 	DEBUG_PRINT("cVAOManager::cVAOManager()\n");
 	this->m_plyReader = new cPlyFileReader();
+	this->m_shaderID = -1;
 }
 
 cVAOManager::~cVAOManager() {
@@ -70,18 +71,22 @@ bool cVAOManager::PrepareNewModel(std::string friendlyName, std::string filePath
 		vertex_element_index_index += 3;
 	}
 
-	delete[] m_plyReader->pTheModelArray;
-	delete[] m_plyReader->pTheModelTriangleArray;
+	if (m_plyReader->m_numberOfVertices > 0) {
+		delete[] m_plyReader->pTheModelArray;
+		m_plyReader->m_numberOfVertices = -1;
+	}
+	if (m_plyReader->m_numberOfTriangles > 0) {
+		delete[] m_plyReader->pTheModelTriangleArray;
+		m_plyReader->m_numberOfTriangles = -1;
+	}
 
 	this->m_mapModels.try_emplace(newModel->meshName, newModel);
 
 	return true;
 }
 
-bool cVAOManager::LoadModelIntoVAO(
-	cModel* drawInfo,
-	unsigned int shaderProgramID) {
-	DEBUG_PRINT("cVAOManager::LoadModelIntoVAO(%s, %d)\n", drawInfo->meshName.c_str(), shaderProgramID);
+bool cVAOManager::LoadModelIntoVAO(cModel* drawInfo) {
+	DEBUG_PRINT("cVAOManager::LoadModelIntoVAO(%s)\n", drawInfo->meshName.c_str());
 
 	// Ask OpenGL for a new buffer ID...
 	glGenVertexArrays(1, &(drawInfo->VAO_ID));
@@ -104,9 +109,9 @@ bool cVAOManager::LoadModelIntoVAO(
 		GL_STATIC_DRAW);
 
 	// Set the vertex attributes.
-	GLint vpos_location = glGetAttribLocation(shaderProgramID, "vPos");
-	GLint vcol_location = glGetAttribLocation(shaderProgramID, "vCol");
-	GLint vNormal_location = glGetAttribLocation(shaderProgramID, "vNormal");
+	GLint vpos_location = glGetAttribLocation(m_shaderID, "vPos");
+	GLint vcol_location = glGetAttribLocation(m_shaderID, "vCol");
+	GLint vNormal_location = glGetAttribLocation(m_shaderID, "vNormal");
 
 	// Set the vertex attributes for this shader
 	// Position
