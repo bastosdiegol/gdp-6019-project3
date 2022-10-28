@@ -40,7 +40,11 @@ public:
 	/// Free Heap Memory Used for Last Loaded Scene
 	/// </summary>
 	void UnloadScene();
-	bool SaveScene(std::string name);
+	/// <summary>
+	/// Saves the selected scene and all its data to the XML file
+	/// </summary>
+	/// <returns>True if saving was successful</returns>
+	bool SaveSelectedScene();
 	/// <summary>
 	/// Sets the Shader ID into cVAOManager
 	/// </summary>

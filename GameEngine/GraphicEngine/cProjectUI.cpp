@@ -13,7 +13,7 @@ void cProjectUI::renderUI() {
 	// TODO: Save Scene on XML file
 	if (ImGui::BeginMenuBar()) {
 		if(ImGui::BeginMenu("Project")){
-			if (ImGui::MenuItem("Save Scene")) {
+			if (ImGui::MenuItem("New Scene")) {
 			}
 			if (ImGui::MenuItem("Quit")) {
 			}
@@ -47,7 +47,9 @@ void cProjectUI::renderSceneUI() {
 										 ImGuiWindowFlags_NoResize);
 	if (ImGui::BeginMenuBar()) {
 		if (ImGui::BeginMenu("Scene")) {
-			// TODO: Add models using this menu in the future?
+			if (ImGui::MenuItem("Save Scene")) {
+				m_projectManager->SaveSelectedScene();
+			}
 			ImGui::EndMenu();
 		}
 		ImGui::EndMenuBar();

@@ -5,9 +5,8 @@
 #include "cMeshObject.h"
 
 class cScene {
-protected:
-	std::string				 m_name;
 public:
+	std::string				 m_name;
 	glm::vec3				 m_cameraEye;
 	glm::vec3				 m_cameraTarget;
 	std::map<std::string, cMeshObject*> m_vMeshes;

@@ -115,26 +115,36 @@ bool cProjectManager::LoadScene(std::string name) {
 					cMeshObject* newMeshObj = new cMeshObject(newModel);
 					newMeshObj->m_meshName = meshNode.attribute("id").value();
 					// Now lets load the rest of info about the mesh
+					// Reads Position
 					pugi::xml_node meshInfo = meshNode.child("position");
 					newMeshObj->m_position = glm::vec3(meshInfo.attribute("x").as_float(),
 													   meshInfo.attribute("y").as_float(),
 													   meshInfo.attribute("z").as_float());
 					meshInfo = meshInfo.next_sibling();
+					// Reads Rotation
 					newMeshObj->m_rotation = glm::vec3(meshInfo.attribute("x").as_float(),
 													   meshInfo.attribute("y").as_float(),
 													   meshInfo.attribute("z").as_float());
 					meshInfo = meshInfo.next_sibling();
+					// Reads UseRGB?
 					newMeshObj->m_bUse_RGBA_colour = meshInfo.attribute("value").as_bool();
 					meshInfo = meshInfo.next_sibling();
+					// Reads Colour
 					newMeshObj->m_RGBA_colour = glm::vec4(meshInfo.attribute("r").as_float(),
 														  meshInfo.attribute("g").as_float(),
 														  meshInfo.attribute("b").as_float(),
 														  1);
 					meshInfo = meshInfo.next_sibling();
+					// Reads Scale
 					newMeshObj->m_scale = meshInfo.attribute("value").as_bool();
 					meshInfo = meshInfo.next_sibling();
+					// Reads isWireframe
 					newMeshObj->m_isWireframe = meshInfo.attribute("value").as_bool();
 					meshInfo = meshInfo.next_sibling();
+					// Reads doNotLight
+					newMeshObj->m_bDoNotLight = meshInfo.attribute("value").as_bool();
+					meshInfo = meshInfo.next_sibling();
+					// Reads isVisible
 					newMeshObj->m_bIsVisible = meshInfo.attribute("value").as_bool();
 
 					newScene->m_vMeshes.try_emplace(newMeshObj->m_meshName, newMeshObj);
@@ -168,6 +178,93 @@ void cProjectManager::UnloadScene() {
 	}
 
 	this->m_selectedMesh = nullptr;
+}
+
+bool cProjectManager::SaveSelectedScene() {
+	// Checks if there's a selected scene
+	if (m_selectedScene == nullptr) {
+		return false;
+	}
+	DEBUG_PRINT("cProjectManager::SaveSelectedScene()\n");
+	// Create a document object
+	pugi::xml_document graphicsLibrary;
+	// Load the XML file into the object
+	pugi::xml_parse_result result = graphicsLibrary.load_file(PROJECT_SAVE_FILE);
+	if (!result) {
+		std::cout << "ProjectManager error: Failed to load file named #" << PROJECT_SAVE_FILE << std::endl;
+		return false;
+	}
+	DEBUG_PRINT("Successfully loaded file named #%s\n", PROJECT_SAVE_FILE);
+
+	// Gets all nodes of sound inside the soundlibrary
+	pugi::xml_node scenes = graphicsLibrary.child("graphicsLibrary");
+	// Iterates through each graphicsLibrary node to find Selected Scene
+	for (pugi::xml_node sceneNode = scenes.child("scene");
+						sceneNode;
+						sceneNode = sceneNode.next_sibling("scene")) {
+		// Checks if current sceneNode is the selected Node
+		if (std::strcmp(sceneNode.attribute("title").value(), m_selectedScene->m_name.c_str()) == 0) {
+			// Found It - Sets camera attributes
+			sceneNode.attribute("camEyeX").set_value(m_selectedScene->m_cameraEye.x);
+			sceneNode.attribute("camEyeY").set_value(m_selectedScene->m_cameraEye.y);
+			sceneNode.attribute("camEyeZ").set_value(m_selectedScene->m_cameraEye.z);
+			sceneNode.attribute("camTarX").set_value(m_selectedScene->m_cameraTarget.x);
+			sceneNode.attribute("camTarY").set_value(m_selectedScene->m_cameraTarget.y);
+			sceneNode.attribute("camTarZ").set_value(m_selectedScene->m_cameraTarget.z);
+			// Now Sets the Mesh attributes
+			pugi::xml_node modelNode = sceneNode.child("model");
+			// Iterates through each Model of the scene
+			for (pugi::xml_node modelNode = sceneNode.child("model");
+								modelNode;
+								modelNode = modelNode.next_sibling("model")) {
+				// Iterates through each Mesh of this Model
+				for (pugi::xml_node meshNode = modelNode.child("mesh");
+									meshNode;
+									meshNode = meshNode.next_sibling("mesh")) {
+					std::map<std::string, cMeshObject*>::iterator itMesh = m_selectedScene->m_vMeshes.find(meshNode.attribute("id").as_string());
+					// Checks if found the Selected Scene Obj
+					if (itMesh == m_selectedScene->m_vMeshes.end()) {
+						DEBUG_PRINT("Tried to find a Mesh to save and got nullptr. Mesh %s not saved.", meshNode.attribute("id").as_string());
+						continue;
+					}
+					// Gets first Mesh Child Node - Position
+					pugi::xml_node meshInfoNode = *meshNode.children().begin();
+					// Sets Position
+					meshInfoNode.attribute("x").set_value(itMesh->second->m_position.x);
+					meshInfoNode.attribute("y").set_value(itMesh->second->m_position.y);
+					meshInfoNode.attribute("z").set_value(itMesh->second->m_position.z);
+					meshInfoNode = meshInfoNode.next_sibling();
+					// Sets Rotation
+					meshInfoNode.attribute("x").set_value(itMesh->second->m_rotation.x);
+					meshInfoNode.attribute("y").set_value(itMesh->second->m_rotation.y);
+					meshInfoNode.attribute("z").set_value(itMesh->second->m_rotation.z);
+					meshInfoNode = meshInfoNode.next_sibling();
+					// Sets Use Color
+					meshInfoNode.attribute("value").set_value(itMesh->second->m_bUse_RGBA_colour);
+					meshInfoNode = meshInfoNode.next_sibling();
+					// Sets Color
+					meshInfoNode.attribute("r").set_value(itMesh->second->m_RGBA_colour.r);
+					meshInfoNode.attribute("g").set_value(itMesh->second->m_RGBA_colour.g);
+					meshInfoNode.attribute("b").set_value(itMesh->second->m_RGBA_colour.b);
+					meshInfoNode.attribute("a").set_value(itMesh->second->m_RGBA_colour.a);
+					meshInfoNode = meshInfoNode.next_sibling();
+					// Sets Scale
+					meshInfoNode.attribute("value").set_value(itMesh->second->m_scale);
+					meshInfoNode = meshInfoNode.next_sibling();
+					// Sets Wireframe
+					meshInfoNode.attribute("value").set_value(itMesh->second->m_isWireframe);
+					meshInfoNode = meshInfoNode.next_sibling();
+					// Sets DoNotLight
+					meshInfoNode.attribute("value").set_value(itMesh->second->m_bDoNotLight);
+					meshInfoNode = meshInfoNode.next_sibling();
+					// Sets Visible
+					meshInfoNode.attribute("value").set_value(itMesh->second->m_bIsVisible);
+				}
+			}
+		}
+	}
+	graphicsLibrary.save_file(PROJECT_SAVE_FILE);
+	return true;
 }
 
 void cProjectManager::SetShaderID(GLuint shaderID) {
