@@ -19,6 +19,11 @@
 #define DEBUG_PRINT(x)
 #endif
 
+// Global Camera Eye that will be pointing to the Selected Scene Camera
+glm::vec3* g_cameraEye;
+// Global Camera Eye that will be pointing to the Selected Scene Target
+glm::vec3* g_cameraTarget;
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 
 }
@@ -49,7 +54,6 @@ int main(int argc, char* argv[]) {
 		glfwTerminate();
 		exit(EXIT_FAILURE);
 	}
-
 	glfwSetKeyCallback(window, key_callback);
 	glfwMakeContextCurrent(window);
 	if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
@@ -57,14 +61,12 @@ int main(int argc, char* argv[]) {
 	}
 	glfwSwapInterval(1);
 
+	// Shader Management
 	cShaderManager* pTheShaderManager = new cShaderManager();
-
 	cShaderManager::cShader vertexShader01;
 	cShaderManager::cShader fragmentShader01;
-
 	vertexShader01.fileName = "assets/shaders/vertexShader01.glsl";
 	fragmentShader01.fileName = "assets/shaders/fragmentShader01.glsl";
-
 	if (!pTheShaderManager->createProgramFromFile("Shader_1", vertexShader01, fragmentShader01)) {
 		std::cout << "Didn't compile shaders" << std::endl;
 		std::string theLastError = pTheShaderManager->getLastError();
@@ -73,10 +75,8 @@ int main(int argc, char* argv[]) {
 	} else {
 		DEBUG_PRINT("Compiled shader OK.");
 	}
-
 	pTheShaderManager->useShaderProgram("Shader_1");
 	shaderID = pTheShaderManager->getIDFromFriendlyName("Shader_1");
-	//glGetError();
 	glUseProgram(shaderID);
 
 	// Setup ImGui context
@@ -109,6 +109,15 @@ int main(int argc, char* argv[]) {
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
+		// If new Scene
+		if (g_ProjectManager->isNewScene) {
+			// Points Camera Eye and Target to their respective new values
+			g_cameraEye		= &g_ProjectManager->m_selectedScene->m_cameraEye;
+			g_cameraTarget	= &g_ProjectManager->m_selectedScene->m_cameraTarget;
+			g_ProjectManager->isNewScene = false;
+		}
+
+		// Renders Project Manager UI
 		g_projectUI.renderUI();
 		g_projectUI.renderSceneUI();
 		g_projectUI.renderMeshUI();

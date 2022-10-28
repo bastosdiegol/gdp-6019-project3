@@ -10,9 +10,8 @@
 
 class cProjectManager {	
 private:
-	std::vector<std::string>	m_vScenes;
-	cScene*						m_selectedScene;
-	cMeshObject*				m_selectedMesh;
+	std::vector<std::string>	m_vScenes;			// List of Scenes Available
+	cMeshObject*				m_selectedMesh;		// Selected Mesh with info available to be edited
 	cVAOManager*				m_VAOManager;
 
 	/// <summary>
@@ -21,6 +20,8 @@ private:
 	/// <returns>TRUE if loading was successful</returns>
 	bool LoadSaveFile();
 public:
+	cScene*						m_selectedScene;	// Selected Scene by the user
+	bool						isNewScene;			// True everytime a user changes the scene
 	/// <summary>
 	/// Default Constructor - also Loads Save File
 	/// </summary>

@@ -25,6 +25,7 @@ void cProjectUI::renderUI() {
 			ImGui::Bullet(); 
 			if (ImGui::SmallButton(m_projectManager->m_vScenes[sceneIndex].c_str())) {
 				m_projectManager->LoadScene(m_projectManager->m_vScenes[sceneIndex]);
+				m_projectManager->isNewScene = true;
 			}
 		}
 		ImGui::TreePop();

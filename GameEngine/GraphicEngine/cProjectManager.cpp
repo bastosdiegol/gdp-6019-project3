@@ -20,6 +20,9 @@ cProjectManager::cProjectManager() {
 		exit(-1);
 	}
 	m_VAOManager = new cVAOManager();
+	isNewScene = false;
+	m_selectedScene = nullptr;
+	m_selectedMesh = nullptr;
 }
 
 cProjectManager::~cProjectManager() {
@@ -53,6 +56,14 @@ bool cProjectManager::LoadScene(std::string name) {
 		if (std::strcmp(sceneNode.attribute("title").value(), name.c_str()) == 0) {
 			// Creates a pointer to the new Scene
 			cScene* newScene = new cScene(name);
+			// Sets Scene Camera Eye
+			newScene->m_cameraEye	 = glm::vec3(sceneNode.attribute("camEyeX").as_float(),
+												 sceneNode.attribute("camEyeY").as_float(),
+												 sceneNode.attribute("camEyeZ").as_float());
+			// Sets Scene Camera Target
+			newScene->m_cameraTarget = glm::vec3(sceneNode.attribute("camTarX").as_float(),
+												 sceneNode.attribute("camTarY").as_float(),
+												 sceneNode.attribute("camTarZ").as_float());
 			// Sets the new scene as selected one
 			this->m_selectedScene = newScene;
 

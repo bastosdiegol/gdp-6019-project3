@@ -1,5 +1,5 @@
 <graphicsLibrary>
-	<scene title="Scene 01">
+	<scene title="Scene 01" camEyeX="0.0f" camEyeY="0.0f" camEyeZ="-25.0f" camTarX="0.0f" camTarY="0.0f" camTarZ="0.0f" >
 		<model path="assets/dragon/SM_Env_Bone_Skull_02.ply" title="Dragon Skull" >
 			<mesh id="Dragon Skull" >
 				<position x="1.0f" y="2.0f" z="3.0f" />
@@ -45,7 +45,7 @@
 		<light title="">
 		</light>
 	</scene>
-	<scene title="Scene 02">
+	<scene title="Scene 02" camEyeX="0.0f" camEyeY="10.0f" camEyeZ="-25.0f" camTarX="0.0f" camTarY="0.0f" camTarZ="0.0f" >
 		<model path="assets/objects/SM_Prop_Brazier_01.ply" title="Brazier" >
 			<mesh id="Brazier 01" >
 				<position x="7.0f" y="8.0f" z="9.0f" />
