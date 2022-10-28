@@ -29,6 +29,13 @@ public:
 	/// <returns></returns>
 	bool LoadModelIntoVAO(cModel* drawInfo);
 
+	/// <summary>
+	/// Checks if a model was previously loaded
+	/// </summary>
+	/// <param name="name">Name of the model</param>
+	/// <returns>The instance of the model</returns>
+	cModel* findModel(std::string name);
+
 	//bool FindDrawInfoByModelName(std::string filename,
 	//	cModel* drawInfo);
 

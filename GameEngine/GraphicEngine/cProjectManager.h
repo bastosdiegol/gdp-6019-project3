@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include <vector>
+#include <map>
 #include <glad/glad.h>
 
 #include "cScene.h"
@@ -10,9 +10,9 @@
 
 class cProjectManager {	
 private:
-	std::vector<std::string>	m_vScenes;			// List of Scenes Available
-	cMeshObject*				m_selectedMesh;		// Selected Mesh with info available to be edited
-	cVAOManager*				m_VAOManager;
+	std::map<std::string, cScene*>	m_mScenes;			// List of Scenes Available
+	cMeshObject*					m_selectedMesh;		// Selected Mesh with info available to be edited
+	cVAOManager*					m_VAOManager;
 
 	/// <summary>
 	/// Loads the PROJECT_SAVE_FILE and stores all scenes available to be loaded
@@ -36,6 +36,10 @@ public:
 	/// <param name="name">Name of the scene to be loaded</param>
 	/// <returns>True if loading was successful</returns>
 	bool LoadScene(std::string name);
+	/// <summary>
+	/// Free Heap Memory Used for Last Loaded Scene
+	/// </summary>
+	void UnloadScene();
 	bool SaveScene(std::string name);
 	/// <summary>
 	/// Sets the Shader ID into cVAOManager

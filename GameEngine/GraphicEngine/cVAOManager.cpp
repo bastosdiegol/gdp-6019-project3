@@ -32,6 +32,12 @@ cVAOManager::~cVAOManager() {
 
 cModel* cVAOManager::PrepareNewModel(std::string friendlyName, std::string filePath) {
 	DEBUG_PRINT("cVAOManager::PrepareNewModel(%s, %s)\n", friendlyName.c_str(), filePath.c_str());
+	// Checks if Model is already loaded
+	std::map<std::string, cModel*>::iterator itModel = m_mapModels.find(friendlyName);
+	if (itModel != m_mapModels.end()) {
+		DEBUG_PRINT("Model already loaded ... Returning its class ...\n");
+		return itModel->second;
+	}
 	cModel* newModel = new cModel();
 	newModel->meshName = friendlyName;
 	// Reads the Ply file
@@ -150,6 +156,14 @@ bool cVAOManager::LoadModelIntoVAO(cModel* drawInfo) {
 	this->m_mapModels[drawInfo->meshName] = drawInfo;
 
 	return true;
+}
+
+cModel* cVAOManager::findModel(std::string name) {
+	std::map<std::string, cModel*>::iterator itModel = m_mapModels.find(name);
+	if (itModel == m_mapModels.end())
+		return nullptr;
+	else
+		return itModel->second;
 }
 
 //bool cVAOManager::FindDrawInfoByModelName(

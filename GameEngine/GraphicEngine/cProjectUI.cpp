@@ -1,3 +1,5 @@
+#include <map>
+
 #include "imgui/imgui.h"
 #include "cProjectUI.h"
 
@@ -21,10 +23,13 @@ void cProjectUI::renderUI() {
 	}
 
 	if (ImGui::TreeNodeEx("Scenes:", ImGuiTreeNodeFlags_DefaultOpen)) {
-		for (int sceneIndex = 0; sceneIndex < m_projectManager->m_vScenes.size(); sceneIndex++) {
-			ImGui::Bullet(); 
-			if (ImGui::SmallButton(m_projectManager->m_vScenes[sceneIndex].c_str())) {
-				m_projectManager->LoadScene(m_projectManager->m_vScenes[sceneIndex]);
+		std::map<std::string, cScene*>::iterator itScenes;
+		for (itScenes = m_projectManager->m_mScenes.begin();
+			 itScenes != m_projectManager->m_mScenes.end();
+			 itScenes++) {
+			ImGui::Bullet();
+			if (ImGui::SmallButton(itScenes->first.c_str())) {
+				m_projectManager->LoadScene(itScenes->first.c_str());
 				m_projectManager->isNewScene = true;
 			}
 		}

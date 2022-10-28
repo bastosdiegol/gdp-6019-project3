@@ -27,13 +27,20 @@ cProjectManager::cProjectManager() {
 
 cProjectManager::~cProjectManager() {
 	DEBUG_PRINT("cProjectManager::~cProjectManager()\n");
-	delete m_selectedScene;
+	std::map<std::string, cScene*>::iterator itScenes;
+	for (itScenes = this->m_mScenes.begin();
+		 itScenes != this->m_mScenes.end();
+		 itScenes++)
+		delete itScenes->second;
 	delete m_VAOManager;
 }
 
 bool cProjectManager::LoadScene(std::string name) {
 	DEBUG_PRINT("cProjectManager::LoadScene(%s)\n", name.c_str());
-	this->m_selectedMesh = nullptr;
+
+	// I don't know if I really want to unload the scenes
+	//this->UnloadScene();
+
 	// Create a document object
 	pugi::xml_document graphicsLibrary;
 	// Load the XML file into the object
@@ -54,6 +61,18 @@ bool cProjectManager::LoadScene(std::string name) {
 		sceneNode = sceneNode.next_sibling("scene")) {
 		// Checks if current sceneNode is the selected Node
 		if (std::strcmp(sceneNode.attribute("title").value(), name.c_str()) == 0) {
+
+			// Tries to find if the scene was already loaded
+			std::map<std::string, cScene*>::iterator itScene = m_mScenes.find(name);
+			if (itScene != m_mScenes.end()) {
+				// Checks if the scene was already loaded
+				if (itScene->second != nullptr) {
+					this->m_selectedScene = itScene->second;
+					DEBUG_PRINT("Scene loaded previously ... Skipping new loading...\n");
+					return true; // Scene previously loaded FOUND
+				}
+			}
+
 			// Creates a pointer to the new Scene
 			cScene* newScene = new cScene(name);
 			// Sets Scene Camera Eye
@@ -79,8 +98,15 @@ bool cProjectManager::LoadScene(std::string name) {
 					|| std::strcmp(modelNode.attribute("title").value(), "") == 0)) {
 					continue;
 				}
-				// Creates a new model and add its Meshes to the MeshObject List of the Scene
-				cModel* newModel = m_VAOManager->PrepareNewModel(modelNode.attribute("title").value(), modelNode.attribute("path").value());
+				cModel* newModel;
+				// Checks if Model was already loaded by another scene
+				newModel = m_VAOManager->findModel(modelNode.attribute("title").value());
+				if (newModel == nullptr) {
+					// Creates a new model and add its Meshes to the MeshObject List of the Scene
+					newModel = m_VAOManager->PrepareNewModel(modelNode.attribute("title").value(), modelNode.attribute("path").value());
+				} else {
+					DEBUG_PRINT("Model previously loaded found ... Skipping the creation a new model ...\n");
+				}
 				// Iterates through each mesh using the same model
 				for (pugi::xml_node meshNode = modelNode.child("mesh");
 					meshNode;
@@ -113,13 +139,35 @@ bool cProjectManager::LoadScene(std::string name) {
 
 					newScene->m_vMeshes.try_emplace(newMeshObj->m_meshName, newMeshObj);
 				}
-				// TODO: Model != Mesh (To remember)
-				// TODO: Change it from String Vector to an MeshObject Vector
+			}
+			// Adds the scene to the Map of scenes
+			itScene = m_mScenes.find(name);
+			if (itScene != m_mScenes.end()) {
+				// Checks if the scene was already loaded
+				itScene->second = newScene;
+			} else {
+				this->m_mScenes.try_emplace(name, newScene);
 			}
 		}
 	}	
-
 	return true;
+}
+
+void cProjectManager::UnloadScene() {
+	DEBUG_PRINT("cProjectManager::UnloadScene()\n");
+	// Cheks if theres no selected scene
+	if (this->m_selectedScene == nullptr)
+		return;
+
+	std::map<std::string, cMeshObject*>::iterator itMeshes;
+	for (itMeshes = this->m_selectedScene->m_vMeshes.begin();
+		 itMeshes != this->m_selectedScene->m_vMeshes.end();
+		 itMeshes++) {
+		itMeshes->second->~cMeshObject();
+		delete itMeshes->second;
+	}
+
+	this->m_selectedMesh = nullptr;
 }
 
 void cProjectManager::SetShaderID(GLuint shaderID) {
@@ -148,7 +196,8 @@ bool cProjectManager::LoadSaveFile() {
 						sceneNode; 
 						sceneNode = sceneNode.next_sibling("scene")) {
 		DEBUG_PRINT("	<scene> Title: %s\n",sceneNode.attribute("title").value());
-		m_vScenes.push_back(sceneNode.attribute("title").value());
+		// Adds the unloaded scene to the map
+		m_mScenes.try_emplace(sceneNode.attribute("title").value(), nullptr);
 	}
 
 	return true;
