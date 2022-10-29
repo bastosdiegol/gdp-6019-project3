@@ -3,11 +3,11 @@
 	<scene title="Scene 01" camEyeX="0" camEyeY="0" camEyeZ="-25" camTarX="0" camTarY="0" camTarZ="0">
 		<model path="assets/dragon/SM_Env_Bone_Skull_02.ply" title="Dragon Skull">
 			<mesh id="Dragon Skull">
-				<position x="74.6699982" y="100" z="38.7700005" />
-				<rotate x="-60.6699982" y="-41.6699982" z="52.1500015" />
-				<useColor value="false" />
+				<position x="-20" y="-20" z="-20" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
 				<color r="0.970588207" g="0.0380622819" b="0.0380622819" a="1" />
-				<scale value="-2.68400002" />
+				<scale value="1" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
 				<visible value="true" />
@@ -15,11 +15,11 @@
 		</model>
 		<model path="assets/dragon/SM_Env_Bone_Rigcage_01.ply" title="Dragon Rib">
 			<mesh id="Dragon Rib">
-				<position x="-79.3300018" y="-70" z="-94" />
-				<rotate x="66.6699982" y="41.6699982" z="46.1500015" />
-				<useColor value="false" />
-				<color r="0" g="0" b="0" a="1" />
-				<scale value="-5.84200001" />
+				<position x="20" y="20" z="20" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="1" g="0" b="0.852941036" a="1" />
+				<scale value="1" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
 				<visible value="true" />
@@ -27,21 +27,21 @@
 		</model>
 		<model path="assets/objects/SM_Prop_Brazier_01.ply" title="Brazier">
 			<mesh id="Brazier 01">
-				<position x="-26.3299999" y="-25.3299999" z="-21.7700005" />
-				<rotate x="-58.3300018" y="-25" z="-61.5400009" />
-				<useColor value="false" />
-				<color r="0" g="0" b="0" a="1" />
-				<scale value="-2.33299994" />
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="1" g="1" b="1" a="1" />
+				<scale value="1" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
 				<visible value="true" />
 			</mesh>
 			<mesh id="Brazier 02">
-				<position x="74.6699982" y="48.6699982" z="44.4599991" />
-				<rotate x="66.6699982" y="25" z="38.4599991" />
-				<useColor value="false" />
-				<color r="0" g="0" b="0" a="1" />
-				<scale value="3.80699992" />
+				<position x="5" y="5" z="5" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0" g="1" b="0.0294115543" a="1" />
+				<scale value="1" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
 				<visible value="true" />
@@ -50,23 +50,13 @@
 		<light title="" />
 	</scene>
 	<scene title="Scene 02" camEyeX="0" camEyeY="10" camEyeZ="-25" camTarX="0" camTarY="0" camTarZ="0">
-		<model path="assets/objects/SM_Prop_Brazier_01.ply" title="Brazier">
-			<mesh id="Brazier 01">
-				<position x="7" y="8" z="9" />
+		<model path="assets/dragon/SM_Env_Bone_Rigcage_01_rgb.ply" title="Dragon Rib">
+			<mesh id="Dragon Rib 01">
+				<position x="0" y="0" z="0" />
 				<rotate x="0" y="0" z="0" />
 				<useColor value="false" />
 				<color r="0" g="0" b="0" a="1" />
-				<scale value="1" />
-				<isWireframe value="false" />
-				<doNotLight value="false" />
-				<visible value="true" />
-			</mesh>
-			<mesh id="Brazier 02">
-				<position x="8" y="7" z="6" />
-				<rotate x="0" y="0" z="0" />
-				<useColor value="false" />
-				<color r="0" g="0" b="0" a="1" />
-				<scale value="1" />
+				<scale value="6.08699989" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
 				<visible value="true" />

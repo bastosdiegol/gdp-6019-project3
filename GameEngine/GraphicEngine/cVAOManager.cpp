@@ -41,7 +41,10 @@ cModel* cVAOManager::PrepareNewModel(std::string friendlyName, std::string fileP
 	cModel* newModel = new cModel();
 	newModel->meshName = friendlyName;
 	// Reads the Ply file
-	m_plyReader->loadMeshFromFile(filePath);
+	// Checks if the reading was ok
+	if (m_plyReader->loadMeshFromFile(filePath) == false) {
+		return nullptr;
+	}
 	// Sets number of Vertices
 	newModel->numberOfVertices = m_plyReader->m_numberOfVertices;
 	// Creates the struct which will host all vertices
@@ -71,7 +74,7 @@ cModel* cVAOManager::PrepareNewModel(std::string friendlyName, std::string fileP
 
 	unsigned int vertex_element_index_index = 0;
 
-	for (unsigned int triangleIndex = 0; triangleIndex != newModel->numberOfTriangles; triangleIndex++) {
+	for (unsigned int triangleIndex = 0; triangleIndex < newModel->numberOfTriangles; triangleIndex++) {
 		newModel->pIndices[vertex_element_index_index + 0] = m_plyReader->pTheModelTriangleArray[triangleIndex].vertexIndices[0];
 		newModel->pIndices[vertex_element_index_index + 1] = m_plyReader->pTheModelTriangleArray[triangleIndex].vertexIndices[1];
 		newModel->pIndices[vertex_element_index_index + 2] = m_plyReader->pTheModelTriangleArray[triangleIndex].vertexIndices[2];
@@ -95,27 +98,27 @@ cModel* cVAOManager::PrepareNewModel(std::string friendlyName, std::string fileP
 	return newModel;
 }
 
-bool cVAOManager::LoadModelIntoVAO(cModel* drawInfo) {
-	DEBUG_PRINT("cVAOManager::LoadModelIntoVAO(%s)\n", drawInfo->meshName.c_str());
+bool cVAOManager::LoadModelIntoVAO(cModel* modelObj) {
+	DEBUG_PRINT("cVAOManager::LoadModelIntoVAO(%s)\n", modelObj->meshName.c_str());
 
 	// Ask OpenGL for a new buffer ID...
-	glGenVertexArrays(1, &(drawInfo->VAO_ID));
+	glGenVertexArrays(1, &(modelObj->VAO_ID));
 	// Bind this buffer:
-	glBindVertexArray(drawInfo->VAO_ID);
-	glGenBuffers(1, &(drawInfo->VertexBufferID));
-	glBindBuffer(GL_ARRAY_BUFFER, drawInfo->VertexBufferID);
+	glBindVertexArray(modelObj->VAO_ID);
+	glGenBuffers(1, &(modelObj->VertexBufferID));
+	glBindBuffer(GL_ARRAY_BUFFER, modelObj->VertexBufferID);
 	glBufferData(GL_ARRAY_BUFFER,
-		sizeof(sVertex) * drawInfo->numberOfVertices,
-		(GLvoid*)drawInfo->pVertices,
+		sizeof(sVertex) * modelObj->numberOfVertices,
+		(GLvoid*)modelObj->pVertices,
 		GL_STATIC_DRAW);
 
 	// Copy the index buffer into the video card, too
 	// Create an index buffer.
-	glGenBuffers(1, &(drawInfo->IndexBufferID));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, drawInfo->IndexBufferID);
+	glGenBuffers(1, &(modelObj->IndexBufferID));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, modelObj->IndexBufferID);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER,			// Type: Index element array
-		sizeof(unsigned int) * drawInfo->numberOfIndices,
-		(GLvoid*)drawInfo->pIndices,
+		sizeof(unsigned int) * modelObj->numberOfIndices,
+		(GLvoid*)modelObj->pIndices,
 		GL_STATIC_DRAW);
 
 	// Set the vertex attributes.
@@ -152,9 +155,6 @@ bool cVAOManager::LoadModelIntoVAO(cModel* drawInfo) {
 	glDisableVertexAttribArray(vcol_location);
 	glDisableVertexAttribArray(vNormal_location);
 
-	// Store the draw information into the map
-	this->m_mapModels[drawInfo->meshName] = drawInfo;
-
 	return true;
 }
 
@@ -165,20 +165,3 @@ cModel* cVAOManager::findModel(std::string name) {
 	else
 		return itModel->second;
 }
-
-//bool cVAOManager::FindDrawInfoByModelName(
-//		std::string filename,
-//		cModel* drawInfo) {
-//	DEBUG_PRINT("cVAOManager::FindDrawInfoByModelName(%s)\n", filename.c_str());
-//
-//	std::map<std::string, cModel*>::iterator
-//		itDrawInfo = this->m_mapModels.find( filename );
-//
-//	// Checks if it's the end of the map
-//	if ( itDrawInfo == this->m_mapModels.end() ) {
-//		return false;
-//	}
-//	// Found it
-//	drawInfo = itDrawInfo->second;
-//	return true;
-//}

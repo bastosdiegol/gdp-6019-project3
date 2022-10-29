@@ -69,6 +69,8 @@ bool cProjectManager::LoadScene(std::string name) {
 				if (itScene->second != nullptr) {
 					this->m_selectedScene = itScene->second;
 					DEBUG_PRINT("Scene loaded previously ... Skipping new loading...\n");
+					// Sets new Scene bool
+					isNewScene = true;
 					return true; // Scene previously loaded FOUND
 				}
 			}
@@ -104,6 +106,7 @@ bool cProjectManager::LoadScene(std::string name) {
 				if (newModel == nullptr) {
 					// Creates a new model and add its Meshes to the MeshObject List of the Scene
 					newModel = m_VAOManager->PrepareNewModel(modelNode.attribute("title").value(), modelNode.attribute("path").value());
+					m_VAOManager->LoadModelIntoVAO(newModel);
 				} else {
 					DEBUG_PRINT("Model previously loaded found ... Skipping the creation a new model ...\n");
 				}
@@ -159,7 +162,9 @@ bool cProjectManager::LoadScene(std::string name) {
 				this->m_mScenes.try_emplace(name, newScene);
 			}
 		}
-	}	
+	}
+	// Sets new Scene bool
+	isNewScene = true;
 	return true;
 }
 

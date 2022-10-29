@@ -25,32 +25,68 @@ cPlyFileReader::~cPlyFileReader() {
 	DEBUG_PRINT("PlyFileReader::~PlyFileReader()\n");
 }
 
-void cPlyFileReader::loadMeshFromFile(std::string file_location) {
+bool cPlyFileReader::loadMeshFromFile(std::string file_location) {
 	DEBUG_PRINT("PlyFileReader::loadMeshFromFile(%s)\n", file_location.c_str());
 	// Loads the file
 	std::ifstream theFile(file_location);
 	// Checks if the file is open
 	if (!theFile.is_open()) {
 		std::cout << "File " << file_location << " could not be opened!" << std::endl;
-		return;
+		return false;
 	}
-
-	// Iteration to Find the Total of Vertices
+	
 	std::string theNextToken;
+	// Iteration to Find the Total of Vertices
 	do {
 		theFile >> theNextToken;
 	} while (theNextToken != "vertex");
+
 	theFile >> theNextToken;
 	// Sets the total of Vertices
 	m_numberOfVertices = std::stoul(theNextToken);
+
+	if (m_numberOfVertices <= 0) {
+		DEBUG_PRINT("cPlyFireReader error: File %s has %d vertices.\nThis model won't be read.\n", file_location.c_str(), m_numberOfVertices);
+		return false;
+	}
+
 	// Create new instance of Vertex array for the model
 	pTheModelArray = new sVertex_XYZ_N_RGBA_UV[m_numberOfVertices];
-
+	
+	// Booleans to check existence of properties
+	bool hasPosition = false;
+	bool hasNormals  = false;
+	bool hasColours  = false;
 	// Iteration to Find the Total of Triangles
+	// And Checks Properties Integrity
 	do {
 		theFile >> theNextToken;
+		// Checks if has Position X Property
+		if (theNextToken == "x")
+			hasPosition = true;
+		// Checks if has Normal X Property
+		if (theNextToken == "nx")
+			hasNormals = true;
+		// Checks if has Normal X Property
+		if (theNextToken == "red")
+			hasColours = true;
 	} while (theNextToken != "face");
 	theFile >> theNextToken;
+
+	// Checks if the file has vertices
+	if (hasPosition == false) {
+		DEBUG_PRINT("cPlyFireReader error: File %s has no vertices.\nThis model won't be read.\n", file_location.c_str());
+		return false;
+	}
+	// Checks if the file has normals
+	if (hasNormals == false) {
+		DEBUG_PRINT("cPlyFireReader warning: File %s has no normals.\nVec3 will be set to 0.0f\n", file_location.c_str());
+	}
+	// Checks if the file has colours
+	if (hasColours == false) {
+		DEBUG_PRINT("cPlyFireReader warning: File %s has no colours.\nVec3 will be set to 1.0f\n", file_location.c_str());
+	}
+
 	// Sets the total of Faces
 	m_numberOfTriangles = std::stoul(theNextToken);
 	// Create a new instance of Triangles Array for the model
@@ -69,14 +105,27 @@ void cPlyFileReader::loadMeshFromFile(std::string file_location) {
 		theFile >> pTheModelArray[i].y;
 		theFile >> pTheModelArray[i].z;
 
-		theFile >> pTheModelArray[i].nx;
-		theFile >> pTheModelArray[i].ny;
-		theFile >> pTheModelArray[i].nz;
+		if (hasNormals) {
+			theFile >> pTheModelArray[i].nx;
+			theFile >> pTheModelArray[i].ny;
+			theFile >> pTheModelArray[i].nz;
+		} else {
+			pTheModelArray[i].nx = 0.0f;
+			pTheModelArray[i].ny = 0.0f;
+			pTheModelArray[i].nz = 0.0f;
+		}
 
-		theFile >> pTheModelArray[i].red;
-		theFile >> pTheModelArray[i].green;
-		theFile >> pTheModelArray[i].blue;
-		theFile >> pTheModelArray[i].alpha;
+		if (hasColours) {
+			theFile >> pTheModelArray[i].red;
+			theFile >> pTheModelArray[i].green;
+			theFile >> pTheModelArray[i].blue;
+			theFile >> pTheModelArray[i].alpha;
+		} else {
+			pTheModelArray[i].red	= 1.0f;
+			pTheModelArray[i].green = 1.0f;
+			pTheModelArray[i].blue	= 1.0f;
+			pTheModelArray[i].alpha = 1.0f;
+		}
 
 		//theFile >> pTheModelArray[i].texture_u;
 		//theFile >> pTheModelArray[i].texture_v;

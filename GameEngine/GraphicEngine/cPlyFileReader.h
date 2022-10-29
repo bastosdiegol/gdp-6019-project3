@@ -43,5 +43,5 @@ public:
     /// Reads a Mesh File and store its Header, Vertices and Faces on a struct in memory
     /// </summary>
     /// <param name="file_location">Path to the file to be read</param>
-    void loadMeshFromFile(std::string file_location);
+    bool loadMeshFromFile(std::string file_location);
 };

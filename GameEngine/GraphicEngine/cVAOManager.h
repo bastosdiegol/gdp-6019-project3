@@ -27,7 +27,7 @@ public:
 	/// <param name="drawInfo">Model Vertices n Triangles</param>
 	/// <param name="shaderProgramID">Shader ID</param>
 	/// <returns></returns>
-	bool LoadModelIntoVAO(cModel* drawInfo);
+	bool LoadModelIntoVAO(cModel* modelObj);
 
 	/// <summary>
 	/// Checks if a model was previously loaded
@@ -35,11 +35,6 @@ public:
 	/// <param name="name">Name of the model</param>
 	/// <returns>The instance of the model</returns>
 	cModel* findModel(std::string name);
-
-	//bool FindDrawInfoByModelName(std::string filename,
-	//	cModel* drawInfo);
-
-	//std::string getLastError(bool bAndClear = true);
 
 private:
 	cPlyFileReader* m_plyReader;
