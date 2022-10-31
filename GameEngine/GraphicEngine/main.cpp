@@ -1,9 +1,11 @@
 #include <glad/glad.h>
+#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp> 
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
+#include <sstream>
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
@@ -11,6 +13,8 @@
 #include "cProjectManager.h"
 #include "cProjectUI.h"
 #include "cShaderManager.h"
+#include "cLightManager.h"
+#include "cLightHelper.h"
 
 #ifdef _DEBUG
 #define DEBUG_LOG_ENABLED
@@ -27,7 +31,31 @@ glm::vec3* g_cameraEye;
 glm::vec3* g_cameraTarget;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-
+	const float CAMERA_MOVE_SPEED = 1.0f;
+	if (key == GLFW_KEY_A)     // Left
+	{
+		g_cameraEye->x -= CAMERA_MOVE_SPEED;
+	}
+	if (key == GLFW_KEY_D)     // Right
+	{
+		g_cameraEye->x += CAMERA_MOVE_SPEED;
+	}
+	if (key == GLFW_KEY_W)     // Forward
+	{
+		g_cameraEye->z += CAMERA_MOVE_SPEED;
+	}
+	if (key == GLFW_KEY_S)     // Backwards
+	{
+		g_cameraEye->z -= CAMERA_MOVE_SPEED;
+	}
+	if (key == GLFW_KEY_Q)     // Down
+	{
+		g_cameraEye->y -= CAMERA_MOVE_SPEED;
+	}
+	if (key == GLFW_KEY_E)     // Up
+	{
+		g_cameraEye->y += CAMERA_MOVE_SPEED;
+	}
 }
 
 static void error_callback(int error, const char* description) {
@@ -96,6 +124,31 @@ int main(int argc, char* argv[]) {
 	cProjectManager* g_ProjectManager = new cProjectManager();
 	g_ProjectManager->SetShaderID(shaderID);
 	//g_ProjectManager->LoadScene("Scene 02");
+	// Creates the Light Manager
+	cLightManager* g_pTheLightManager = new cLightManager();
+	// Creates the Light Helper
+	cLightHelper* pLightHelper = new cLightHelper();
+	g_pTheLightManager->LoadLightUniformLocations(shaderID);
+	// Hardcoded - Setup Light 0
+	g_pTheLightManager->vecTheLights[0].position = glm::vec4(10.0f, 10.0f, 0.0f, 1.0f);
+	g_pTheLightManager->vecTheLights[0].diffuse = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	g_pTheLightManager->vecTheLights[0].atten = glm::vec4(0.1f, 0.01f, 0.0000001f, 1.0f);
+	//g_pTheLightManager->vecTheLights[0].param2.x = 1.0f;
+	g_pTheLightManager->vecTheLights[0].TurnOn();
+	g_pTheLightManager->vecTheLights[0].param1.x = 1.0f;
+	g_pTheLightManager->vecTheLights[0].direction = glm::vec4(0.0f, -1.0f, 0.0f, 1.0f);
+	g_pTheLightManager->vecTheLights[0].param1.y = 10.0f;
+	g_pTheLightManager->vecTheLights[0].param1.z = 20.0f;
+
+	g_pTheLightManager->vecTheLights[1].param1.x = 2.0f;  // 2 means directional
+	g_pTheLightManager->vecTheLights[1].diffuse = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	g_pTheLightManager->vecTheLights[1].direction = glm::vec4(0.0f, -1.0f, 0.0f, 1.0f);
+	g_pTheLightManager->vecTheLights[1].TurnOn();
+	g_pTheLightManager->vecTheLights[1].param1.x = 0.0f;  // 2 means directional
+	g_pTheLightManager->vecTheLights[1].diffuse = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	g_pTheLightManager->vecTheLights[1].position = glm::vec4(0.0f, 500.0f, 500.0f, 1.0f);
+	g_pTheLightManager->vecTheLights[1].atten = glm::vec4(0.1f, 0.001f, 0.0000001f, 1.0f);
+	g_pTheLightManager->vecTheLights[1].TurnOn();
 	
 	// Creates my Project Manager UI - ImGui Window
 	cProjectUI g_projectUI(g_ProjectManager);
@@ -111,6 +164,13 @@ int main(int argc, char* argv[]) {
 	GLint mModelInverseTransform_location	= glGetUniformLocation(shaderID, "mModelInverseTranspose");
 
 	while (!glfwWindowShouldClose(window)) {
+
+		g_pTheLightManager->CopyLightInformationToShader(shaderID);
+		// Point the spotlight to the center of the scene
+		glm::vec3 LightToCenter = glm::vec3(0.0f) - glm::vec3(g_pTheLightManager->vecTheLights[0].position);
+		LightToCenter = glm::normalize(LightToCenter);
+		g_pTheLightManager->vecTheLights[0].direction = glm::vec4(LightToCenter, 1.0f);
+		//DrawConcentricDebugLightObjects();
 
 		float ratio;
 		int width, height;
@@ -181,11 +241,11 @@ int main(int argc, char* argv[]) {
 				float uniformScale = pCurrentMeshObject->m_scale;
 				glm::mat4 matScale = glm::scale(glm::mat4(1.0f), glm::vec3(uniformScale, uniformScale, uniformScale));
 				// Applying all these transformations to the Model
-				//matModel = matModel * matTranslation;
-				//matModel = matModel * matRoationX;
-				//matModel = matModel * matRoationY;
-				//matModel = matModel * matRoationZ;
-				//matModel = matModel * matScale;
+				matModel = matModel * matTranslation;
+				matModel = matModel * matRoationX;
+				matModel = matModel * matRoationY;
+				matModel = matModel * matRoationZ;
+				matModel = matModel * matScale;
 
 				// Pass all the matrices to the Shader
 				glUniformMatrix4fv(mModel_location, 1, GL_FALSE, glm::value_ptr(matModel));
@@ -235,15 +295,25 @@ int main(int argc, char* argv[]) {
 
 		// Rendering
 		ImGui::Render();
-		int display_w, display_h;
-		glfwGetFramebufferSize(window, &display_w, &display_h);
-		glViewport(0, 0, display_w, display_h);
-		glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
-		glClear(GL_COLOR_BUFFER_BIT);
+		//int display_w, display_h;
+		//glfwGetFramebufferSize(window, &display_w, &display_h);
+		//glViewport(0, 0, display_w, display_h);
+		//glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
+		//glClear(GL_COLOR_BUFFER_BIT);
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
+
+		if (g_ProjectManager->m_selectedScene != nullptr) {
+			std::stringstream ssTitle;
+			ssTitle << "Camera (x,y,z): "
+				<< g_cameraEye->x << ", "
+				<< g_cameraEye->y << ", "
+				<< g_cameraEye->z;
+			std::string theText = ssTitle.str();
+			glfwSetWindowTitle(window, ssTitle.str().c_str());
+		}
 	}
 
 	delete g_ProjectManager;
@@ -257,3 +327,89 @@ int main(int argc, char* argv[]) {
 
 	exit(EXIT_SUCCESS);
 }
+
+//void DrawConcentricDebugLightObjects(void) {
+//	extern bool bEnableDebugLightingObjects;
+//	extern cLightManager* g_pTheLightManager;
+//
+//	if (!bEnableDebugLightingObjects) {
+//		pDebugSphere_1->bIsVisible = false;
+//		pDebugSphere_2->bIsVisible = false;
+//		pDebugSphere_3->bIsVisible = false;
+//		pDebugSphere_4->bIsVisible = false;
+//		pDebugSphere_5->bIsVisible = false;
+//		return;
+//	}
+//
+//	pDebugSphere_1->bIsVisible = true;
+//	pDebugSphere_2->bIsVisible = true;
+//	pDebugSphere_3->bIsVisible = true;
+//	pDebugSphere_4->bIsVisible = true;
+//	pDebugSphere_5->bIsVisible = true;
+//
+//	cLightHelper theLightHelper;
+//
+//	// Move the debug sphere to where the light #0 is
+//	pDebugSphere_1->position = glm::vec3(g_pTheLightManager->vecTheLights[0].position);
+//	pDebugSphere_2->position = glm::vec3(g_pTheLightManager->vecTheLights[0].position);
+//	pDebugSphere_3->position = glm::vec3(g_pTheLightManager->vecTheLights[0].position);
+//	pDebugSphere_4->position = glm::vec3(g_pTheLightManager->vecTheLights[0].position);
+//	pDebugSphere_5->position = glm::vec3(g_pTheLightManager->vecTheLights[0].position);
+//
+//	{
+//		// Draw a bunch of concentric spheres at various "brightnesses" 
+//		float distance75percent = theLightHelper.calcApproxDistFromAtten(
+//			0.75f,  // 75%
+//			0.001f,
+//			100000.0f,
+//			g_pTheLightManager->vecTheLights[0].atten.x,
+//			g_pTheLightManager->vecTheLights[0].atten.y,
+//			g_pTheLightManager->vecTheLights[0].atten.z);
+//
+//		pDebugSphere_2->scale = distance75percent;
+//		pDebugSphere_2->position = glm::vec3(g_pTheLightManager->vecTheLights[0].position);
+//	}
+//
+//	{
+//		// Draw a bunch of concentric spheres at various "brightnesses" 
+//		float distance50percent = theLightHelper.calcApproxDistFromAtten(
+//			0.50f,  // 75%
+//			0.001f,
+//			100000.0f,
+//			g_pTheLightManager->vecTheLights[0].atten.x,
+//			g_pTheLightManager->vecTheLights[0].atten.y,
+//			g_pTheLightManager->vecTheLights[0].atten.z);
+//
+//		pDebugSphere_3->scale = distance50percent;
+//		pDebugSphere_3->position = glm::vec3(g_pTheLightManager->vecTheLights[0].position);
+//	}
+//
+//	{
+//		// Draw a bunch of concentric spheres at various "brightnesses" 
+//		float distance25percent = theLightHelper.calcApproxDistFromAtten(
+//			0.25f,  // 75%
+//			0.001f,
+//			100000.0f,
+//			g_pTheLightManager->vecTheLights[0].atten.x,
+//			g_pTheLightManager->vecTheLights[0].atten.y,
+//			g_pTheLightManager->vecTheLights[0].atten.z);
+//
+//		pDebugSphere_4->scale = distance25percent;
+//		pDebugSphere_4->position = glm::vec3(g_pTheLightManager->vecTheLights[0].position);
+//	}
+//
+//	{
+//		// Draw a bunch of concentric spheres at various "brightnesses" 
+//		float distance5percent = theLightHelper.calcApproxDistFromAtten(
+//			0.05f,  // 75%
+//			0.001f,
+//			100000.0f,
+//			g_pTheLightManager->vecTheLights[0].atten.x,
+//			g_pTheLightManager->vecTheLights[0].atten.y,
+//			g_pTheLightManager->vecTheLights[0].atten.z);
+//
+//		pDebugSphere_5->scale = distance5percent;
+//		pDebugSphere_5->position = glm::vec3(g_pTheLightManager->vecTheLights[0].position);
+//	}
+//	return;
+//}

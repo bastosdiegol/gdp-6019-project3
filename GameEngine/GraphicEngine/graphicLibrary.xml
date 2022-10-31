@@ -3,8 +3,8 @@
 	<scene title="Scene 01" camEyeX="0" camEyeY="0" camEyeZ="-25" camTarX="0" camTarY="0" camTarZ="0">
 		<model path="assets/dragon/SM_Env_Bone_Skull_02.ply" title="Dragon Skull">
 			<mesh id="Dragon Skull">
-				<position x="-20" y="-20" z="-20" />
-				<rotate x="0" y="0" z="0" />
+				<position x="10" y="0" z="30" />
+				<rotate x="0" y="15" z="0" />
 				<useColor value="true" />
 				<color r="0.970588207" g="0.0380622819" b="0.0380622819" a="1" />
 				<scale value="1" />
@@ -15,7 +15,7 @@
 		</model>
 		<model path="assets/dragon/SM_Env_Bone_Rigcage_01.ply" title="Dragon Rib">
 			<mesh id="Dragon Rib">
-				<position x="20" y="20" z="20" />
+				<position x="0" y="5" z="20" />
 				<rotate x="0" y="0" z="0" />
 				<useColor value="true" />
 				<color r="1" g="0" b="0.852941036" a="1" />
@@ -56,7 +56,7 @@
 				<rotate x="0" y="0" z="0" />
 				<useColor value="false" />
 				<color r="0" g="0" b="0" a="1" />
-				<scale value="6.08699989" />
+				<scale value="0" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
 				<visible value="true" />

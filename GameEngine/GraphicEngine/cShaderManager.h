@@ -1,6 +1,4 @@
-#ifndef _cShaderManager_HG_
-#define _cShaderManager_HG_
-
+#pragma once
 #include <string>
 #include <vector>
 #include <map>
@@ -78,5 +76,3 @@ private:
 	std::map< unsigned int /*ID*/, cShaderProgram > m_ID_to_Shader;
 	std::map< std::string /*name*/, unsigned int /*ID*/ > m_name_to_ID;
 };
-
-#endif

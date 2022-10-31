@@ -147,4 +147,5 @@ bool cPlyFileReader::loadMeshFromFile(std::string file_location) {
 	DEBUG_PRINT("done!\n");
 
 	theFile.close();
+	return true;
 }
