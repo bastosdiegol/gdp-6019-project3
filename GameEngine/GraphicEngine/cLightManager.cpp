@@ -5,7 +5,17 @@
 
 #include "cLightManager.h"
 
+#ifdef _DEBUG
+#define DEBUG_LOG_ENABLED
+#endif
+#ifdef DEBUG_LOG_ENABLED
+#define DEBUG_PRINT(x, ...) printf(x, __VA_ARGS__)
+#else
+#define DEBUG_PRINT(x)
+#endif
+
 cLightManager::cLightManager() {
+	DEBUG_PRINT("cLightManager::cLightManager()\n");
 	// Create the initial lights
 	for (unsigned int count = 0;
 		count != cLightManager::NUMBER_OF_LIGHTS_IM_GONNA_USE;
@@ -18,6 +28,7 @@ cLightManager::cLightManager() {
 }
 
 void cLightManager::LoadLightUniformLocations(unsigned int shaderID) {
+	DEBUG_PRINT("cLightManager::LoadLightUniformLocations(%d)\n", shaderID);
 
 	this->vecTheLights[0].position_UniformLocation	= glGetUniformLocation(shaderID, "theLights[0].position");
 	this->vecTheLights[0].diffuse_UniformLocation	= glGetUniformLocation(shaderID, "theLights[0].diffuse");
@@ -47,6 +58,7 @@ void cLightManager::LoadLightUniformLocations(unsigned int shaderID) {
 }
 
 void cLightManager::CopyLightInformationToShader(unsigned int shaderID) {
+	DEBUG_PRINT("cLightManager::CopyLightInformationToShader(%d)\n", shaderID);
 	for (std::vector<cLight>::iterator itLight = this->vecTheLights.begin();
 		itLight != this->vecTheLights.end();
 		itLight++) {
