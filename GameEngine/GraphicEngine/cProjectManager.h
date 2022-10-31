@@ -5,6 +5,7 @@
 
 #include "cScene.h"
 #include "cVAOManager.h"
+#include "cLightManager.h"
 
 #define PROJECT_SAVE_FILE "graphicLibrary.xml"
 
@@ -13,6 +14,7 @@ private:
 	std::map<std::string, cScene*>	m_mScenes;			// List of Scenes Available
 	cMeshObject*					m_selectedMesh;		// Selected Mesh with info available to be edited
 	cVAOManager*					m_VAOManager;
+	cLightManager*					m_lightManager;
 
 	/// <summary>
 	/// Loads the PROJECT_SAVE_FILE and stores all scenes available to be loaded

@@ -20,6 +20,7 @@ cProjectManager::cProjectManager() {
 		exit(-1);
 	}
 	m_VAOManager = new cVAOManager();
+	m_lightManager = new cLightManager();
 	isNewScene = false;
 	m_selectedScene = nullptr;
 	m_selectedMesh = nullptr;
@@ -33,6 +34,7 @@ cProjectManager::~cProjectManager() {
 		 itScenes++)
 		delete itScenes->second;
 	delete m_VAOManager;
+	delete m_lightManager;
 }
 
 bool cProjectManager::LoadScene(std::string name) {

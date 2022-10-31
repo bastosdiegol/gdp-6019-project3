@@ -57,6 +57,7 @@ bool cPlyFileReader::loadMeshFromFile(std::string file_location) {
 	bool hasPosition = false;
 	bool hasNormals  = false;
 	bool hasColours  = false;
+	bool hasTextures = false;
 	// Iteration to Find the Total of Triangles
 	// And Checks Properties Integrity
 	do {
@@ -70,6 +71,9 @@ bool cPlyFileReader::loadMeshFromFile(std::string file_location) {
 		// Checks if has Normal X Property
 		if (theNextToken == "red")
 			hasColours = true;
+		// Checks if has Texture U Property
+		if (theNextToken == "texture_u")
+			hasTextures = true;
 	} while (theNextToken != "face");
 	theFile >> theNextToken;
 
@@ -85,6 +89,10 @@ bool cPlyFileReader::loadMeshFromFile(std::string file_location) {
 	// Checks if the file has colours
 	if (hasColours == false) {
 		DEBUG_PRINT("cPlyFireReader warning: File %s has no colours.\nVec3 will be set to 1.0f\n", file_location.c_str());
+	}
+	// Checks if the file has textures
+	if (hasTextures == false) {
+		DEBUG_PRINT("cPlyFireReader warning: File %s has no textures.\nValues will be set to 0.0f\n", file_location.c_str());
 	}
 
 	// Sets the total of Faces
@@ -127,8 +135,13 @@ bool cPlyFileReader::loadMeshFromFile(std::string file_location) {
 			pTheModelArray[i].alpha = 1.0f;
 		}
 
-		//theFile >> pTheModelArray[i].texture_u;
-		//theFile >> pTheModelArray[i].texture_v;
+		if (hasTextures) {
+			theFile >> pTheModelArray[i].texture_u;
+			theFile >> pTheModelArray[i].texture_v;
+		} else {
+			pTheModelArray[i].texture_u = 0.0f;
+			pTheModelArray[i].texture_v = 0.0f;
+		}
 	}
 	DEBUG_PRINT("done!\n");
 

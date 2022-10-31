@@ -58,7 +58,7 @@ void cLightManager::LoadLightUniformLocations(unsigned int shaderID) {
 }
 
 void cLightManager::CopyLightInformationToShader(unsigned int shaderID) {
-	DEBUG_PRINT("cLightManager::CopyLightInformationToShader(%d)\n", shaderID);
+	//DEBUG_PRINT("cLightManager::CopyLightInformationToShader(%d)\n", shaderID);
 	for (std::vector<cLight>::iterator itLight = this->vecTheLights.begin();
 		itLight != this->vecTheLights.end();
 		itLight++) {
