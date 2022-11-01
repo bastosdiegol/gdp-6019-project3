@@ -131,7 +131,8 @@ void cProjectUI::renderMeshUI() {
 	ImGui::Begin("Selected Mesh", NULL, ImGuiWindowFlags_MenuBar	|
 										ImGuiWindowFlags_NoMove		|
 										ImGuiWindowFlags_NoTitleBar	|
-										ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysUseWindowPadding);
+										ImGuiWindowFlags_NoResize | 
+										ImGuiWindowFlags_AlwaysUseWindowPadding);
 	if (ImGui::BeginMenuBar()) {
 		if (ImGui::BeginMenu("Mesh")) {
 			if (ImGui::MenuItem("Save Mesh Data")) {
@@ -182,6 +183,8 @@ void cProjectUI::renderMeshUI() {
 		ImGui::Text("Scale");
 		// Scale Slider
 		ImGui::SliderFloat("##Scale", &m_projectManager->m_selectedMesh->m_scale, -10, 10);
+		ImGui::SameLine();
+		ImGui::InputFloat("##ScaleInput", &m_projectManager->m_selectedMesh->m_scale);
 		ImGui::Text("Use RGB?"); ImGui::SameLine();
 		// RGB Checkbox
 		ImGui::Checkbox("##RGB?", &m_projectManager->m_selectedMesh->m_bUse_RGBA_colour);
@@ -215,9 +218,10 @@ void cProjectUI::renderMeshUI() {
 
 void cProjectUI::renderLighthUI() {
 	ImGui::Begin("Selected Light", NULL, ImGuiWindowFlags_MenuBar |
-		ImGuiWindowFlags_NoMove |
-		ImGuiWindowFlags_NoTitleBar |
-		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysUseWindowPadding);
+										 ImGuiWindowFlags_NoMove |
+										 ImGuiWindowFlags_NoTitleBar |
+										 ImGuiWindowFlags_NoResize | 
+										 ImGuiWindowFlags_AlwaysUseWindowPadding);
 	if (ImGui::BeginMenuBar()) {
 		if (ImGui::BeginMenu("Light")) {
 			if (ImGui::MenuItem("Save Light Data")) {
@@ -230,6 +234,73 @@ void cProjectUI::renderLighthUI() {
 	}
 	// Checks if the selected mesh isnt nullptr
 	if (m_projectManager->m_selectedLight != nullptr) {
+		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), m_projectManager->m_selectedLight->m_friendlyName.c_str());
+		// Light Type
+		static const char* current_item; // Combo current selected item
+		// Array used on the combo
+		const char* lightType[3] = { "Point Light", "Spot Light", "Directional" };
+		// Sets current_item same from selected light
+		switch ((cLight::eLightType)m_projectManager->m_selectedLight->m_param1.x) {
+		case cLight::POINT_LIGHT:
+			current_item = "Point Light";
+			break;
+		case cLight::SPOT_LIGHT:
+			current_item = "Spot Light";
+			break;
+		case cLight::DIRECTIONAL_LIGHT:
+			current_item = "Directional";
+			break;
+		}
+		// Light ComboBox
+		ImGui::Text("Light Type");
+		if (ImGui::BeginCombo("##Light Type", current_item)) {
+			for (int i = 0; i < 3; i++) {
+				bool is_selected = (current_item == lightType[i]);
+				if (ImGui::Selectable(lightType[i], is_selected)) {
+					current_item = lightType[i];
+					m_projectManager->m_selectedLight->SetLightType(cLight::eLightType(i));
+				}if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndCombo();
+		}
+		// Variable for ImGui to control Position
+		float pos3f[3] = { m_projectManager->m_selectedLight->m_position.x,
+						   m_projectManager->m_selectedLight->m_position.y,
+						   m_projectManager->m_selectedLight->m_position.z };
+		ImGui::Text("Position");
+		// Position Input
+		if (ImGui::InputFloat3("X Y Z##PositionInput", pos3f, "%.2f")) {
+			m_projectManager->m_selectedLight->m_position.x = pos3f[0];
+			m_projectManager->m_selectedLight->m_position.y = pos3f[1];
+			m_projectManager->m_selectedLight->m_position.z = pos3f[2];
+		}
+		// Position Slider
+		if (ImGui::SliderFloat3("X Y Z##PositionSlider", pos3f, -10, +10, "%.2f")) {
+			m_projectManager->m_selectedLight->m_position.x = pos3f[0];
+			m_projectManager->m_selectedLight->m_position.y = pos3f[1];
+			m_projectManager->m_selectedLight->m_position.z = pos3f[2];
+		}
+		ImGui::Text("Use RGB?"); ImGui::SameLine();
+		// RGB Checkbox
+		if (ImGui::Checkbox("##RGB?", &m_projectManager->m_selectedLight->m_useRGB)) {
+			// If False - Set Light to White
+			if (m_projectManager->m_selectedLight->m_useRGB == false) {
+				m_projectManager->m_selectedLight->SetToWhite();
+			}
+		}
+		// Variable for ImGui to control RGB
+		float col4f[4] = { m_projectManager->m_selectedLight->m_specular.x,
+						   m_projectManager->m_selectedLight->m_specular.y,
+						   m_projectManager->m_selectedLight->m_specular.z,
+						   m_projectManager->m_selectedLight->m_specular.w };
+		// RGB Picker
+		if (ImGui::ColorEdit4("R G B A##RGB", col4f, ImGuiColorEditFlags_Float)) {
+			m_projectManager->m_selectedLight->m_specular.x = col4f[0];
+			m_projectManager->m_selectedLight->m_specular.y = col4f[1];
+			m_projectManager->m_selectedLight->m_specular.z = col4f[2];
+			m_projectManager->m_selectedLight->m_specular.w = col4f[3];
+		}
 	} else {
 		ImGui::BulletText("No Light Selected.");
 	}

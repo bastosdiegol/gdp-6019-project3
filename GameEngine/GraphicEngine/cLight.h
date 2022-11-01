@@ -1,22 +1,25 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <glm/vec4.hpp>
+#include <string>
 
 class cLight {
 public:
-	glm::vec4 position;
-	glm::vec4 diffuse;
-	glm::vec4 specular;		// rgb = highlight colour, w = power
-	glm::vec4 atten;		// x = constant, y = linear, z = quadratic, w = DistanceCutOff
-	glm::vec4 direction;	// Spot, directional lights
+	std::string m_friendlyName;
+	glm::vec4 m_position;
+	glm::vec4 m_diffuse;
+	bool m_useRGB;
+	glm::vec4 m_specular;		// rgb = highlight colour, w = power
+	glm::vec4 m_attenuation;		// x = constant, y = linear, z = quadratic, w = DistanceCutOff
+	glm::vec4 m_direction;	// Spot, directional lights
 	/// <summary>
 	/// x = lightType, y = inner angle, z = outer angle, w = TBD
 	/// 0 = pointlight
 	/// 1 = spot light
 	/// 2 = directional light
 	/// </summary>
-	glm::vec4 param1;
-	glm::vec4 param2;		// x = 0 for off, 1 for on
+	glm::vec4 m_param1;
+	glm::vec4 m_param2;		// x = 0 for off, 1 for on
 
 	// Also store the uniform locations from the shader here
 	int position_UniformLocation;
@@ -36,16 +39,16 @@ public:
 
 	enum eLightType {
 		POINT_LIGHT,
-		DIRECTIONAL_LIGHT,
-		SPOT_LIGHT
+		SPOT_LIGHT,
+		DIRECTIONAL_LIGHT
 	};
 
-	void TurnOn(void);
-	void TurnOff(void);
-	void SetToWhite(void);
-	void SetToBlack(void);
+	void TurnOn();
+	void TurnOff();
+	void SetToWhite();
+	void SetColour(float r, float g, float b);
 	void SetLightType(eLightType newLightType);
-	void MakeItAPointLight(void);
+	void MakeItAPointLight();
 	void MakeItASpotLight(glm::vec3 direction, float innerAngle, float outerAngle);
 };
 

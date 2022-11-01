@@ -11,14 +11,14 @@
 
 cLight::cLight() {
 	DEBUG_PRINT("cLight::cLight()\n");
-	this->position	= glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-	this->diffuse	= glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	this->specular	= glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	this->atten		= glm::vec4(0.01f, 0.01f, 0.0f, 1.0f);
-	this->direction = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
-	this->param1	= glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-	this->param2	= glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-
+	this->m_position	= glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	this->m_diffuse		= glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	this->m_specular	= glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	this->m_attenuation = glm::vec4(0.01f, 0.01f, 0.0f, 1.0f);
+	this->m_direction	= glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
+	this->m_param1		= glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	this->m_param2		= glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	this->m_useRGB		= false;
 }
 
 cLight::~cLight() {
@@ -26,27 +26,58 @@ cLight::~cLight() {
 }
 
 void cLight::setConstantAttenuation(float newConstAtten) {
-	this->atten.x = newConstAtten;
+	this->m_attenuation.x = newConstAtten;
 	return;
 }
 void cLight::setLinearAttenuation(float newLinearAtten) {
-	this->atten.y = newLinearAtten;
+	this->m_attenuation.y = newLinearAtten;
 	return;
 }
 
 void cLight::setQuadraticAttenuation(float newQuadAtten) {
-	this->atten.z = newQuadAtten;
+	this->m_attenuation.z = newQuadAtten;
 	return;
 }
 
-void cLight::TurnOn(void) {
+void cLight::TurnOn() {
 	DEBUG_PRINT("cLight::TurnOn()\n");
-	this->param2.x = 1;
+	this->m_param2.x = 1;
 	return;
 }
 
-void cLight::TurnOff(void) {
+void cLight::TurnOff() {
 	DEBUG_PRINT("cLight::TurnOff()\n");
-	this->param2.x = 0;
+	this->m_param2.x = 0;
 	return;
+}
+
+void cLight::SetToWhite() {
+	DEBUG_PRINT("cLight::SetToWhite()\n");
+	this->m_specular.x = 1.0f;
+	this->m_specular.y = 1.0f;
+	this->m_specular.z = 1.0f;
+	this->m_specular.w = 1.0f;
+}
+
+void cLight::SetColour(float r, float g, float b) {
+	DEBUG_PRINT("cLight::SetColour(%f, %f, %f)\n", r,g,b);
+	this->m_specular.x = r;
+	this->m_specular.y = g;
+	this->m_specular.z = b;
+	this->m_specular.w = 1.0f;
+}
+
+void cLight::SetLightType(eLightType newLightType) {
+	DEBUG_PRINT("cLight::SetLightType(%d)\n", newLightType);
+	switch (newLightType) {
+	case cLight::POINT_LIGHT:
+		this->m_param1.x = 0;
+		break;
+	case cLight::SPOT_LIGHT:
+		this->m_param1.x = 1;
+		break;
+	case cLight::DIRECTIONAL_LIGHT:
+		this->m_param1.x = 2;
+		break;
+	}
 }

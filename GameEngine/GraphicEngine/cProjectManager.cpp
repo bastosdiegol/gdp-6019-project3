@@ -163,54 +163,54 @@ bool cProjectManager::LoadScene(std::string name) {
 			for (pugi::xml_node lightNode = sceneNode.child("light");
 				lightNode;
 				lightNode = lightNode.next_sibling("light")) {
-				// Gets Light Friendly Name / ID
-				std::string friendlyLightName = lightNode.attribute("id").value();
 				// Creates new Instance of the Light
 				cLight* newLight = new cLight();
+				// Gets Light Friendly Name / ID
+				newLight->m_friendlyName = lightNode.attribute("id").value();
 				// Reads light info and store them
 				pugi::xml_node lightInfo = lightNode.child("position");
 				// Reads Position
-				newLight->position.x = lightInfo.attribute("x").as_float();
-				newLight->position.y = lightInfo.attribute("y").as_float();
-				newLight->position.z = lightInfo.attribute("z").as_float();
+				newLight->m_position.x = lightInfo.attribute("x").as_float();
+				newLight->m_position.y = lightInfo.attribute("y").as_float();
+				newLight->m_position.z = lightInfo.attribute("z").as_float();
 				lightInfo = lightInfo.next_sibling();
 				// Reads Diffuse
-				newLight->diffuse.x = lightInfo.attribute("x").as_float();
-				newLight->diffuse.y = lightInfo.attribute("y").as_float();
-				newLight->diffuse.z = lightInfo.attribute("z").as_float();
+				newLight->m_diffuse.x = lightInfo.attribute("x").as_float();
+				newLight->m_diffuse.y = lightInfo.attribute("y").as_float();
+				newLight->m_diffuse.z = lightInfo.attribute("z").as_float();
 				lightInfo = lightInfo.next_sibling();
 				// Reads Specullar
-				newLight->specular.x = lightInfo.attribute("r").as_float();
-				newLight->specular.y = lightInfo.attribute("g").as_float();
-				newLight->specular.z = lightInfo.attribute("b").as_float();
-				newLight->specular.w = lightInfo.attribute("w").as_float();
+				newLight->m_specular.x = lightInfo.attribute("r").as_float();
+				newLight->m_specular.y = lightInfo.attribute("g").as_float();
+				newLight->m_specular.z = lightInfo.attribute("b").as_float();
+				newLight->m_specular.w = lightInfo.attribute("w").as_float();
 				lightInfo = lightInfo.next_sibling();
 				// Reads Attenuation
-				newLight->atten.x = lightInfo.attribute("x").as_float();
-				newLight->atten.y = lightInfo.attribute("y").as_float();
-				newLight->atten.z = lightInfo.attribute("z").as_float();
-				newLight->atten.w = lightInfo.attribute("w").as_float();
+				newLight->m_attenuation.x = lightInfo.attribute("x").as_float();
+				newLight->m_attenuation.y = lightInfo.attribute("y").as_float();
+				newLight->m_attenuation.z = lightInfo.attribute("z").as_float();
+				newLight->m_attenuation.w = lightInfo.attribute("w").as_float();
 				lightInfo = lightInfo.next_sibling();
 				// Reads Direction
-				newLight->direction.x = lightInfo.attribute("x").as_float();
-				newLight->direction.y = lightInfo.attribute("y").as_float();
-				newLight->direction.z = lightInfo.attribute("z").as_float();
-				newLight->direction.w = lightInfo.attribute("w").as_float();
+				newLight->m_direction.x = lightInfo.attribute("x").as_float();
+				newLight->m_direction.y = lightInfo.attribute("y").as_float();
+				newLight->m_direction.z = lightInfo.attribute("z").as_float();
+				newLight->m_direction.w = lightInfo.attribute("w").as_float();
 				lightInfo = lightInfo.next_sibling();
 				// Reads Param1
-				newLight->param1.x = lightInfo.attribute("x").as_float();
-				newLight->param1.y = lightInfo.attribute("y").as_float();
-				newLight->param1.z = lightInfo.attribute("z").as_float();
-				newLight->param1.w = lightInfo.attribute("w").as_float();
+				newLight->m_param1.x = lightInfo.attribute("x").as_float();
+				newLight->m_param1.y = lightInfo.attribute("y").as_float();
+				newLight->m_param1.z = lightInfo.attribute("z").as_float();
+				newLight->m_param1.w = lightInfo.attribute("w").as_float();
 				lightInfo = lightInfo.next_sibling();
 				// Reads Param2
-				newLight->param2.x = lightInfo.attribute("x").as_float();
-				newLight->param2.y = lightInfo.attribute("y").as_float();
-				newLight->param2.z = lightInfo.attribute("z").as_float();
-				newLight->param2.w = lightInfo.attribute("w").as_float();
+				newLight->m_param2.x = lightInfo.attribute("x").as_float();
+				newLight->m_param2.y = lightInfo.attribute("y").as_float();
+				newLight->m_param2.z = lightInfo.attribute("z").as_float();
+				newLight->m_param2.w = lightInfo.attribute("w").as_float();
 
 				// Adds the newly created Light to the Scene Map of Lights
-				newScene->m_mLights.try_emplace(friendlyLightName, newLight);
+				newScene->m_mLights.try_emplace(newLight->m_friendlyName, newLight);
 			}
 			// Load UniformLocations for new Scene and set them on each light that's going to be used
 			if(newScene->m_mLights.size() > 0)
