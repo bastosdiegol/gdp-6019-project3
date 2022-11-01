@@ -123,32 +123,6 @@ int main(int argc, char* argv[]) {
 	// Creates my Project Manager
 	cProjectManager* g_ProjectManager = new cProjectManager();
 	g_ProjectManager->SetShaderID(shaderID);
-	//g_ProjectManager->LoadScene("Scene 02");
-	// Creates the Light Manager
-	cLightManager* g_pTheLightManager = new cLightManager();
-	// Creates the Light Helper
-	cLightHelper* pLightHelper = new cLightHelper();
-	g_pTheLightManager->LoadLightUniformLocations(shaderID);
-	// Hardcoded - Setup Light 0
-	g_pTheLightManager->vecTheLights[0].position = glm::vec4(10.0f, 10.0f, 0.0f, 1.0f);
-	g_pTheLightManager->vecTheLights[0].diffuse = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	g_pTheLightManager->vecTheLights[0].atten = glm::vec4(0.1f, 0.01f, 0.0000001f, 1.0f);
-	//g_pTheLightManager->vecTheLights[0].param2.x = 1.0f;
-	g_pTheLightManager->vecTheLights[0].TurnOn();
-	g_pTheLightManager->vecTheLights[0].param1.x = 1.0f;
-	g_pTheLightManager->vecTheLights[0].direction = glm::vec4(0.0f, -1.0f, 0.0f, 1.0f);
-	g_pTheLightManager->vecTheLights[0].param1.y = 10.0f;
-	g_pTheLightManager->vecTheLights[0].param1.z = 20.0f;
-
-	g_pTheLightManager->vecTheLights[1].param1.x = 2.0f;  // 2 means directional
-	g_pTheLightManager->vecTheLights[1].diffuse = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	g_pTheLightManager->vecTheLights[1].direction = glm::vec4(0.0f, -1.0f, 0.0f, 1.0f);
-	g_pTheLightManager->vecTheLights[1].TurnOn();
-	g_pTheLightManager->vecTheLights[1].param1.x = 0.0f;  // 2 means directional
-	g_pTheLightManager->vecTheLights[1].diffuse = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	g_pTheLightManager->vecTheLights[1].position = glm::vec4(0.0f, 500.0f, 500.0f, 1.0f);
-	g_pTheLightManager->vecTheLights[1].atten = glm::vec4(0.1f, 0.001f, 0.0000001f, 1.0f);
-	g_pTheLightManager->vecTheLights[1].TurnOn();
 	
 	// Creates my Project Manager UI - ImGui Window
 	cProjectUI g_projectUI(g_ProjectManager);
@@ -165,11 +139,6 @@ int main(int argc, char* argv[]) {
 
 	while (!glfwWindowShouldClose(window)) {
 
-		g_pTheLightManager->CopyLightInformationToShader(shaderID);
-		// Point the spotlight to the center of the scene
-		glm::vec3 LightToCenter = glm::vec3(0.0f) - glm::vec3(g_pTheLightManager->vecTheLights[0].position);
-		LightToCenter = glm::normalize(LightToCenter);
-		g_pTheLightManager->vecTheLights[0].direction = glm::vec4(LightToCenter, 1.0f);
 		//DrawConcentricDebugLightObjects();
 
 		float ratio;
@@ -204,6 +173,10 @@ int main(int argc, char* argv[]) {
 
 		// Checks if there's a Selected Scene to be drawn
 		if (g_ProjectManager->m_selectedScene != nullptr) {
+			g_ProjectManager->m_lightManager->CopyLightInformationToShader(
+				g_ProjectManager->m_VAOManager->m_shaderID,
+				&g_ProjectManager->m_selectedScene->m_mLights);
+
 			matView = glm::lookAt(*g_cameraEye,
 								  *g_cameraTarget,
 								  upVector);
@@ -219,9 +192,9 @@ int main(int argc, char* argv[]) {
 
 			// Time to Draw the Meshes of Selected Scene
 			std::map<std::string, cMeshObject*>::iterator itMeshes;
-			itMeshes = g_ProjectManager->m_selectedScene->m_vMeshes.begin();
+			itMeshes = g_ProjectManager->m_selectedScene->m_mMeshes.begin();
 			// Iterates through all meshes
-			for (itMeshes; itMeshes != g_ProjectManager->m_selectedScene->m_vMeshes.end(); itMeshes++) {
+			for (itMeshes; itMeshes != g_ProjectManager->m_selectedScene->m_mMeshes.end(); itMeshes++) {
 				cMeshObject* pCurrentMeshObject = itMeshes->second;
 				// Skip this meshe if not visible
 				if (!pCurrentMeshObject->m_bIsVisible)
@@ -304,16 +277,6 @@ int main(int argc, char* argv[]) {
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-
-		if (g_ProjectManager->m_selectedScene != nullptr) {
-			std::stringstream ssTitle;
-			ssTitle << "Camera (x,y,z): "
-				<< g_cameraEye->x << ", "
-				<< g_cameraEye->y << ", "
-				<< g_cameraEye->z;
-			std::string theText = ssTitle.str();
-			glfwSetWindowTitle(window, ssTitle.str().c_str());
-		}
 	}
 
 	delete g_ProjectManager;

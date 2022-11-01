@@ -21,6 +21,10 @@ cLight::cLight() {
 
 }
 
+cLight::~cLight() {
+	DEBUG_PRINT("cLight::~cLight()\n");
+}
+
 void cLight::setConstantAttenuation(float newConstAtten) {
 	this->atten.x = newConstAtten;
 	return;

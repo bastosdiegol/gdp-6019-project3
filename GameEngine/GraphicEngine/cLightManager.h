@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <map>
 
 #include "cLight.h"
 
@@ -13,8 +14,10 @@ public:
 	std::vector<cLight> vecTheLights;
 
 	void LoadLightUniformLocations(unsigned int shaderID);
+	void LoadLightUniformLocations(unsigned int shaderID, std::map<std::string, cLight*>* p_mapOfLights);
 
 	void CopyLightInformationToShader(unsigned int shaderID);
+	void CopyLightInformationToShader(unsigned int shaderID, std::map<std::string, cLight*>* p_mapOfLights);
 
 };
 

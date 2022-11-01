@@ -17,6 +17,6 @@ cScene::cScene(std::string name) {
 cScene::~cScene() {
 	DEBUG_PRINT("cScene::~cScene()\n");
 	std::map<std::string, cMeshObject*>::iterator itMesh;
-	for (itMesh = m_vMeshes.begin(); itMesh != m_vMeshes.end(); itMesh++)
+	for (itMesh = m_mMeshes.begin(); itMesh != m_mMeshes.end(); itMesh++)
 		delete itMesh->second;
 }

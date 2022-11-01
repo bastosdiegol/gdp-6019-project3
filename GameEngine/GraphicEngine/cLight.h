@@ -4,7 +4,6 @@
 
 class cLight {
 public:
-	cLight();
 	glm::vec4 position;
 	glm::vec4 diffuse;
 	glm::vec4 specular;		// rgb = highlight colour, w = power
@@ -27,6 +26,9 @@ public:
 	int direction_UniformLocation;
 	int param1_UniformLocation;
 	int param2_UniformLocation;
+
+	cLight();
+	~cLight();
 
 	void setConstantAttenuation(float newConstAtten);
 	void setLinearAttenuation(float newLinearAtten);

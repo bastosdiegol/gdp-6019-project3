@@ -18,6 +18,8 @@ cVAOManager::cVAOManager() {
 	DEBUG_PRINT("cVAOManager::cVAOManager()\n");
 	this->m_plyReader = new cPlyFileReader();
 	this->m_shaderID = -1;
+	// Loads the universal light model
+	LoadModelIntoVAO(PrepareNewModel("Light", LIGHT_MODEL_PATH));
 }
 
 cVAOManager::~cVAOManager() {

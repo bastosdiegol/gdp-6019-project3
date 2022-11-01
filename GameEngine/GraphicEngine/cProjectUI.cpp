@@ -54,17 +54,65 @@ void cProjectUI::renderSceneUI() {
 		}
 		ImGui::EndMenuBar();
 	}
+	// Camera Manipulation
+	// First Checks if there's a selected scene
+	if (m_projectManager->m_selectedScene != nullptr) {
+		// Variable for ImGui to control Position
+		float eye3f[3] = { m_projectManager->m_selectedScene->m_cameraEye.x,
+						   m_projectManager->m_selectedScene->m_cameraEye.y,
+						   m_projectManager->m_selectedScene->m_cameraEye.z };
+		ImGui::Text("Camera Eye");
+		// Camera Eye Input
+		if (ImGui::InputFloat3("X Y Z##EyeInput", eye3f, "%.2f")) {
+			m_projectManager->m_selectedScene->m_cameraEye.x = eye3f[0];
+			m_projectManager->m_selectedScene->m_cameraEye.y = eye3f[1];
+			m_projectManager->m_selectedScene->m_cameraEye.z = eye3f[2];
+		}
+		// Camera Eye Slider
+		if (ImGui::SliderFloat3("X Y Z##EyeSlider", eye3f, -50, +50, "%.2f")) {
+			m_projectManager->m_selectedScene->m_cameraEye.x = eye3f[0];
+			m_projectManager->m_selectedScene->m_cameraEye.y = eye3f[1];
+			m_projectManager->m_selectedScene->m_cameraEye.z = eye3f[2];
+		}
+		// Variable for ImGui to control Camera Target
+		float target3f[3] = { m_projectManager->m_selectedScene->m_cameraTarget.x,
+							  m_projectManager->m_selectedScene->m_cameraTarget.y,
+							  m_projectManager->m_selectedScene->m_cameraTarget.z };
+		ImGui::Text("Camera Target");
+		// Camera Target Input
+		if (ImGui::InputFloat3("X Y Z##TargetInput", target3f, "%.2f")) {
+			m_projectManager->m_selectedScene->m_cameraTarget.x = target3f[0];
+			m_projectManager->m_selectedScene->m_cameraTarget.y = target3f[1];
+			m_projectManager->m_selectedScene->m_cameraTarget.z = target3f[2];
+		}
+		// Camera Target Slider
+		if (ImGui::SliderFloat3("X Y Z##TargetSlider", target3f, -50, +50, "%.2f")) {
+			m_projectManager->m_selectedScene->m_cameraTarget.x = target3f[0];
+			m_projectManager->m_selectedScene->m_cameraTarget.y = target3f[1];
+			m_projectManager->m_selectedScene->m_cameraTarget.z = target3f[2];
+		}
+	}
 	// Checks if there's a selected scene
 	if (ImGui::TreeNodeEx("Meshes:", ImGuiTreeNodeFlags_DefaultOpen)) {
 		if (m_projectManager->m_selectedScene != nullptr) {
 			// Iterates through all models
 			std::map<std::string, cMeshObject*>::iterator itMesh;
-			for (itMesh = m_projectManager->m_selectedScene->m_vMeshes.begin();
-				 itMesh != m_projectManager->m_selectedScene->m_vMeshes.end();
+			for (itMesh = m_projectManager->m_selectedScene->m_mMeshes.begin();
+				 itMesh != m_projectManager->m_selectedScene->m_mMeshes.end();
 				 itMesh++) {
 				ImGui::Bullet();
 				if (ImGui::SmallButton(itMesh->second->m_meshName.c_str())) {
 					m_projectManager->m_selectedMesh = itMesh->second;
+				}
+			}
+			// Iterates through all lights
+			std::map<std::string, cLight*>::iterator itLight;
+			for (itLight = m_projectManager->m_selectedScene->m_mLights.begin();
+				 itLight != m_projectManager->m_selectedScene->m_mLights.end();
+				 itLight++) {
+				ImGui::Bullet();
+				if (ImGui::SmallButton(itLight->first.c_str())) {
+					m_projectManager->m_selectedLight = itLight->second;
 				}
 			}
 		} else {
@@ -107,7 +155,7 @@ void cProjectUI::renderMeshUI() {
 			m_projectManager->m_selectedMesh->m_position.z = pos3f[2];
 		}
 		// Position Slider
-		if (ImGui::SliderFloat3("X Y Z##PositionSlider", pos3f, -100, +100, "%.2f")) {
+		if (ImGui::SliderFloat3("X Y Z##PositionSlider", pos3f, -10, +10, "%.2f")) {
 			m_projectManager->m_selectedMesh->m_position.x = pos3f[0];
 			m_projectManager->m_selectedMesh->m_position.y = pos3f[1];
 			m_projectManager->m_selectedMesh->m_position.z = pos3f[2];
@@ -124,7 +172,7 @@ void cProjectUI::renderMeshUI() {
 			m_projectManager->m_selectedMesh->m_rotation.z = rot3f[2];
 		}
 		// Rotation Slider
-		if (ImGui::SliderFloat3("X Y Z##RotationSlider", rot3f, -100, +100, "%.2f")) {
+		if (ImGui::SliderFloat3("X Y Z##RotationSlider", rot3f, -5, +5, "%.2f")) {
 			m_projectManager->m_selectedMesh->m_rotation.x = rot3f[0];
 			m_projectManager->m_selectedMesh->m_rotation.y = rot3f[1];
 			m_projectManager->m_selectedMesh->m_rotation.z = rot3f[2];

@@ -5,6 +5,8 @@
 #include "cModel.h"
 #include "cPlyFileReader.h"
 
+#define LIGHT_MODEL_PATH "assets/ISO_Shphere.ply"
+
 class cVAOManager {
 public:
 	GLuint m_shaderID;
@@ -37,7 +39,7 @@ public:
 	cModel* findModel(std::string name);
 
 private:
-	cPlyFileReader* m_plyReader;
-	std::map<std::string, cModel*> m_mapModels;
+	cPlyFileReader*					m_plyReader;
+	std::map<std::string, cModel*>	m_mapModels;
 };
 

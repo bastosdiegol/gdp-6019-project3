@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <graphicsLibrary>
-	<scene title="Scene 01" camEyeX="0" camEyeY="0" camEyeZ="-25" camTarX="0" camTarY="0" camTarZ="0">
+	<scene title="1. Graphics Proj#1" camEyeX="0" camEyeY="8.34000015" camEyeZ="-44.2400017" camTarX="0" camTarY="0" camTarZ="0">
 		<model path="assets/dragon/SM_Env_Bone_Skull_02.ply" title="Dragon Skull">
 			<mesh id="Dragon Skull">
 				<position x="10" y="0" z="30" />
@@ -47,21 +47,58 @@
 				<visible value="true" />
 			</mesh>
 		</model>
-		<light title="" />
+		<light id="Light 01">
+			<position x="0.0" y="500.0" z="500.0" w="1.0" />
+			<diffuse x="1.0" y="1.0" z="1.0" w="1.0" />
+			<specular r="1.0" g="1.0" b="1.0" w="1.0" />
+			<attenuation x="0.1" y="0.001" z="0.0000001" w="1.0" />
+			<direction x="0.0" y="-1.0" z="0.0" w="1.0" />
+			<param1 x="2.0" y="0.0" z="0.0" w="1.0" />
+			<param2 x="1.0" y="0.0" z="0.0" w="1.0" />
+		</light>
+		<light id="Light 02">
+			<position x="10.0" y="10.0" z="0.0" w="1.0" />
+			<diffuse x="1.0" y="1.0" z="1.0" w="1.0" />
+			<specular r="1.0" g="1.0" b="1.0" w="1.0" />
+			<attenuation x="0.1" y="0.01" z="0.0000001" w="1.0" />
+			<direction x="0.0" y="-1.0" z="0.0" w="1.0" />
+			<param1 x="1.0" y="10.0" z="20.0" w="1.0" />
+			<param2 x="0.0" y="0.0" z="0.0" w="1.0" />
+		</light>
 	</scene>
-	<scene title="Scene 02" camEyeX="0" camEyeY="10" camEyeZ="-25" camTarX="0" camTarY="0" camTarZ="0">
-		<model path="assets/dragon/SM_Env_Bone_Rigcage_01_rgb.ply" title="Dragon Rib">
-			<mesh id="Dragon Rib 01">
-				<position x="0" y="0" z="0" />
-				<rotate x="0" y="0" z="0" />
+	<scene title="2. Graphics MidTerm" camEyeX="0" camEyeY="50" camEyeZ="250" camTarX="-20" camTarY="30" camTarZ="0">
+		<model path="assets/midterm/terrain.ply" title="Terrain">
+			<mesh id="Terrain">
+				<position x="-150" y="-100" z="-100" />
+				<rotate x="-0.800000012" y="0" z="0" />
 				<useColor value="false" />
 				<color r="0" g="0" b="0" a="1" />
-				<scale value="0" />
+				<scale value="1" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
 				<visible value="true" />
 			</mesh>
 		</model>
-		<light title="" />
+		<model path="assets/dragon/SM_Env_Bone_Rigcage_01_rgb.ply" title="Dragon Rib">
+			<mesh id="Dragon Rib 01">
+				<position x="0" y="0" z="-40" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="1" g="0.0490196347" b="0.0490196347" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+			</mesh>
+		</model>
+		<light id="Light 01">
+			<position x="0.0" y="500.0" z="500.0" w="1.0" />
+			<diffuse x="1.0" y="1.0" z="1.0" w="1.0" />
+			<specular r="1.0" g="1.0" b="1.0" w="1.0" />
+			<attenuation x="0.1" y="0.001" z="0.0000001" w="1.0" />
+			<direction x="0.0" y="-1.0" z="0.0" w="1.0" />
+			<param1 x="2.0" y="0.0" z="0.0" w="1.0" />
+			<param2 x="1.0" y="0.0" z="0.0" w="1.0" />
+		</light>
 	</scene>
 </graphicsLibrary>

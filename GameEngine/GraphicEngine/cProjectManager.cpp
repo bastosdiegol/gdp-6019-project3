@@ -91,7 +91,7 @@ bool cProjectManager::LoadScene(std::string name) {
 			this->m_selectedScene = newScene;
 
 			DEBUG_PRINT("<scene title=\"%s\">\n", name.c_str());
-			// Iterates through each node inside the selected Scene Node
+			// Iterates through each Model node inside the selected Scene Node
 			for (pugi::xml_node modelNode = sceneNode.child("model");
 				modelNode;
 				modelNode = modelNode.next_sibling("model")) {
@@ -152,9 +152,65 @@ bool cProjectManager::LoadScene(std::string name) {
 					// Reads isVisible
 					newMeshObj->m_bIsVisible = meshInfo.attribute("value").as_bool();
 
-					newScene->m_vMeshes.try_emplace(newMeshObj->m_meshName, newMeshObj);
+					// Adds the newly created Mesh to the Scene Map of Meshes
+					newScene->m_mMeshes.try_emplace(newMeshObj->m_meshName, newMeshObj);
 				}
 			}
+			// Iterates through each Light Node
+			for (pugi::xml_node lightNode = sceneNode.child("light");
+				lightNode;
+				lightNode = lightNode.next_sibling("light")) {
+				// Gets Light Friendly Name / ID
+				std::string friendlyLightName = lightNode.attribute("id").value();
+				// Creates new Instance of the Light
+				cLight* newLight = new cLight();
+				// Reads light info and store them
+				pugi::xml_node lightInfo = lightNode.child("position");
+				// Reads Position
+				newLight->position.x = lightInfo.attribute("x").as_float();
+				newLight->position.y = lightInfo.attribute("y").as_float();
+				newLight->position.z = lightInfo.attribute("z").as_float();
+				lightInfo = lightInfo.next_sibling();
+				// Reads Diffuse
+				newLight->diffuse.x = lightInfo.attribute("x").as_float();
+				newLight->diffuse.y = lightInfo.attribute("y").as_float();
+				newLight->diffuse.z = lightInfo.attribute("z").as_float();
+				lightInfo = lightInfo.next_sibling();
+				// Reads Specullar
+				newLight->specular.x = lightInfo.attribute("r").as_float();
+				newLight->specular.y = lightInfo.attribute("g").as_float();
+				newLight->specular.z = lightInfo.attribute("b").as_float();
+				newLight->specular.w = lightInfo.attribute("w").as_float();
+				lightInfo = lightInfo.next_sibling();
+				// Reads Attenuation
+				newLight->atten.x = lightInfo.attribute("x").as_float();
+				newLight->atten.y = lightInfo.attribute("y").as_float();
+				newLight->atten.z = lightInfo.attribute("z").as_float();
+				newLight->atten.w = lightInfo.attribute("w").as_float();
+				lightInfo = lightInfo.next_sibling();
+				// Reads Direction
+				newLight->direction.x = lightInfo.attribute("x").as_float();
+				newLight->direction.y = lightInfo.attribute("y").as_float();
+				newLight->direction.z = lightInfo.attribute("z").as_float();
+				newLight->direction.w = lightInfo.attribute("w").as_float();
+				lightInfo = lightInfo.next_sibling();
+				// Reads Param1
+				newLight->param1.x = lightInfo.attribute("x").as_float();
+				newLight->param1.y = lightInfo.attribute("y").as_float();
+				newLight->param1.z = lightInfo.attribute("z").as_float();
+				newLight->param1.w = lightInfo.attribute("w").as_float();
+				lightInfo = lightInfo.next_sibling();
+				// Reads Param2
+				newLight->param2.x = lightInfo.attribute("x").as_float();
+				newLight->param2.y = lightInfo.attribute("y").as_float();
+				newLight->param2.z = lightInfo.attribute("z").as_float();
+				newLight->param2.w = lightInfo.attribute("w").as_float();
+
+				// Adds the newly created Light to the Scene Map of Lights
+				newScene->m_mLights.try_emplace(friendlyLightName, newLight);
+			}
+			// Load UniformLocations for new Scene and set them on each light that's going to be used
+			m_lightManager->LoadLightUniformLocations(m_VAOManager->m_shaderID, &newScene->m_mLights);
 			// Adds the scene to the Map of scenes
 			itScene = m_mScenes.find(name);
 			if (itScene != m_mScenes.end()) {
@@ -167,6 +223,8 @@ bool cProjectManager::LoadScene(std::string name) {
 	}
 	// Sets new Scene bool
 	isNewScene = true;
+	// Unselect previous selected mesh
+	this->m_selectedMesh = nullptr;
 	return true;
 }
 
@@ -177,8 +235,8 @@ void cProjectManager::UnloadScene() {
 		return;
 
 	std::map<std::string, cMeshObject*>::iterator itMeshes;
-	for (itMeshes = this->m_selectedScene->m_vMeshes.begin();
-		 itMeshes != this->m_selectedScene->m_vMeshes.end();
+	for (itMeshes = this->m_selectedScene->m_mMeshes.begin();
+		 itMeshes != this->m_selectedScene->m_mMeshes.end();
 		 itMeshes++) {
 		itMeshes->second->~cMeshObject();
 		delete itMeshes->second;
@@ -228,9 +286,9 @@ bool cProjectManager::SaveSelectedScene() {
 				for (pugi::xml_node meshNode = modelNode.child("mesh");
 									meshNode;
 									meshNode = meshNode.next_sibling("mesh")) {
-					std::map<std::string, cMeshObject*>::iterator itMesh = m_selectedScene->m_vMeshes.find(meshNode.attribute("id").as_string());
+					std::map<std::string, cMeshObject*>::iterator itMesh = m_selectedScene->m_mMeshes.find(meshNode.attribute("id").as_string());
 					// Checks if found the Selected Scene Obj
-					if (itMesh == m_selectedScene->m_vMeshes.end()) {
+					if (itMesh == m_selectedScene->m_mMeshes.end()) {
 						DEBUG_PRINT("Tried to find a Mesh to save and got nullptr. Mesh %s not saved.", meshNode.attribute("id").as_string());
 						continue;
 					}
