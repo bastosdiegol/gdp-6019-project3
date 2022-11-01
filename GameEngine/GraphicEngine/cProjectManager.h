@@ -12,8 +12,6 @@
 class cProjectManager {	
 private:
 	std::map<std::string, cScene*>	m_mScenes;			// List of Scenes Available
-	cMeshObject*					m_selectedMesh;		// Selected Mesh with info available to be edited
-	cLight*							m_selectedLight;	// Selected Light
 
 	/// <summary>
 	/// Loads the PROJECT_SAVE_FILE and stores all scenes available to be loaded
@@ -22,6 +20,8 @@ private:
 	bool LoadSaveFile();
 public:
 	cScene*						m_selectedScene;	// Selected Scene by the user
+	cMeshObject*				m_selectedMesh;		// Selected Mesh with info available to be edited
+	cLight*						m_selectedLight;	// Selected Light
 	bool						isNewScene;			// True everytime a user changes the scene
 	cVAOManager* m_VAOManager;
 	cLightManager* m_lightManager;

@@ -162,6 +162,7 @@ int main(int argc, char* argv[]) {
 		g_projectUI.renderUI();
 		g_projectUI.renderSceneUI();
 		g_projectUI.renderMeshUI();
+		g_projectUI.renderLighthUI();
 
 		// If new Scene
 		if (g_ProjectManager->isNewScene) {

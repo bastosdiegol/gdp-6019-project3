@@ -91,6 +91,8 @@ void cProjectUI::renderSceneUI() {
 			m_projectManager->m_selectedScene->m_cameraTarget.y = target3f[1];
 			m_projectManager->m_selectedScene->m_cameraTarget.z = target3f[2];
 		}
+	} else {
+		ImGui::BulletText("No Scene Selected.");
 	}
 	// Checks if there's a selected scene
 	if (ImGui::TreeNodeEx("Meshes:", ImGuiTreeNodeFlags_DefaultOpen)) {
@@ -133,7 +135,7 @@ void cProjectUI::renderMeshUI() {
 	if (ImGui::BeginMenuBar()) {
 		if (ImGui::BeginMenu("Mesh")) {
 			if (ImGui::MenuItem("Save Mesh Data")) {
-
+				// TODO:: Save Mesh Data
 			}
 			// TODO: Add models using this menu in the future?
 			ImGui::EndMenu();
@@ -204,6 +206,32 @@ void cProjectUI::renderMeshUI() {
 		ImGui::Text("Is Visible?"); ImGui::SameLine();
 		// isVisible Checkbox
 		ImGui::Checkbox("##Visible?", &m_projectManager->m_selectedMesh->m_bIsVisible);
+	} else {
+		ImGui::BulletText("No Mesh Selected.");
+	}
+
+	ImGui::End();
+}
+
+void cProjectUI::renderLighthUI() {
+	ImGui::Begin("Selected Light", NULL, ImGuiWindowFlags_MenuBar |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysUseWindowPadding);
+	if (ImGui::BeginMenuBar()) {
+		if (ImGui::BeginMenu("Light")) {
+			if (ImGui::MenuItem("Save Light Data")) {
+				// TODO: Save Light Data
+			}
+			// TODO: Add lights using this menu in the future?
+			ImGui::EndMenu();
+		}
+		ImGui::EndMenuBar();
+	}
+	// Checks if the selected mesh isnt nullptr
+	if (m_projectManager->m_selectedLight != nullptr) {
+	} else {
+		ImGui::BulletText("No Light Selected.");
 	}
 
 	ImGui::End();

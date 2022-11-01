@@ -18,5 +18,9 @@ public:
 	/// After a mesh is selected, this method will draw the mesh info
 	/// </summary>
 	void renderMeshUI();
+	/// <summary>
+	/// After a light is selected, this method will draw the light info
+	/// </summary>
+	void renderLighthUI();
 };
 

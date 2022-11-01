@@ -39,9 +39,12 @@ cProjectManager::~cProjectManager() {
 
 bool cProjectManager::LoadScene(std::string name) {
 	DEBUG_PRINT("cProjectManager::LoadScene(%s)\n", name.c_str());
-
 	// I don't know if I really want to unload the scenes
 	//this->UnloadScene();
+	
+	// Unselect previous selected mesh and light
+	this->m_selectedMesh = nullptr;
+	this->m_selectedLight = nullptr;
 
 	// Create a document object
 	pugi::xml_document graphicsLibrary;
@@ -210,7 +213,8 @@ bool cProjectManager::LoadScene(std::string name) {
 				newScene->m_mLights.try_emplace(friendlyLightName, newLight);
 			}
 			// Load UniformLocations for new Scene and set them on each light that's going to be used
-			m_lightManager->LoadLightUniformLocations(m_VAOManager->m_shaderID, &newScene->m_mLights);
+			if(newScene->m_mLights.size() > 0)
+				m_lightManager->LoadLightUniformLocations(m_VAOManager->m_shaderID, &newScene->m_mLights);
 			// Adds the scene to the Map of scenes
 			itScene = m_mScenes.find(name);
 			if (itScene != m_mScenes.end()) {
@@ -223,8 +227,6 @@ bool cProjectManager::LoadScene(std::string name) {
 	}
 	// Sets new Scene bool
 	isNewScene = true;
-	// Unselect previous selected mesh
-	this->m_selectedMesh = nullptr;
 	return true;
 }
 
