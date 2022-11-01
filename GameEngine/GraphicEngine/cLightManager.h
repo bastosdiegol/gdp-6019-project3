@@ -9,7 +9,7 @@ class cLightManager {
 public:
 	cLightManager();
 
-	static const unsigned int NUMBER_OF_LIGHTS_IM_GONNA_USE = 3;
+	static const unsigned int NUMBER_OF_LIGHTS_IM_GONNA_USE = 4;
 
 	void LoadLightUniformLocations(unsigned int shaderID, std::map<std::string, cLight*>* p_mapOfLights);
 

@@ -144,7 +144,7 @@ bool cProjectManager::LoadScene(std::string name) {
 														  1);
 					meshInfo = meshInfo.next_sibling();
 					// Reads Scale
-					newMeshObj->m_scale = meshInfo.attribute("value").as_bool();
+					newMeshObj->m_scale = meshInfo.attribute("value").as_float();
 					meshInfo = meshInfo.next_sibling();
 					// Reads isWireframe
 					newMeshObj->m_isWireframe = meshInfo.attribute("value").as_bool();

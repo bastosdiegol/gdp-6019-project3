@@ -10,8 +10,8 @@ public:
 	glm::vec4 m_diffuse;
 	bool m_useRGB;
 	glm::vec4 m_specular;		// rgb = highlight colour, w = power
-	glm::vec4 m_attenuation;		// x = constant, y = linear, z = quadratic, w = DistanceCutOff
-	glm::vec4 m_direction;	// Spot, directional lights
+	glm::vec4 m_attenuation;	// x = constant, y = linear, z = quadratic, w = DistanceCutOff
+	glm::vec4 m_direction;		// Spot, directional lights
 	/// <summary>
 	/// x = lightType, y = inner angle, z = outer angle, w = TBD
 	/// 0 = pointlight

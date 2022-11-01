@@ -105,6 +105,9 @@ void cProjectUI::renderSceneUI() {
 				ImGui::Bullet();
 				if (ImGui::SmallButton(itMesh->second->m_meshName.c_str())) {
 					m_projectManager->m_selectedMesh = itMesh->second;
+					// Internal Bool-Switch for RenderingUI
+					this->isMeshSelected = true;
+					this->isLightSelected = false;
 				}
 			}
 			// Iterates through all lights
@@ -115,6 +118,9 @@ void cProjectUI::renderSceneUI() {
 				ImGui::Bullet();
 				if (ImGui::SmallButton(itLight->first.c_str())) {
 					m_projectManager->m_selectedLight = itLight->second;
+					// Internal Bool-Switch for RenderingUI
+					this->isLightSelected = true;
+					this->isMeshSelected = false;
 				}
 			}
 		} else {
@@ -281,12 +287,48 @@ void cProjectUI::renderLighthUI() {
 			m_projectManager->m_selectedLight->m_position.y = pos3f[1];
 			m_projectManager->m_selectedLight->m_position.z = pos3f[2];
 		}
-		ImGui::Text("Use RGB?"); ImGui::SameLine();
-		// RGB Checkbox
-		if (ImGui::Checkbox("##RGB?", &m_projectManager->m_selectedLight->m_useRGB)) {
-			// If False - Set Light to White
-			if (m_projectManager->m_selectedLight->m_useRGB == false) {
-				m_projectManager->m_selectedLight->SetToWhite();
+		// Variable for ImGui to control Diffuse
+		float dif3f[3] = { m_projectManager->m_selectedLight->m_diffuse.x,
+						   m_projectManager->m_selectedLight->m_diffuse.y,
+						   m_projectManager->m_selectedLight->m_diffuse.z };
+		ImGui::Text("Diffuse");
+		// Diffuse Input
+		if (ImGui::InputFloat3("X Y Z##DiffuseInput", dif3f, "%.2f")) {
+			m_projectManager->m_selectedLight->m_diffuse.x = dif3f[0];
+			m_projectManager->m_selectedLight->m_diffuse.y = dif3f[1];
+			m_projectManager->m_selectedLight->m_diffuse.z = dif3f[2];
+		}
+		// Diffuse Slider
+		if (ImGui::SliderFloat3("X Y Z##DiffuseSlider", dif3f, -10, +10, "%.2f")) {
+			m_projectManager->m_selectedLight->m_diffuse.x = dif3f[0];
+			m_projectManager->m_selectedLight->m_diffuse.y = dif3f[1];
+			m_projectManager->m_selectedLight->m_diffuse.z = dif3f[2];
+		}
+		if (current_item == "Spot Light" || current_item == "Directional") {
+			// Variable for ImGui to control Direction
+			float dir3f[3] = { m_projectManager->m_selectedLight->m_direction.x,
+							   m_projectManager->m_selectedLight->m_direction.y,
+							   m_projectManager->m_selectedLight->m_direction.z };
+			ImGui::Text("Direction");
+			// Position Input
+			if (ImGui::InputFloat3("X Y Z##DirectionInput", dir3f, "%.2f")) {
+				m_projectManager->m_selectedLight->m_direction.x = dir3f[0];
+				m_projectManager->m_selectedLight->m_direction.y = dir3f[1];
+				m_projectManager->m_selectedLight->m_direction.z = dir3f[2];
+			}
+			// Position Slider
+			if (ImGui::SliderFloat3("X Y Z##DirectionSlider", dir3f, -5, +5, "%.2f")) {
+				m_projectManager->m_selectedLight->m_direction.x = dir3f[0];
+				m_projectManager->m_selectedLight->m_direction.y = dir3f[1];
+				m_projectManager->m_selectedLight->m_direction.z = dir3f[2];
+			}
+			ImGui::Text("Use RGB?"); ImGui::SameLine();
+			// RGB Checkbox
+			if (ImGui::Checkbox("##RGB?", &m_projectManager->m_selectedLight->m_useRGB)) {
+				// If False - Set Light to White
+				if (m_projectManager->m_selectedLight->m_useRGB == false) {
+					m_projectManager->m_selectedLight->SetToWhite();
+				}
 			}
 		}
 		// Variable for ImGui to control RGB
@@ -301,6 +343,35 @@ void cProjectUI::renderLighthUI() {
 			m_projectManager->m_selectedLight->m_specular.z = col4f[2];
 			m_projectManager->m_selectedLight->m_specular.w = col4f[3];
 		}
+		// Attenuations
+		ImGui::Text("Attenuation:");
+		// Constant 
+		ImGui::Text("Constant");
+		ImGui::SameLine();
+		ImGui::InputFloat("##ConstantInput", &m_projectManager->m_selectedLight->m_attenuation.x, 0.0f, 0.0f, "%.2f");
+		// Linear
+		ImGui::Text("Linear");
+		ImGui::SameLine();
+		ImGui::InputFloat("##LinearInput", &m_projectManager->m_selectedLight->m_attenuation.y, 0.0f, 0.0f, "%.3f");
+		// Quadratic
+		ImGui::Text("Quadratic");
+		ImGui::SameLine();
+		ImGui::InputFloat("##QuadraticInput", &m_projectManager->m_selectedLight->m_attenuation.z, 0.0f, 0.0f, "%.7f");
+		// Distance Cut Off
+		ImGui::Text("Distance Cut-Off");
+		ImGui::SameLine();
+		ImGui::InputFloat("##Cut-OffInput", &m_projectManager->m_selectedLight->m_attenuation.w, 0.0f, 0.0f, "%.2f");
+		// Turn On/Off Checkbox
+		ImGui::Text("Turn On/Off");
+		ImGui::SameLine();
+		bool onoff = (bool)m_projectManager->m_selectedLight->m_param2.x;
+		if (ImGui::Checkbox("##OnOff", &onoff)) {
+			if (onoff)
+				m_projectManager->m_selectedLight->TurnOn();
+			else
+				m_projectManager->m_selectedLight->TurnOff();
+		}
+
 	} else {
 		ImGui::BulletText("No Light Selected.");
 	}

@@ -161,8 +161,10 @@ int main(int argc, char* argv[]) {
 		// Renders Project Manager UI
 		g_projectUI.renderUI();
 		g_projectUI.renderSceneUI();
-		g_projectUI.renderMeshUI();
-		g_projectUI.renderLighthUI();
+		if(g_projectUI.isMeshSelected)
+			g_projectUI.renderMeshUI();
+		if(g_projectUI.isLightSelected)
+			g_projectUI.renderLighthUI();
 
 		// If new Scene
 		if (g_ProjectManager->isNewScene) {

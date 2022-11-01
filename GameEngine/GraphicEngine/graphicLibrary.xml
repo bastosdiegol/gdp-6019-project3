@@ -1,6 +1,28 @@
 <?xml version="1.0"?>
 <graphicsLibrary>
-	<scene title="1.Graphics Proj#1" camEyeX="0" camEyeY="8.34000015" camEyeZ="-44.2400017" camTarX="0" camTarY="0" camTarZ="0">
+	<scene title="1.Graphics Proj#1" camEyeX="0" camEyeY="30" camEyeZ="-70" camTarX="0" camTarY="0" camTarZ="0">
+		<model path="assets/room/SM_Env_Tiles_09.ply" title="Tile">
+			<mesh id="Tile 01">
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="1" b="1" a="1" />
+				<scale value="2" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+			</mesh>
+			<mesh id="Tile 02">
+				<position x="-9.95" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="1" b="1" a="1" />
+				<scale value="2" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+			</mesh>
+		</model>
 		<model path="assets/dragon/SM_Env_Bone_Skull_02.ply" title="Dragon Skull">
 			<mesh id="Dragon Skull">
 				<position x="10" y="0" z="30" />
@@ -101,6 +123,5 @@
 			<param2 x="1.0" y="0.0" z="0.0" w="1.0" />
 		</light>
 	</scene>
-	<scene title="3.Physics Proj#2" camEyeX="0" camEyeY="0" camEyeZ="0" camTarX="0" camTarY="0" camTarZ="0">
-	</scene>
+	<scene title="3.Physics Proj#2" camEyeX="0" camEyeY="0" camEyeZ="0" camTarX="0" camTarY="0" camTarZ="0" />
 </graphicsLibrary>

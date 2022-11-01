@@ -5,7 +5,12 @@ class cProjectUI {
 private:
 	cProjectManager* m_projectManager;
 public:
-	cProjectUI(cProjectManager* projectManager) : m_projectManager(projectManager) {}
+	bool isMeshSelected;
+	bool isLightSelected;
+
+	cProjectUI(cProjectManager* projectManager) : m_projectManager(projectManager), 
+												  isMeshSelected(false), 
+												  isLightSelected(false) {}
 	/// <summary>
 	/// Will draw any important information related to Project Manager
 	/// </summary>
