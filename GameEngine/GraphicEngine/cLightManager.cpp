@@ -52,12 +52,22 @@ void cLightManager::LoadLightUniformLocations(unsigned int shaderID, std::map<st
 		itLight->second->param1_UniformLocation		= glGetUniformLocation(shaderID, "theLights[2].param1");
 		itLight->second->param2_UniformLocation		= glGetUniformLocation(shaderID, "theLights[2].param2");
 	}
+	itLight++;
+	if(itLight != p_mapOfLights->end()){
+		itLight->second->position_UniformLocation	= glGetUniformLocation(shaderID, "theLights[3].position");
+		itLight->second->diffuse_UniformLocation	= glGetUniformLocation(shaderID, "theLights[3].diffuse");
+		itLight->second->specular_UniformLocation	= glGetUniformLocation(shaderID, "theLights[3].specular");
+		itLight->second->atten_UniformLocation		= glGetUniformLocation(shaderID, "theLights[3].atten");
+		itLight->second->direction_UniformLocation	= glGetUniformLocation(shaderID, "theLights[3].direction");
+		itLight->second->param1_UniformLocation		= glGetUniformLocation(shaderID, "theLights[3].param1");
+		itLight->second->param2_UniformLocation		= glGetUniformLocation(shaderID, "theLights[3].param2");
+	}
 }
 
 void cLightManager::CopyLightInformationToShader(unsigned int shaderID, std::map<std::string, cLight*>* p_mapOfLights) {
 	//DEBUG_PRINT("cLightManager::CopyLightInformationToShader(%d, mapOfLights[%d])\n", shaderID, p_mapOfLights->size());
-	std::map<std::string, cLight*>::iterator itLight = p_mapOfLights->begin();
-	for (itLight; itLight != p_mapOfLights->end(); itLight++) {
+	std::map<std::string, cLight*>::iterator itLight;
+	for (itLight = p_mapOfLights->begin(); itLight != p_mapOfLights->end(); itLight++) {
 		glUniform4f(itLight->second->position_UniformLocation,
 					itLight->second->m_position.x,
 					itLight->second->m_position.y,

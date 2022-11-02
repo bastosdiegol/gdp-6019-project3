@@ -17,7 +17,7 @@ public:
 	glm::vec3		m_rotation;
 	float			m_scale;
 	bool			m_bUse_RGBA_colour; // When true, it will overwrite the vertex colours
-	glm::vec4		m_RGBA_colour; // RGA & Alpha, 0,0,0,1 (black, with transparency of 1.0)
+	glm::vec4		m_RGBA_colour; // Diffuse Colour RGB & Alpha, 0,0,0,1 (black, with transparency of 1.0)
 	bool			m_isWireframe;
 	bool			m_bDoNotLight;
 	bool			m_bIsVisible;

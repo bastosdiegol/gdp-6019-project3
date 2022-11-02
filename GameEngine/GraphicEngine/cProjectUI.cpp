@@ -62,14 +62,8 @@ void cProjectUI::renderSceneUI() {
 						   m_projectManager->m_selectedScene->m_cameraEye.y,
 						   m_projectManager->m_selectedScene->m_cameraEye.z };
 		ImGui::Text("Camera Eye");
-		// Camera Eye Input
-		if (ImGui::InputFloat3("X Y Z##EyeInput", eye3f, "%.2f")) {
-			m_projectManager->m_selectedScene->m_cameraEye.x = eye3f[0];
-			m_projectManager->m_selectedScene->m_cameraEye.y = eye3f[1];
-			m_projectManager->m_selectedScene->m_cameraEye.z = eye3f[2];
-		}
 		// Camera Eye Slider
-		if (ImGui::SliderFloat3("X Y Z##EyeSlider", eye3f, -50, +50, "%.2f")) {
+		if (ImGui::DragFloat3("X Y Z##EyeSlider", eye3f, 0.1f, 0.0f, 0.0f, "%.2f")) {
 			m_projectManager->m_selectedScene->m_cameraEye.x = eye3f[0];
 			m_projectManager->m_selectedScene->m_cameraEye.y = eye3f[1];
 			m_projectManager->m_selectedScene->m_cameraEye.z = eye3f[2];
@@ -79,14 +73,8 @@ void cProjectUI::renderSceneUI() {
 							  m_projectManager->m_selectedScene->m_cameraTarget.y,
 							  m_projectManager->m_selectedScene->m_cameraTarget.z };
 		ImGui::Text("Camera Target");
-		// Camera Target Input
-		if (ImGui::InputFloat3("X Y Z##TargetInput", target3f, "%.2f")) {
-			m_projectManager->m_selectedScene->m_cameraTarget.x = target3f[0];
-			m_projectManager->m_selectedScene->m_cameraTarget.y = target3f[1];
-			m_projectManager->m_selectedScene->m_cameraTarget.z = target3f[2];
-		}
 		// Camera Target Slider
-		if (ImGui::SliderFloat3("X Y Z##TargetSlider", target3f, -50, +50, "%.2f")) {
+		if (ImGui::DragFloat3("X Y Z##TargetSlider", target3f, 0.1f, 0.0f, 0.0f, "%.2f")) {
 			m_projectManager->m_selectedScene->m_cameraTarget.x = target3f[0];
 			m_projectManager->m_selectedScene->m_cameraTarget.y = target3f[1];
 			m_projectManager->m_selectedScene->m_cameraTarget.z = target3f[2];
@@ -157,14 +145,8 @@ void cProjectUI::renderMeshUI() {
 							  m_projectManager->m_selectedMesh->m_position.y,
 							  m_projectManager->m_selectedMesh->m_position.z };
 		ImGui::Text("Position");
-		// Position Input
-		if (ImGui::InputFloat3("X Y Z##PositionInput", pos3f, "%.2f")) {
-			m_projectManager->m_selectedMesh->m_position.x = pos3f[0];
-			m_projectManager->m_selectedMesh->m_position.y = pos3f[1];
-			m_projectManager->m_selectedMesh->m_position.z = pos3f[2];
-		}
 		// Position Slider
-		if (ImGui::SliderFloat3("X Y Z##PositionSlider", pos3f, -10, +10, "%.2f")) {
+		if (ImGui::DragFloat3("X Y Z##PositionSlider", pos3f, 0.1f, 0.0f, 0.0f, "%.2f")) {
 			m_projectManager->m_selectedMesh->m_position.x = pos3f[0];
 			m_projectManager->m_selectedMesh->m_position.y = pos3f[1];
 			m_projectManager->m_selectedMesh->m_position.z = pos3f[2];
@@ -174,25 +156,17 @@ void cProjectUI::renderMeshUI() {
 								  m_projectManager->m_selectedMesh->m_rotation.y,
 								  m_projectManager->m_selectedMesh->m_rotation.z };
 		ImGui::Text("Rotation");
-		// Rotation Input
-		if (ImGui::InputFloat3("X Y Z##RotationInput", rot3f, "%.2f")) {
-			m_projectManager->m_selectedMesh->m_rotation.x = rot3f[0];
-			m_projectManager->m_selectedMesh->m_rotation.y = rot3f[1];
-			m_projectManager->m_selectedMesh->m_rotation.z = rot3f[2];
-		}
 		// Rotation Slider
-		if (ImGui::SliderFloat3("X Y Z##RotationSlider", rot3f, -5, +5, "%.2f")) {
+		if (ImGui::DragFloat3("X Y Z##RotationSlider", rot3f, 0.1f, 0.0f, 0.0f, "%.2f")) {
 			m_projectManager->m_selectedMesh->m_rotation.x = rot3f[0];
 			m_projectManager->m_selectedMesh->m_rotation.y = rot3f[1];
 			m_projectManager->m_selectedMesh->m_rotation.z = rot3f[2];
 		}
 		ImGui::Text("Scale");
 		// Scale Slider
-		ImGui::SliderFloat("##Scale", &m_projectManager->m_selectedMesh->m_scale, -10, 10);
-		ImGui::SameLine();
-		ImGui::InputFloat("##ScaleInput", &m_projectManager->m_selectedMesh->m_scale);
-		ImGui::Text("Use RGB?"); ImGui::SameLine();
+		ImGui::DragFloat("##Scale", &m_projectManager->m_selectedMesh->m_scale, 0.01f, 0.0f, 0.0f, "%.2f");
 		// RGB Checkbox
+		ImGui::Text("Use RGB?"); ImGui::SameLine();
 		ImGui::Checkbox("##RGB?", &m_projectManager->m_selectedMesh->m_bUse_RGBA_colour);
 		// Variable for ImGui to control RGB
 		float col4f[4] = { m_projectManager->m_selectedMesh->m_RGBA_colour.r,
@@ -275,34 +249,24 @@ void cProjectUI::renderLighthUI() {
 						   m_projectManager->m_selectedLight->m_position.y,
 						   m_projectManager->m_selectedLight->m_position.z };
 		ImGui::Text("Position");
-		// Position Input
-		if (ImGui::InputFloat3("X Y Z##PositionInput", pos3f, "%.2f")) {
-			m_projectManager->m_selectedLight->m_position.x = pos3f[0];
-			m_projectManager->m_selectedLight->m_position.y = pos3f[1];
-			m_projectManager->m_selectedLight->m_position.z = pos3f[2];
-		}
 		// Position Slider
-		if (ImGui::SliderFloat3("X Y Z##PositionSlider", pos3f, -10, +10, "%.2f")) {
+		if (ImGui::DragFloat3("X Y Z##PositionSlider", pos3f, 0.1f, 0.0f, 0.0f, "%.2f")) {
 			m_projectManager->m_selectedLight->m_position.x = pos3f[0];
 			m_projectManager->m_selectedLight->m_position.y = pos3f[1];
 			m_projectManager->m_selectedLight->m_position.z = pos3f[2];
 		}
 		// Variable for ImGui to control Diffuse
-		float dif3f[3] = { m_projectManager->m_selectedLight->m_diffuse.x,
-						   m_projectManager->m_selectedLight->m_diffuse.y,
-						   m_projectManager->m_selectedLight->m_diffuse.z };
 		ImGui::Text("Diffuse");
-		// Diffuse Input
-		if (ImGui::InputFloat3("X Y Z##DiffuseInput", dif3f, "%.2f")) {
+		float dif3f[4] = { m_projectManager->m_selectedLight->m_diffuse.x,
+						   m_projectManager->m_selectedLight->m_diffuse.y,
+						   m_projectManager->m_selectedLight->m_diffuse.z,
+						   m_projectManager->m_selectedLight->m_diffuse.w };
+		// RGB Picker
+		if (ImGui::ColorEdit4("R G B A##RGB", dif3f, ImGuiColorEditFlags_Float)) {
 			m_projectManager->m_selectedLight->m_diffuse.x = dif3f[0];
 			m_projectManager->m_selectedLight->m_diffuse.y = dif3f[1];
 			m_projectManager->m_selectedLight->m_diffuse.z = dif3f[2];
-		}
-		// Diffuse Slider
-		if (ImGui::SliderFloat3("X Y Z##DiffuseSlider", dif3f, -10, +10, "%.2f")) {
-			m_projectManager->m_selectedLight->m_diffuse.x = dif3f[0];
-			m_projectManager->m_selectedLight->m_diffuse.y = dif3f[1];
-			m_projectManager->m_selectedLight->m_diffuse.z = dif3f[2];
+			//m_projectManager->m_selectedLight->m_diffuse.w = dif3f[3];
 		}
 		if (current_item == "Spot Light" || current_item == "Directional") {
 			// Variable for ImGui to control Direction
@@ -310,14 +274,8 @@ void cProjectUI::renderLighthUI() {
 							   m_projectManager->m_selectedLight->m_direction.y,
 							   m_projectManager->m_selectedLight->m_direction.z };
 			ImGui::Text("Direction");
-			// Position Input
-			if (ImGui::InputFloat3("X Y Z##DirectionInput", dir3f, "%.2f")) {
-				m_projectManager->m_selectedLight->m_direction.x = dir3f[0];
-				m_projectManager->m_selectedLight->m_direction.y = dir3f[1];
-				m_projectManager->m_selectedLight->m_direction.z = dir3f[2];
-			}
-			// Position Slider
-			if (ImGui::SliderFloat3("X Y Z##DirectionSlider", dir3f, -5, +5, "%.2f")) {
+			// Direction Slider
+			if (ImGui::DragFloat3("X Y Z##DirectionSlider", dir3f, 0.1f, 0.0f, 0.0f, "%.2f")) {
 				m_projectManager->m_selectedLight->m_direction.x = dir3f[0];
 				m_projectManager->m_selectedLight->m_direction.y = dir3f[1];
 				m_projectManager->m_selectedLight->m_direction.z = dir3f[2];
@@ -331,17 +289,26 @@ void cProjectUI::renderLighthUI() {
 				}
 			}
 		}
+		// Inner Angle
+		ImGui::Text("Inner Angle");
+		ImGui::SameLine();
+		ImGui::DragFloat("##InnerAngleSlider", &m_projectManager->m_selectedLight->m_param1.y, 0.1f, 0.0f, 0.0f, "%.2f");
+		// Outer Angle
+		ImGui::Text("Outer Angle");
+		ImGui::SameLine();
+		ImGui::DragFloat("##OuterAngleSlider", &m_projectManager->m_selectedLight->m_param1.z, 0.1f, 0.0f, 0.0f, "%.2f");
 		// Variable for ImGui to control RGB
-		float col4f[4] = { m_projectManager->m_selectedLight->m_specular.x,
+		ImGui::Text("Specular Reflection");
+		float spec4f[4] = { m_projectManager->m_selectedLight->m_specular.x,
 						   m_projectManager->m_selectedLight->m_specular.y,
 						   m_projectManager->m_selectedLight->m_specular.z,
 						   m_projectManager->m_selectedLight->m_specular.w };
 		// RGB Picker
-		if (ImGui::ColorEdit4("R G B A##RGB", col4f, ImGuiColorEditFlags_Float)) {
-			m_projectManager->m_selectedLight->m_specular.x = col4f[0];
-			m_projectManager->m_selectedLight->m_specular.y = col4f[1];
-			m_projectManager->m_selectedLight->m_specular.z = col4f[2];
-			m_projectManager->m_selectedLight->m_specular.w = col4f[3];
+		if (ImGui::ColorEdit4("R G B A##RGB", spec4f, ImGuiColorEditFlags_Float)) {
+			m_projectManager->m_selectedLight->m_specular.x = spec4f[0];
+			m_projectManager->m_selectedLight->m_specular.y = spec4f[1];
+			m_projectManager->m_selectedLight->m_specular.z = spec4f[2];
+			//m_projectManager->m_selectedLight->m_specular.w = col4f[3];
 		}
 		// Attenuations
 		ImGui::Text("Attenuation:");
@@ -352,7 +319,9 @@ void cProjectUI::renderLighthUI() {
 		// Linear
 		ImGui::Text("Linear");
 		ImGui::SameLine();
+		//ImGui::PushItemWidth(-FLT_MIN);
 		ImGui::InputFloat("##LinearInput", &m_projectManager->m_selectedLight->m_attenuation.y, 0.0f, 0.0f, "%.3f");
+		//ImGui::PopItemWidth();
 		// Quadratic
 		ImGui::Text("Quadratic");
 		ImGui::SameLine();
