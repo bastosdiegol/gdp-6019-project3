@@ -10,8 +10,9 @@
 class cVAOManager {
 public:
 	GLuint m_shaderID;
+	cModel* m_lightModel;
 	// Default Constructor
-	cVAOManager();
+	cVAOManager(GLuint shaderID);
 	// Destructor
 	~cVAOManager();
 	/// <summary>
@@ -22,6 +23,12 @@ public:
 	/// <returns></returns>
 	cModel* PrepareNewModel(std::string friendlyName,
 						 std::string filePath);
+	/// <summary>
+	/// Loads the light model
+	/// </summary>
+	/// <returns>Returns pointer to the model of the light</returns>
+	cModel* LoadLightModel();
+
 	/// <summary>
 	/// Binds now the Model Data to the Shader
 	/// </summary>

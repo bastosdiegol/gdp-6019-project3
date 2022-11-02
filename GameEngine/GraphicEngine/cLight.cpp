@@ -19,6 +19,7 @@ cLight::cLight() {
 	this->m_param1		= glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	this->m_param2		= glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	this->m_useRGB		= false;
+	this->m_showModel	= true;
 }
 
 cLight::~cLight() {
@@ -49,6 +50,13 @@ void cLight::TurnOff() {
 	DEBUG_PRINT("cLight::TurnOff()\n");
 	this->m_param2.x = 0;
 	return;
+}
+
+bool cLight::isOn() {
+	if (this->m_param2.x == 1)
+		return true;
+	else
+		return false;
 }
 
 void cLight::SetToWhite() {

@@ -28,7 +28,7 @@ public:
 	/// <summary>
 	/// Default Constructor - also Loads Save File
 	/// </summary>
-	cProjectManager();
+	cProjectManager(GLuint shaderID);
 	// TODO: Clean the Vector of Scenes
 	~cProjectManager();
 
@@ -48,11 +48,6 @@ public:
 	/// </summary>
 	/// <returns>True if saving was successful</returns>
 	bool SaveSelectedScene();
-	/// <summary>
-	/// Sets the Shader ID into cVAOManager
-	/// </summary>
-	/// <param name="shaderID">GLuint Shader ID generated</param>
-	void SetShaderID(GLuint shaderID);
 
 	friend class cProjectUI;
 };

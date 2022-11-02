@@ -9,6 +9,7 @@ public:
 	glm::vec4 m_position;
 	glm::vec4 m_diffuse;
 	bool m_useRGB;
+	bool m_showModel;
 	glm::vec4 m_specular;		// rgb = highlight colour, w = power
 	glm::vec4 m_attenuation;	// x = constant, y = linear, z = quadratic, w = DistanceCutOff
 	glm::vec4 m_direction;		// Spot, directional lights
@@ -45,6 +46,7 @@ public:
 
 	void TurnOn();
 	void TurnOff();
+	bool isOn();
 	void SetToWhite();
 	void SetColour(float r, float g, float b);
 	void SetLightType(eLightType newLightType);

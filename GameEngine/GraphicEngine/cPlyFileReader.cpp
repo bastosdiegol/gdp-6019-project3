@@ -125,9 +125,17 @@ bool cPlyFileReader::loadMeshFromFile(std::string file_location) {
 
 		if (hasColours) {
 			theFile >> pTheModelArray[i].red;
+			if (pTheModelArray[i].red > 1.0f)
+				pTheModelArray[i].red /= 255;
 			theFile >> pTheModelArray[i].green;
+			if (pTheModelArray[i].green > 1.0f)
+				pTheModelArray[i].green /= 255;
 			theFile >> pTheModelArray[i].blue;
+			if (pTheModelArray[i].blue > 1.0f)
+				pTheModelArray[i].blue /= 255;
 			theFile >> pTheModelArray[i].alpha;
+			if (pTheModelArray[i].alpha > 1.0f)
+				pTheModelArray[i].alpha /= 255;
 		} else {
 			pTheModelArray[i].red	= 1.0f;
 			pTheModelArray[i].green = 1.0f;

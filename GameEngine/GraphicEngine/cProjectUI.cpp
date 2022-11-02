@@ -340,6 +340,10 @@ void cProjectUI::renderLighthUI() {
 			else
 				m_projectManager->m_selectedLight->TurnOff();
 		}
+		// Show Model Checkbox
+		ImGui::Text("Show Model?");
+		ImGui::SameLine();
+		ImGui::Checkbox("##ShowModel?", &m_projectManager->m_selectedLight->m_showModel);
 
 	} else {
 		ImGui::BulletText("No Light Selected.");

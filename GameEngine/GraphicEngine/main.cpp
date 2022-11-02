@@ -121,8 +121,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	// Creates my Project Manager
-	cProjectManager* g_ProjectManager = new cProjectManager();
-	g_ProjectManager->SetShaderID(shaderID);
+	cProjectManager* g_ProjectManager = new cProjectManager(shaderID);
 	
 	// Creates my Project Manager UI - ImGui Window
 	cProjectUI g_projectUI(g_ProjectManager);
@@ -197,8 +196,9 @@ int main(int argc, char* argv[]) {
 			std::map<std::string, cMeshObject*>::iterator itMeshes;
 			itMeshes = g_ProjectManager->m_selectedScene->m_mMeshes.begin();
 			// Iterates through all meshes
+			cMeshObject* pCurrentMeshObject;
 			for (itMeshes; itMeshes != g_ProjectManager->m_selectedScene->m_mMeshes.end(); itMeshes++) {
-				cMeshObject* pCurrentMeshObject = itMeshes->second;
+				pCurrentMeshObject = itMeshes->second;
 				// Skip this meshe if not visible
 				if (!pCurrentMeshObject->m_bIsVisible)
 					continue;
@@ -267,6 +267,56 @@ int main(int argc, char* argv[]) {
 							   (void*)0);
 				glBindVertexArray(0);
 			}
+			// Iterates through all lights
+			std::map<std::string, cLight*>::iterator itLights 
+				= g_ProjectManager->m_selectedScene->m_mLights.begin();
+			// g_ProjectManager->m_VAOManager->m_lightModel;
+			cLightHelper theLightHelper;
+			for (itLights; 
+				 itLights != g_ProjectManager->m_selectedScene->m_mLights.end(); 
+				 itLights++) {
+				// Skip if Light is off
+				if (!itLights->second->isOn())
+					continue;
+				// Skip if Light doesn't want to show its model
+				else if (!itLights->second->m_showModel)
+					continue;
+
+				glCullFace(GL_BACK);
+				glEnable(GL_DEPTH_TEST);
+
+				matModel = glm::mat4x4(1.0f);
+				// Apply Position Transformation
+				glm::mat4 matTranslation = glm::translate(glm::mat4(1.0f), glm::vec3(itLights->second->m_position));
+				// Applying all these transformations to the Model
+				matModel = matModel * matTranslation;
+				// Pass all the matrices to the Shader
+				glUniformMatrix4fv(mModel_location, 1, GL_FALSE, glm::value_ptr(matModel));
+				glUniformMatrix4fv(mView_location, 1, GL_FALSE, glm::value_ptr(matView));
+				glUniformMatrix4fv(mProjection_location, 1, GL_FALSE, glm::value_ptr(matProjection));
+				// Set as Wireframe
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+				// Set Diffuse Colour for the Model on the Shader
+				GLint RGBA_Colour_ULocID = glGetUniformLocation(shaderID, "RGBA_Colour");
+				glUniform4f(RGBA_Colour_ULocID, itLights->second->m_diffuse.x, 
+												itLights->second->m_diffuse.y, 
+												itLights->second->m_diffuse.z, 
+												itLights->second->m_diffuse.w);
+				// Pass the UseRGB boolean to the Shader
+				GLint bUseRGBA_Colour_ULocID = glGetUniformLocation(shaderID, "bUseRGBA_Colour");
+				glUniform1f(bUseRGBA_Colour_ULocID, (GLfloat)GL_TRUE);
+				// Pass DoNotLight boolean to the Shader
+				GLint bDoNotLight_Colour_ULocID = glGetUniformLocation(shaderID, "bDoNotLight");
+				glUniform1f(bDoNotLight_Colour_ULocID, (GLfloat)GL_TRUE);
+
+				// Pass the Model we want to draw
+				glBindVertexArray(g_ProjectManager->m_VAOManager->m_lightModel->VAO_ID);
+				glDrawElements(GL_TRIANGLES,
+					g_ProjectManager->m_VAOManager->m_lightModel->numberOfIndices,
+					GL_UNSIGNED_INT,
+					(void*)0);
+				glBindVertexArray(0);
+			}
 		}
 
 		// Rendering
@@ -293,6 +343,8 @@ int main(int argc, char* argv[]) {
 
 	exit(EXIT_SUCCESS);
 }
+
+
 
 //void DrawConcentricDebugLightObjects(void) {
 //	extern bool bEnableDebugLightingObjects;

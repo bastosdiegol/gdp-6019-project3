@@ -13,13 +13,13 @@
 #define DEBUG_PRINT(x)
 #endif
 
-cProjectManager::cProjectManager() {
+cProjectManager::cProjectManager(GLuint shaderID) {
 	DEBUG_PRINT("cProjectManager::cProjectManager()\n");
 	if (!LoadSaveFile()) {
 		std::cout << "Project Save File named: #" << PROJECT_SAVE_FILE << " could not be loaded. Ending the application." << std::endl;
 		exit(-1);
 	}
-	m_VAOManager = new cVAOManager();
+	m_VAOManager = new cVAOManager(shaderID);
 	m_lightManager = new cLightManager();
 	isNewScene = false;
 	m_selectedScene = nullptr;
@@ -332,10 +332,6 @@ bool cProjectManager::SaveSelectedScene() {
 	}
 	graphicsLibrary.save_file(PROJECT_SAVE_FILE);
 	return true;
-}
-
-void cProjectManager::SetShaderID(GLuint shaderID) {
-	this->m_VAOManager->m_shaderID = shaderID;
 }
 
 bool cProjectManager::LoadSaveFile() {

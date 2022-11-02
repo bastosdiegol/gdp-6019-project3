@@ -14,12 +14,13 @@
 #define DEBUG_PRINT(x)
 #endif
 
-cVAOManager::cVAOManager() {
+cVAOManager::cVAOManager(GLuint shaderID) {
 	DEBUG_PRINT("cVAOManager::cVAOManager()\n");
 	this->m_plyReader = new cPlyFileReader();
-	this->m_shaderID = -1;
+	this->m_shaderID = shaderID;
 	// Loads the universal light model
-	LoadModelIntoVAO(PrepareNewModel("Light", LIGHT_MODEL_PATH));
+	this->m_lightModel = LoadLightModel();
+	LoadModelIntoVAO(this->m_lightModel);
 }
 
 cVAOManager::~cVAOManager() {
@@ -30,6 +31,8 @@ cVAOManager::~cVAOManager() {
 	// Free Each Model Class
 	for (itModel = m_mapModels.begin(); itModel != m_mapModels.end(); itModel++)
 		delete itModel->second;
+	// Free Light Model
+	delete m_lightModel;
 }
 
 cModel* cVAOManager::PrepareNewModel(std::string friendlyName, std::string filePath) {
@@ -96,6 +99,66 @@ cModel* cVAOManager::PrepareNewModel(std::string friendlyName, std::string fileP
 	}
 
 	this->m_mapModels.try_emplace(newModel->meshName, newModel);
+
+	return newModel;
+}
+
+cModel* cVAOManager::LoadLightModel() {
+	DEBUG_PRINT("cVAOManager::LoadLightModel()\n");
+	cModel* newModel = new cModel();
+	newModel->meshName = "Light";
+	// Reads the Ply file
+	// Checks if the reading was ok
+	if (m_plyReader->loadMeshFromFile(LIGHT_MODEL_PATH) == false) {
+		return nullptr;
+	}
+	// Sets number of Vertices
+	newModel->numberOfVertices = m_plyReader->m_numberOfVertices;
+	// Creates the struct which will host all vertices
+	newModel->pVertices = new sVertex[newModel->numberOfVertices];
+	// Now copy the information from the PLY to the model class
+	for (unsigned int index = 0; index != m_plyReader->m_numberOfVertices; index++) {
+
+		newModel->pVertices[index].x = m_plyReader->pTheModelArray[index].x;
+		newModel->pVertices[index].y = m_plyReader->pTheModelArray[index].y;
+		newModel->pVertices[index].z = m_plyReader->pTheModelArray[index].z;
+
+		newModel->pVertices[index].r = m_plyReader->pTheModelArray[index].red;
+		newModel->pVertices[index].g = m_plyReader->pTheModelArray[index].green;
+		newModel->pVertices[index].b = m_plyReader->pTheModelArray[index].blue;
+
+		newModel->pVertices[index].nx = m_plyReader->pTheModelArray[index].nx;
+		newModel->pVertices[index].ny = m_plyReader->pTheModelArray[index].ny;
+		newModel->pVertices[index].nz = m_plyReader->pTheModelArray[index].nz;
+
+	}
+	// Sets Number of Triangles
+	newModel->numberOfTriangles = m_plyReader->m_numberOfTriangles;
+	// Final Number of Indices to be drawn
+	newModel->numberOfIndices = newModel->numberOfTriangles * 3;
+	// Creates the struct which will host all vertices of each triangle
+	newModel->pIndices = new unsigned int[newModel->numberOfIndices];
+
+	unsigned int vertex_element_index_index = 0;
+
+	for (unsigned int triangleIndex = 0; triangleIndex < newModel->numberOfTriangles; triangleIndex++) {
+		newModel->pIndices[vertex_element_index_index + 0] = m_plyReader->pTheModelTriangleArray[triangleIndex].vertexIndices[0];
+		newModel->pIndices[vertex_element_index_index + 1] = m_plyReader->pTheModelTriangleArray[triangleIndex].vertexIndices[1];
+		newModel->pIndices[vertex_element_index_index + 2] = m_plyReader->pTheModelTriangleArray[triangleIndex].vertexIndices[2];
+
+		// Each +1 of the triangle index moves the "vertex element index" by 3
+		// (3 vertices per triangle)
+		vertex_element_index_index += 3;
+	}
+
+	if (m_plyReader->m_numberOfVertices > 0) {
+		delete[] m_plyReader->pTheModelArray;
+		m_plyReader->m_numberOfVertices = -1;
+	}
+	if (m_plyReader->m_numberOfTriangles > 0) {
+		delete[] m_plyReader->pTheModelTriangleArray;
+		m_plyReader->m_numberOfTriangles = -1;
+	}
 
 	return newModel;
 }
