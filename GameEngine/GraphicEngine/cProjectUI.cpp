@@ -83,6 +83,7 @@ void cProjectUI::renderSceneUI() {
 		ImGui::BulletText("No Scene Selected.");
 	}
 	// Checks if there's a selected scene
+	//std::string lastModelID = "";
 	if (ImGui::TreeNodeEx("Meshes:", ImGuiTreeNodeFlags_DefaultOpen)) {
 		if (m_projectManager->m_selectedScene != nullptr) {
 			// Iterates through all models
@@ -90,6 +91,14 @@ void cProjectUI::renderSceneUI() {
 			for (itMesh = m_projectManager->m_selectedScene->m_mMeshes.begin();
 				 itMesh != m_projectManager->m_selectedScene->m_mMeshes.end();
 				 itMesh++) {
+				/*if (lastModelID.empty()) {
+					lastModelID = itMesh->second->m_parentModel->meshName;
+					ImGui::TreeNode(lastModelID.c_str());
+				} else if (lastModelID != itMesh->second->m_parentModel->meshName) {
+					lastModelID = itMesh->second->m_parentModel->meshName;
+					ImGui::TreePop();
+					ImGui::TreeNode(lastModelID.c_str());
+				}*/
 				ImGui::Bullet();
 				if (ImGui::SmallButton(itMesh->second->m_meshName.c_str())) {
 					m_projectManager->m_selectedMesh = itMesh->second;
@@ -98,6 +107,7 @@ void cProjectUI::renderSceneUI() {
 					this->isLightSelected = false;
 				}
 			}
+			//ImGui::TreePop();
 			// Iterates through all lights
 			std::map<std::string, cLight*>::iterator itLight;
 			for (itLight = m_projectManager->m_selectedScene->m_mLights.begin();
@@ -140,6 +150,10 @@ void cProjectUI::renderMeshUI() {
 	// Checks if the selected mesh isnt nullptr
 	if (m_projectManager->m_selectedMesh != nullptr) {
 		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), m_projectManager->m_selectedMesh->m_meshName.c_str());
+		ImGui::SameLine();
+		if (ImGui::Button("Look at")) {
+			m_projectManager->m_selectedScene->m_cameraTarget = m_projectManager->m_selectedMesh->m_position;
+		}
 		// Variable for ImGui to control Position
 		float pos3f[3] = { m_projectManager->m_selectedMesh->m_position.x,
 							  m_projectManager->m_selectedMesh->m_position.y,
@@ -170,9 +184,9 @@ void cProjectUI::renderMeshUI() {
 		ImGui::Checkbox("##RGB?", &m_projectManager->m_selectedMesh->m_bUse_RGBA_colour);
 		// Variable for ImGui to control RGB
 		float col4f[4] = { m_projectManager->m_selectedMesh->m_RGBA_colour.r,
-								  m_projectManager->m_selectedMesh->m_RGBA_colour.g,
-								  m_projectManager->m_selectedMesh->m_RGBA_colour.b,
-								  m_projectManager->m_selectedMesh->m_RGBA_colour.a};
+						   m_projectManager->m_selectedMesh->m_RGBA_colour.g,
+						   m_projectManager->m_selectedMesh->m_RGBA_colour.b,
+						   m_projectManager->m_selectedMesh->m_RGBA_colour.a};
 		// RGB Picker
 		if (ImGui::ColorEdit4("R G B A##RGB", col4f, ImGuiColorEditFlags_Float)) {
 			m_projectManager->m_selectedMesh->m_RGBA_colour.r = col4f[0];
@@ -215,6 +229,10 @@ void cProjectUI::renderLighthUI() {
 	// Checks if the selected mesh isnt nullptr
 	if (m_projectManager->m_selectedLight != nullptr) {
 		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), m_projectManager->m_selectedLight->m_friendlyName.c_str());
+		ImGui::SameLine();
+		if (ImGui::Button("Look at")) {
+			m_projectManager->m_selectedScene->m_cameraTarget = m_projectManager->m_selectedLight->m_position;
+		}
 		// Light Type
 		static const char* current_item; // Combo current selected item
 		// Array used on the combo
@@ -262,11 +280,11 @@ void cProjectUI::renderLighthUI() {
 						   m_projectManager->m_selectedLight->m_diffuse.z,
 						   m_projectManager->m_selectedLight->m_diffuse.w };
 		// RGB Picker
-		if (ImGui::ColorEdit4("R G B A##RGB", dif3f, ImGuiColorEditFlags_Float)) {
+		if (ImGui::ColorEdit4("R G B A##DiffuseRGB", dif3f, ImGuiColorEditFlags_Float)) {
 			m_projectManager->m_selectedLight->m_diffuse.x = dif3f[0];
 			m_projectManager->m_selectedLight->m_diffuse.y = dif3f[1];
 			m_projectManager->m_selectedLight->m_diffuse.z = dif3f[2];
-			//m_projectManager->m_selectedLight->m_diffuse.w = dif3f[3];
+			m_projectManager->m_selectedLight->m_diffuse.w = dif3f[3];
 		}
 		if (current_item == "Spot Light" || current_item == "Directional") {
 			// Variable for ImGui to control Direction
@@ -299,37 +317,37 @@ void cProjectUI::renderLighthUI() {
 		ImGui::DragFloat("##OuterAngleSlider", &m_projectManager->m_selectedLight->m_param1.z, 0.1f, 0.0f, 0.0f, "%.2f");
 		// Variable for ImGui to control RGB
 		ImGui::Text("Specular Reflection");
-		float spec4f[4] = { m_projectManager->m_selectedLight->m_specular.x,
-						   m_projectManager->m_selectedLight->m_specular.y,
-						   m_projectManager->m_selectedLight->m_specular.z,
-						   m_projectManager->m_selectedLight->m_specular.w };
+		float spec4f[4] = { m_projectManager->m_selectedLight->m_specular.r,
+						   m_projectManager->m_selectedLight->m_specular.g,
+						   m_projectManager->m_selectedLight->m_specular.b,
+						   m_projectManager->m_selectedLight->m_specular.a };
 		// RGB Picker
-		if (ImGui::ColorEdit4("R G B A##RGB", spec4f, ImGuiColorEditFlags_Float)) {
-			m_projectManager->m_selectedLight->m_specular.x = spec4f[0];
-			m_projectManager->m_selectedLight->m_specular.y = spec4f[1];
-			m_projectManager->m_selectedLight->m_specular.z = spec4f[2];
-			//m_projectManager->m_selectedLight->m_specular.w = col4f[3];
+		if (ImGui::ColorEdit4("R G B A##SpecularRGB", spec4f, ImGuiColorEditFlags_Float)) {
+			m_projectManager->m_selectedLight->m_specular.r = spec4f[0];
+			m_projectManager->m_selectedLight->m_specular.g = spec4f[1];
+			m_projectManager->m_selectedLight->m_specular.b = spec4f[2];
+			m_projectManager->m_selectedLight->m_specular.a = spec4f[3];
 		}
 		// Attenuations
 		ImGui::Text("Attenuation:");
 		// Constant 
 		ImGui::Text("Constant");
 		ImGui::SameLine();
-		ImGui::InputFloat("##ConstantInput", &m_projectManager->m_selectedLight->m_attenuation.x, 0.0f, 0.0f, "%.2f");
+		ImGui::DragFloat("##ConstantInput", &m_projectManager->m_selectedLight->m_attenuation.x, 0.1f, 0.0f, 0.0f, "%.2f");
 		// Linear
 		ImGui::Text("Linear");
 		ImGui::SameLine();
 		//ImGui::PushItemWidth(-FLT_MIN);
-		ImGui::InputFloat("##LinearInput", &m_projectManager->m_selectedLight->m_attenuation.y, 0.0f, 0.0f, "%.3f");
+		ImGui::DragFloat("##LinearInput", &m_projectManager->m_selectedLight->m_attenuation.y, 0.01f, 0.0f, 0.0f, "%.3f");
 		//ImGui::PopItemWidth();
 		// Quadratic
 		ImGui::Text("Quadratic");
 		ImGui::SameLine();
-		ImGui::InputFloat("##QuadraticInput", &m_projectManager->m_selectedLight->m_attenuation.z, 0.0f, 0.0f, "%.7f");
+		ImGui::DragFloat("##QuadraticInput", &m_projectManager->m_selectedLight->m_attenuation.z, 0.01f, 0.0f, 0.0f, "%.7f");
 		// Distance Cut Off
 		ImGui::Text("Distance Cut-Off");
 		ImGui::SameLine();
-		ImGui::InputFloat("##Cut-OffInput", &m_projectManager->m_selectedLight->m_attenuation.w, 0.0f, 0.0f, "%.2f");
+		ImGui::DragFloat("##Cut-OffInput", &m_projectManager->m_selectedLight->m_attenuation.w, 0.001f, 0.0f, 0.0f, "%.2f");
 		// Turn On/Off Checkbox
 		ImGui::Text("Turn On/Off");
 		ImGui::SameLine();

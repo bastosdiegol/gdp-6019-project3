@@ -61,18 +61,18 @@ bool cLight::isOn() {
 
 void cLight::SetToWhite() {
 	DEBUG_PRINT("cLight::SetToWhite()\n");
-	this->m_specular.x = 1.0f;
-	this->m_specular.y = 1.0f;
-	this->m_specular.z = 1.0f;
-	this->m_specular.w = 1.0f;
+	this->m_specular.r = 1.0f;
+	this->m_specular.g = 1.0f;
+	this->m_specular.b = 1.0f;
+	this->m_specular.a = 1.0f;
 }
 
 void cLight::SetColour(float r, float g, float b) {
 	DEBUG_PRINT("cLight::SetColour(%f, %f, %f)\n", r,g,b);
-	this->m_specular.x = r;
-	this->m_specular.y = g;
-	this->m_specular.z = b;
-	this->m_specular.w = 1.0f;
+	this->m_specular.r = r;
+	this->m_specular.g = g;
+	this->m_specular.b = b;
+	this->m_specular.a = 1.0f;
 }
 
 void cLight::SetLightType(eLightType newLightType) {

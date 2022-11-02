@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <graphicsLibrary>
-	<scene title="1.Graphics Proj#1" camEyeX="0" camEyeY="158" camEyeZ="-21" camTarX="0" camTarY="5.5" camTarZ="0">
+	<scene title="1.Graphics Proj#1" camEyeX="0" camEyeY="10" camEyeZ="-50" camTarX="4.9000001" camTarY="1.10000002" camTarZ="18">
 		<model path="assets/room/SM_Env_Tiles_09.ply" title="Tile">
 			<mesh id="Tile 01">
 				<position x="0" y="0" z="0" />
@@ -165,7 +165,7 @@
 		</model>
 		<model path="assets/room/SM_Env_Wall_01.ply" title="Wall T1">
 			<mesh id="Wall T1 01">
-				<position x="-29.6000004" y="0" z="0" />
+				<position x="-29.5" y="0" z="-0.150000006" />
 				<rotate x="0" y="1.54999995" z="0" />
 				<useColor value="true" />
 				<color r="0.650519013" g="0.812945247" b="0.941176474" a="1" />
@@ -352,7 +352,7 @@
 				<scale value="15" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
-				<visible value="false" />
+				<visible value="true" />
 			</mesh>
 		</model>
 		<model path="assets/dragon/SM_Env_Bone_Skull_01.ply" title="Dragon Skull">
@@ -381,7 +381,7 @@
 		</model>
 		<model path="assets/dragon/SM_Env_Bone_Skull_Jaw_01.ply" title="Dragon Jaw">
 			<mesh id="Dragon Jaw">
-				<position x="12.8999996" y="0.5" z="17.5" />
+				<position x="12.8999996" y="0.5" z="16.6000004" />
 				<rotate x="0" y="2" z="0" />
 				<useColor value="true" />
 				<color r="0.529411793" g="0.506055415" b="0.441176474" a="1" />
@@ -525,38 +525,38 @@
 				<visible value="true" />
 			</mesh>
 		</model>
-		<light id="Light 01">
+		<light id="Light 01" onoff="1" showmodel="false">
 			<position x="32.5" y="3.29999995" z="4.5" w="1" />
 			<diffuse x="1" y="0" z="0" w="1" />
-			<specular r="1" g="1" b="1" w="1" />
-			<attenuation x="0.100000001" y="0.5" z="0.00999999978" w="1" />
+			<specular r="1" g="0.764705896" b="0.764705896" a="1" />
+			<attenuation x="0.100000001" y="0.200000003" z="0.00100000005" w="1" />
 			<direction x="0" y="0" z="0" w="1" />
 			<param1 x="0" y="10" z="20" w="1" />
 			<param2 x="1" y="0" z="0" w="1" />
 		</light>
-		<light id="Light 02">
+		<light id="Light 02" onoff="1" showmodel="false">
 			<position x="-32.5" y="3.29999995" z="4.5" w="1" />
 			<diffuse x="1" y="1" z="0.200980365" w="1" />
-			<specular r="1" g="1" b="1" w="1" />
-			<attenuation x="0.100000001" y="0.5" z="0.00999999978" w="1" />
+			<specular r="1" g="0.972895026" b="0.769607842" a="1" />
+			<attenuation x="0.00999999978" y="0.5" z="0.100000001" w="1" />
 			<direction x="0" y="0" z="0" w="1" />
 			<param1 x="0" y="10" z="20" w="1" />
 			<param2 x="1" y="0" z="0" w="1" />
 		</light>
-		<light id="Light 03">
+		<light id="Light 03" onoff="1" showmodel="false">
 			<position x="11.5" y="5.30000019" z="-26.5" w="1" />
 			<diffuse x="0.386245668" y="1" z="0.367647052" w="1" />
-			<specular r="1" g="1" b="1" w="1" />
-			<attenuation x="0.100000001" y="0.5" z="0.00999999978" w="1" />
+			<specular r="0.713379443" g="1" b="0.65196079" a="1" />
+			<attenuation x="0.200000003" y="1" z="9.99999975e-06" w="1" />
 			<direction x="0" y="0" z="0" w="1" />
 			<param1 x="0" y="10" z="20" w="1" />
 			<param2 x="1" y="0" z="0" w="1" />
 		</light>
-		<light id="Light 04">
+		<light id="Light 04" onoff="1" showmodel="false">
 			<position x="-11.5" y="5.30000019" z="-26.5" w="1" />
 			<diffuse x="0.352941155" y="0.352941155" z="1" w="1" />
-			<specular r="1" g="1" b="1" w="1" />
-			<attenuation x="0.100000001" y="0.5" z="0.00999999978" w="1" />
+			<specular r="0.799307883" g="0.764705896" b="1" a="1" />
+			<attenuation x="1" y="1.5" z="9.99999975e-06" w="1" />
 			<direction x="0" y="0" z="0" w="1" />
 			<param1 x="0" y="10" z="20" w="1" />
 			<param2 x="1" y="0" z="0" w="1" />
@@ -587,10 +587,10 @@
 				<visible value="true" />
 			</mesh>
 		</model>
-		<light id="Light 01">
+		<light id="Light 01" onoff="1" showmodel="true">
 			<position x="0.0" y="500.0" z="500.0" w="1.0" />
 			<diffuse x="1.0" y="1.0" z="1.0" w="1.0" />
-			<specular r="1.0" g="1.0" b="1.0" w="1.0" />
+			<specular r="1.0" g="1.0" b="1.0" a="1.0" />
 			<attenuation x="0.1" y="0.001" z="0.0000001" w="1.0" />
 			<direction x="0.0" y="-1.0" z="0.0" w="1.0" />
 			<param1 x="2.0" y="0.0" z="0.0" w="1.0" />

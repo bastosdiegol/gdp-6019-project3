@@ -167,25 +167,29 @@ bool cProjectManager::LoadScene(std::string name) {
 				cLight* newLight = new cLight();
 				// Gets Light Friendly Name / ID
 				newLight->m_friendlyName = lightNode.attribute("id").value();
+				// Gets On/Off
+				newLight->m_param2.x = lightNode.attribute("onoff").as_bool();
+				// Gets Show Model
+				newLight->m_showModel = lightNode.attribute("showmodel").as_bool();
 				// Reads light info and store them
 				pugi::xml_node lightInfo = lightNode.child("position");
 				// Reads Position
 				newLight->m_position.x = lightInfo.attribute("x").as_float();
 				newLight->m_position.y = lightInfo.attribute("y").as_float();
 				newLight->m_position.z = lightInfo.attribute("z").as_float();
-				newLight->m_specular.w = lightInfo.attribute("w").as_float();
+				newLight->m_position.w = lightInfo.attribute("w").as_float();
 				lightInfo = lightInfo.next_sibling();
 				// Reads Diffuse
 				newLight->m_diffuse.x = lightInfo.attribute("x").as_float();
 				newLight->m_diffuse.y = lightInfo.attribute("y").as_float();
 				newLight->m_diffuse.z = lightInfo.attribute("z").as_float();
-				newLight->m_specular.w = lightInfo.attribute("w").as_float();
+				newLight->m_diffuse.w = lightInfo.attribute("w").as_float();
 				lightInfo = lightInfo.next_sibling();
 				// Reads Specullar
-				newLight->m_specular.x = lightInfo.attribute("r").as_float();
-				newLight->m_specular.y = lightInfo.attribute("g").as_float();
-				newLight->m_specular.z = lightInfo.attribute("b").as_float();
-				newLight->m_specular.w = lightInfo.attribute("w").as_float();
+				newLight->m_specular.r = lightInfo.attribute("r").as_float();
+				newLight->m_specular.g = lightInfo.attribute("g").as_float();
+				newLight->m_specular.b = lightInfo.attribute("b").as_float();
+				newLight->m_specular.a = lightInfo.attribute("a").as_float();
 				lightInfo = lightInfo.next_sibling();
 				// Reads Attenuation
 				newLight->m_attenuation.x = lightInfo.attribute("x").as_float();
@@ -340,6 +344,10 @@ bool cProjectManager::SaveSelectedScene() {
 					DEBUG_PRINT("Tried to find a Mesh to save and got nullptr. Mesh %s not saved.", lightNode.attribute("id").as_string());
 					continue;
 				}
+				// Sets On/Off
+				lightNode.attribute("onoff").set_value(itLight->second->m_param2.x);
+				// Sets Show Model
+				lightNode.attribute("showmodel").set_value(itLight->second->m_showModel);
 				// Gets first Mesh Child Node - Position
 				pugi::xml_node lightInfoNode = *lightNode.children().begin();
 				// Sets Position
@@ -358,7 +366,7 @@ bool cProjectManager::SaveSelectedScene() {
 				lightInfoNode.attribute("r").set_value(itLight->second->m_specular.r);
 				lightInfoNode.attribute("g").set_value(itLight->second->m_specular.g);
 				lightInfoNode.attribute("b").set_value(itLight->second->m_specular.b);
-				lightInfoNode.attribute("w").set_value(itLight->second->m_specular.w);
+				lightInfoNode.attribute("a").set_value(itLight->second->m_specular.a);
 				lightInfoNode = lightInfoNode.next_sibling();
 				// Sets Attenuation
 				lightInfoNode.attribute("x").set_value(itLight->second->m_attenuation.x);

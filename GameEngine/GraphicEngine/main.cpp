@@ -112,7 +112,7 @@ int main(int argc, char* argv[]) {
 	// Setup ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGuiIO& io = ImGui::GetIO();
 	// Setup ImGui style
 	ImGui::StyleColorsDark();
 	// Setup Platform/Renderer backends
@@ -127,7 +127,7 @@ int main(int argc, char* argv[]) {
 	cProjectUI g_projectUI(g_ProjectManager);
 
 	// ImGui Window Color
-	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+	//ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 	// Gets Shader ID for each variable to sent to it
 	GLint mvp_location						= glGetUniformLocation(shaderID, "MVP");
@@ -319,13 +319,8 @@ int main(int argc, char* argv[]) {
 			}
 		}
 
-		// Rendering
+		// ImGui Rendering
 		ImGui::Render();
-		//int display_w, display_h;
-		//glfwGetFramebufferSize(window, &display_w, &display_h);
-		//glViewport(0, 0, display_w, display_h);
-		//glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
-		//glClear(GL_COLOR_BUFFER_BIT);
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		glfwSwapBuffers(window);
