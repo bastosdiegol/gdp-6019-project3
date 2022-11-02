@@ -5,7 +5,6 @@
 #include <glm/gtc/matrix_transform.hpp> 
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
-#include <sstream>
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
@@ -13,8 +12,7 @@
 #include "cProjectManager.h"
 #include "cProjectUI.h"
 #include "cShaderManager.h"
-#include "cLightManager.h"
-#include "cLightHelper.h"
+//#include "cLightHelper.h"
 
 #ifdef _DEBUG
 #define DEBUG_LOG_ENABLED
@@ -271,7 +269,7 @@ int main(int argc, char* argv[]) {
 			std::map<std::string, cLight*>::iterator itLights 
 				= g_ProjectManager->m_selectedScene->m_mLights.begin();
 			// g_ProjectManager->m_VAOManager->m_lightModel;
-			cLightHelper theLightHelper;
+			//cLightHelper theLightHelper;
 			for (itLights; 
 				 itLights != g_ProjectManager->m_selectedScene->m_mLights.end(); 
 				 itLights++) {
