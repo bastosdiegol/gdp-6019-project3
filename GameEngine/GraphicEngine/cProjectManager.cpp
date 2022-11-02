@@ -173,11 +173,13 @@ bool cProjectManager::LoadScene(std::string name) {
 				newLight->m_position.x = lightInfo.attribute("x").as_float();
 				newLight->m_position.y = lightInfo.attribute("y").as_float();
 				newLight->m_position.z = lightInfo.attribute("z").as_float();
+				newLight->m_specular.w = lightInfo.attribute("w").as_float();
 				lightInfo = lightInfo.next_sibling();
 				// Reads Diffuse
 				newLight->m_diffuse.x = lightInfo.attribute("x").as_float();
 				newLight->m_diffuse.y = lightInfo.attribute("y").as_float();
 				newLight->m_diffuse.z = lightInfo.attribute("z").as_float();
+				newLight->m_specular.w = lightInfo.attribute("w").as_float();
 				lightInfo = lightInfo.next_sibling();
 				// Reads Specullar
 				newLight->m_specular.x = lightInfo.attribute("r").as_float();
@@ -278,8 +280,7 @@ bool cProjectManager::SaveSelectedScene() {
 			sceneNode.attribute("camTarX").set_value(m_selectedScene->m_cameraTarget.x);
 			sceneNode.attribute("camTarY").set_value(m_selectedScene->m_cameraTarget.y);
 			sceneNode.attribute("camTarZ").set_value(m_selectedScene->m_cameraTarget.z);
-			// Now Sets the Mesh attributes
-			pugi::xml_node modelNode = sceneNode.child("model");
+			// Now Sets the Model attributes
 			// Iterates through each Model of the scene
 			for (pugi::xml_node modelNode = sceneNode.child("model");
 								modelNode;
@@ -327,6 +328,61 @@ bool cProjectManager::SaveSelectedScene() {
 					// Sets Visible
 					meshInfoNode.attribute("value").set_value(itMesh->second->m_bIsVisible);
 				}
+			}
+			// Now Sets the Light attributes
+			// Iterates through each Light of the scene
+			for (pugi::xml_node lightNode = sceneNode.child("light");
+				lightNode;
+				lightNode = lightNode.next_sibling("light")) {
+				std::map<std::string, cLight*>::iterator itLight = m_selectedScene->m_mLights.find(lightNode.attribute("id").as_string());
+				// Checks if found the Selected Light Obj
+				if (itLight == m_selectedScene->m_mLights.end()) {
+					DEBUG_PRINT("Tried to find a Mesh to save and got nullptr. Mesh %s not saved.", lightNode.attribute("id").as_string());
+					continue;
+				}
+				// Gets first Mesh Child Node - Position
+				pugi::xml_node lightInfoNode = *lightNode.children().begin();
+				// Sets Position
+				lightInfoNode.attribute("x").set_value(itLight->second->m_position.x);
+				lightInfoNode.attribute("y").set_value(itLight->second->m_position.y);
+				lightInfoNode.attribute("z").set_value(itLight->second->m_position.z);
+				lightInfoNode.attribute("w").set_value(itLight->second->m_position.w);
+				lightInfoNode = lightInfoNode.next_sibling();
+				// Sets Diffuse
+				lightInfoNode.attribute("x").set_value(itLight->second->m_diffuse.x);
+				lightInfoNode.attribute("y").set_value(itLight->second->m_diffuse.y);
+				lightInfoNode.attribute("z").set_value(itLight->second->m_diffuse.z);
+				lightInfoNode.attribute("w").set_value(itLight->second->m_diffuse.w);
+				lightInfoNode = lightInfoNode.next_sibling();
+				// Sets Specular
+				lightInfoNode.attribute("r").set_value(itLight->second->m_specular.r);
+				lightInfoNode.attribute("g").set_value(itLight->second->m_specular.g);
+				lightInfoNode.attribute("b").set_value(itLight->second->m_specular.b);
+				lightInfoNode.attribute("w").set_value(itLight->second->m_specular.w);
+				lightInfoNode = lightInfoNode.next_sibling();
+				// Sets Attenuation
+				lightInfoNode.attribute("x").set_value(itLight->second->m_attenuation.x);
+				lightInfoNode.attribute("y").set_value(itLight->second->m_attenuation.y);
+				lightInfoNode.attribute("z").set_value(itLight->second->m_attenuation.z);
+				lightInfoNode.attribute("w").set_value(itLight->second->m_attenuation.w);
+				lightInfoNode = lightInfoNode.next_sibling();
+				// Sets Direction
+				lightInfoNode.attribute("x").set_value(itLight->second->m_direction.x);
+				lightInfoNode.attribute("y").set_value(itLight->second->m_direction.y);
+				lightInfoNode.attribute("z").set_value(itLight->second->m_direction.z);
+				lightInfoNode.attribute("w").set_value(itLight->second->m_direction.w);
+				lightInfoNode = lightInfoNode.next_sibling();
+				// Sets param1
+				lightInfoNode.attribute("x").set_value(itLight->second->m_param1.x);
+				lightInfoNode.attribute("y").set_value(itLight->second->m_param1.y);
+				lightInfoNode.attribute("z").set_value(itLight->second->m_param1.z);
+				lightInfoNode.attribute("w").set_value(itLight->second->m_param1.w);
+				lightInfoNode = lightInfoNode.next_sibling();
+				// Sets param2
+				lightInfoNode.attribute("x").set_value(itLight->second->m_param2.x);
+				lightInfoNode.attribute("y").set_value(itLight->second->m_param2.y);
+				lightInfoNode.attribute("z").set_value(itLight->second->m_param2.z);
+				lightInfoNode.attribute("w").set_value(itLight->second->m_param2.w);
 			}
 		}
 	}
