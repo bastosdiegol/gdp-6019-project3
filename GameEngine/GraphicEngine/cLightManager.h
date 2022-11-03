@@ -8,6 +8,7 @@
 class cLightManager {
 public:
 	cLightManager();
+	~cLightManager();
 
 	static const unsigned int NUMBER_OF_LIGHTS_IM_GONNA_USE = 4;
 

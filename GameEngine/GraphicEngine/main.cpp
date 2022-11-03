@@ -60,6 +60,21 @@ static void error_callback(int error, const char* description) {
 	fprintf(stderr, "Glfw Error %d: %s\n", error, description);
 }
 
+void graphicsProjOneGameLoop() {
+}
+
+void graphicsMidTermGameLoop() {
+	// TODO
+}
+
+void engineMidTermGameLoop() {
+	// TODO
+}
+
+void physicsProjTwoGameLoop() {
+	// TODO
+}
+
 int main(int argc, char* argv[]) {
 
 	GLuint vertex_buffer = 0;
@@ -150,6 +165,22 @@ int main(int argc, char* argv[]) {
 
 		glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
 
+		// Game Loop
+		// First I check If I want to enable the game loop
+		if (g_ProjectManager->m_isGameLoopEnabled && 
+			// Then if there's a selected Scene
+			g_ProjectManager->m_selectedScene != nullptr) {
+			// Then choose the correct game loop for the specified scene
+			if (g_ProjectManager->m_selectedScene->m_name == "1.Graphics Proj#1")
+				graphicsProjOneGameLoop();
+			else if (g_ProjectManager->m_selectedScene->m_name == "2.Graphics MidTerm")
+				graphicsMidTermGameLoop();
+			else if (g_ProjectManager->m_selectedScene->m_name == "3.Engine MidTerm")
+				engineMidTermGameLoop();
+			else if (g_ProjectManager->m_selectedScene->m_name == "4.Physics Proj#2")
+				physicsProjTwoGameLoop();
+		}
+
 		// Start the Dear ImGui frame
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -194,11 +225,9 @@ int main(int argc, char* argv[]) {
 			std::map<std::string, cMeshObject*>::iterator itMeshes;
 			itMeshes = g_ProjectManager->m_selectedScene->m_mMeshes.begin();
 			// Iterates through all meshes
-			cMeshObject* pCurrentMeshObject;
 			for (itMeshes; itMeshes != g_ProjectManager->m_selectedScene->m_mMeshes.end(); itMeshes++) {
-				pCurrentMeshObject = itMeshes->second;
 				// Skip this meshe if not visible
-				if (!pCurrentMeshObject->m_bIsVisible)
+				if (!itMeshes->second->m_bIsVisible)
 					continue;
 
 				glCullFace(GL_BACK);
@@ -206,13 +235,13 @@ int main(int argc, char* argv[]) {
 
 				matModel = glm::mat4x4(1.0f);
 				// Apply Position Transformation
-				glm::mat4 matTranslation = glm::translate(glm::mat4(1.0f), pCurrentMeshObject->m_position);
+				glm::mat4 matTranslation = glm::translate(glm::mat4(1.0f), itMeshes->second->m_position);
 				// Apply Rotation Transformation
-				glm::mat4 matRoationZ = glm::rotate(glm::mat4(1.0f), pCurrentMeshObject->m_rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
-				glm::mat4 matRoationY = glm::rotate(glm::mat4(1.0f), pCurrentMeshObject->m_rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
-				glm::mat4 matRoationX = glm::rotate(glm::mat4(1.0f), pCurrentMeshObject->m_rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+				glm::mat4 matRoationZ = glm::rotate(glm::mat4(1.0f), itMeshes->second->m_rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+				glm::mat4 matRoationY = glm::rotate(glm::mat4(1.0f), itMeshes->second->m_rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
+				glm::mat4 matRoationX = glm::rotate(glm::mat4(1.0f), itMeshes->second->m_rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
 				// Scale the object
-				float uniformScale = pCurrentMeshObject->m_scale;
+				float uniformScale = itMeshes->second->m_scale;
 				glm::mat4 matScale = glm::scale(glm::mat4(1.0f), glm::vec3(uniformScale, uniformScale, uniformScale));
 				// Applying all these transformations to the Model
 				matModel = matModel * matTranslation;
@@ -232,35 +261,35 @@ int main(int argc, char* argv[]) {
 				glUniformMatrix4fv(mModelInverseTransform_location, 1, GL_FALSE, glm::value_ptr(mModelInverseTransform));
 
 				// Wireframe Check
-				if (pCurrentMeshObject->m_isWireframe)
+				if (itMeshes->second->m_isWireframe)
 					glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 				else
 					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 				// Pass Colours to the Shader
 				GLint RGBA_Colour_ULocID = glGetUniformLocation(shaderID, "RGBA_Colour");
-				glUniform4f(RGBA_Colour_ULocID, pCurrentMeshObject->m_RGBA_colour.r,
-					pCurrentMeshObject->m_RGBA_colour.g,
-					pCurrentMeshObject->m_RGBA_colour.b,
-					pCurrentMeshObject->m_RGBA_colour.w);
+				glUniform4f(RGBA_Colour_ULocID, itMeshes->second->m_RGBA_colour.r,
+												itMeshes->second->m_RGBA_colour.g,
+												itMeshes->second->m_RGBA_colour.b,
+												itMeshes->second->m_RGBA_colour.w);
 				// Pass the UseRGB boolean to the Shader
 				GLint bUseRGBA_Colour_ULocID = glGetUniformLocation(shaderID, "bUseRGBA_Colour");
-				if (pCurrentMeshObject->m_bUse_RGBA_colour)
+				if (itMeshes->second->m_bUse_RGBA_colour)
 					glUniform1f(bUseRGBA_Colour_ULocID, (GLfloat)GL_TRUE);
 				else
 					glUniform1f(bUseRGBA_Colour_ULocID, (GLfloat)GL_FALSE);
 
 				// Pass DoNotLight boolean to the Shader	
 				GLint bDoNotLight_Colour_ULocID = glGetUniformLocation(shaderID, "bDoNotLight");
-				if (pCurrentMeshObject->m_bDoNotLight)
+				if (itMeshes->second->m_bDoNotLight)
 					glUniform1f(bDoNotLight_Colour_ULocID, (GLfloat)GL_TRUE);
 				else
 					glUniform1f(bDoNotLight_Colour_ULocID, (GLfloat)GL_FALSE);
 
 				// Pass the Model we want to draw
-				glBindVertexArray(pCurrentMeshObject->m_parentModel->VAO_ID);
+				glBindVertexArray(itMeshes->second->m_parentModel->VAO_ID);
 				glDrawElements(GL_TRIANGLES,
-							   pCurrentMeshObject->m_parentModel->numberOfIndices,
+							   itMeshes->second->m_parentModel->numberOfIndices,
 							   GL_UNSIGNED_INT,
 							   (void*)0);
 				glBindVertexArray(0);

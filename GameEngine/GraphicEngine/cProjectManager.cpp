@@ -24,6 +24,7 @@ cProjectManager::cProjectManager(GLuint shaderID) {
 	isNewScene = false;
 	m_selectedScene = nullptr;
 	m_selectedMesh = nullptr;
+	m_isGameLoopEnabled = false;
 }
 
 cProjectManager::~cProjectManager() {
@@ -45,6 +46,7 @@ bool cProjectManager::LoadScene(std::string name) {
 	// Unselect previous selected mesh and light
 	this->m_selectedMesh = nullptr;
 	this->m_selectedLight = nullptr;
+	this->m_isGameLoopEnabled = false;
 
 	// Create a document object
 	pugi::xml_document graphicsLibrary;

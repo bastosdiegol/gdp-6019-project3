@@ -19,4 +19,7 @@ cScene::~cScene() {
 	std::map<std::string, cMeshObject*>::iterator itMesh;
 	for (itMesh = m_mMeshes.begin(); itMesh != m_mMeshes.end(); itMesh++)
 		delete itMesh->second;
+	std::map<std::string, cLight*>::iterator itLights;
+	for (itLights = m_mLights.begin(); itLights != m_mLights.end(); itLights++)
+		delete itLights->second;
 }

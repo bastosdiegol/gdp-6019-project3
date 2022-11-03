@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <graphicsLibrary>
-	<scene title="1.Graphics Proj#1" camEyeX="0" camEyeY="10" camEyeZ="-50" camTarX="4.9000001" camTarY="1.10000002" camTarZ="18">
+	<scene title="1.Graphics Proj#1" camEyeX="0" camEyeY="10" camEyeZ="-46" camTarX="0" camTarY="5" camTarZ="0">
 		<model path="assets/room/SM_Env_Tiles_09.ply" title="Tile">
 			<mesh id="Tile 01">
 				<position x="0" y="0" z="0" />

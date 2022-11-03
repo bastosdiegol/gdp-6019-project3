@@ -13,9 +13,9 @@ void cProjectUI::renderUI() {
 	// TODO: Save Scene on XML file
 	if (ImGui::BeginMenuBar()) {
 		if(ImGui::BeginMenu("Project")){
-			if (ImGui::MenuItem("New Scene")) {
+			if (ImGui::MenuItem("New Scene (TODO)")) {
 			}
-			if (ImGui::MenuItem("Quit")) {
+			if (ImGui::MenuItem("Quit (TODO)")) {
 			}
 			ImGui::EndMenu();
 		}
@@ -32,6 +32,11 @@ void cProjectUI::renderUI() {
 				m_projectManager->LoadScene(itScenes->first.c_str());
 				m_projectManager->isNewScene = true;
 			}
+			if (m_projectManager->m_selectedScene != nullptr)
+				if (m_projectManager->m_selectedScene->m_name == itScenes->first) {
+					ImGui::Text("  "); ImGui::SameLine();
+					ImGui::Checkbox("Enable Game Loop", &m_projectManager->m_isGameLoopEnabled);
+				}
 		}
 		ImGui::TreePop();
 	}
@@ -139,7 +144,7 @@ void cProjectUI::renderMeshUI() {
 										ImGuiWindowFlags_AlwaysUseWindowPadding);
 	if (ImGui::BeginMenuBar()) {
 		if (ImGui::BeginMenu("Mesh")) {
-			if (ImGui::MenuItem("Save Mesh Data")) {
+			if (ImGui::MenuItem("Add New Mesh (TODO)")) {
 				// TODO:: Save Mesh Data
 			}
 			// TODO: Add models using this menu in the future?

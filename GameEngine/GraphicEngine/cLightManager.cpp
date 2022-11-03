@@ -18,6 +18,10 @@ cLightManager::cLightManager() {
 	DEBUG_PRINT("cLightManager::cLightManager()\n");
 }
 
+cLightManager::~cLightManager() {
+	DEBUG_PRINT("cLightManager::~cLightManager()\n");
+}
+
 void cLightManager::LoadLightUniformLocations(unsigned int shaderID, std::map<std::string, cLight*>* p_mapOfLights) {
 	DEBUG_PRINT("cLightManager::LoadLightUniformLocations(%d, mapOfLights[%d])\n", shaderID, p_mapOfLights->size());
 	std::map<std::string, cLight*>::iterator itLight = p_mapOfLights->begin();

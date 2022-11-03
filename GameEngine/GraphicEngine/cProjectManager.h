@@ -23,6 +23,7 @@ public:
 	cMeshObject*				m_selectedMesh;		// Selected Mesh with info available to be edited
 	cLight*						m_selectedLight;	// Selected Light
 	bool						isNewScene;			// True everytime a user changes the scene
+	bool						m_isGameLoopEnabled;
 	cVAOManager* m_VAOManager;
 	cLightManager* m_lightManager;
 	/// <summary>
