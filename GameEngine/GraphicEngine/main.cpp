@@ -293,6 +293,84 @@ int main(int argc, char* argv[]) {
 							   GL_UNSIGNED_INT,
 							   (void*)0);
 				glBindVertexArray(0);
+
+				// Display Bounding Box
+				if (itMeshes->second->m_displayBoundingBox) {
+					// Cube 1x1x1, centered on origin
+					GLfloat vertices[] = {
+					  -0.5, -0.5, -0.5, 1.0,
+					   0.5, -0.5, -0.5, 1.0,
+					   0.5,  0.5, -0.5, 1.0,
+					  -0.5,  0.5, -0.5, 1.0,
+					  -0.5, -0.5,  0.5, 1.0,
+					   0.5, -0.5,  0.5, 1.0,
+					   0.5,  0.5,  0.5, 1.0,
+					  -0.5,  0.5,  0.5, 1.0,
+					};
+					GLuint vbo_vertices;
+					glGenBuffers(1, &vbo_vertices);
+					glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
+					glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+					glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+					GLushort elements[] = {
+						0, 1, 2, 3,
+						4, 5, 6, 7,
+						0, 4, 1, 5, 2, 6, 3, 7
+					};
+					GLuint ibo_elements;
+					glGenBuffers(1, &ibo_elements);
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
+					glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+					cModel* parentModel = itMeshes->second->m_parentModel;
+					glm::vec3 size = glm::vec3(parentModel->max_x - parentModel->min_x, 
+											   parentModel->max_y - parentModel->min_y, 
+											   parentModel->max_z - parentModel->min_z);
+					glm::vec3 center = glm::vec3((parentModel->min_x + parentModel->max_x) / 2, 
+												 (parentModel->min_y + parentModel->max_y) / 2, 
+												 (parentModel->min_z + parentModel->max_z) / 2);
+					glm::mat4 transform = glm::translate(glm::mat4(1), center) * glm::scale(glm::mat4(1), size);
+
+					// Use Colour vCol
+					glUniform1f(bUseRGBA_Colour_ULocID, (GLfloat)GL_TRUE);
+					// Set White BoundingBox
+					glUniform4f(RGBA_Colour_ULocID, 1.0f, 1.0f, 1.0f, 1.0f);
+					// Do Not Light the BB
+					glUniform1f(bDoNotLight_Colour_ULocID, (GLfloat)GL_TRUE);
+
+					/* Apply object's transformation matrix */
+					glm::mat4 m = matModel * transform;
+					glUniformMatrix4fv(mModel_location, 1, GL_FALSE, glm::value_ptr(m));
+
+					GLint attribute_v_coord = glGetAttribLocation(g_ProjectManager->m_VAOManager->m_shaderID, "vPos");
+					glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
+					glEnableVertexAttribArray(attribute_v_coord);
+					glVertexAttribPointer(
+						attribute_v_coord,  // attribute
+						4,                  // number of elements per vertex, here (x,y,z,w)
+						GL_FLOAT,           // the type of each element
+						GL_FALSE,           // take our values as-is
+						0,                  // no extra data between each position
+						0                   // offset of first element
+					);
+
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
+					glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, 0);
+					glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, (GLvoid*)(4 * sizeof(GLushort)));
+					glDrawElements(GL_LINES, 8, GL_UNSIGNED_SHORT, (GLvoid*)(8 * sizeof(GLushort)));
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+					glDisableVertexAttribArray(attribute_v_coord);
+					glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+					glDeleteBuffers(1, &vbo_vertices);
+					glDeleteBuffers(1, &ibo_elements);
+
+					glLineWidth(2);
+
+				}
 			}
 			// Iterates through all lights
 			std::map<std::string, cLight*>::iterator itLights 

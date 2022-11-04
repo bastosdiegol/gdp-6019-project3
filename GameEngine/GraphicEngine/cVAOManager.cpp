@@ -54,12 +54,23 @@ cModel* cVAOManager::PrepareNewModel(std::string friendlyName, std::string fileP
 	newModel->numberOfVertices = m_plyReader->m_numberOfVertices;
 	// Creates the struct which will host all vertices
 	newModel->pVertices = new sVertex[newModel->numberOfVertices];
+	// Sets up initial min and max values
+	newModel->min_x = newModel->max_x = m_plyReader->pTheModelArray[0].x;
+	newModel->min_y = newModel->max_y = m_plyReader->pTheModelArray[0].y;
+	newModel->min_z = newModel->max_z = m_plyReader->pTheModelArray[0].z;
 	// Now copy the information from the PLY to the model class
 	for (unsigned int index = 0; index != m_plyReader->m_numberOfVertices; index++) {
 
 		newModel->pVertices[index].x = m_plyReader->pTheModelArray[index].x;
 		newModel->pVertices[index].y = m_plyReader->pTheModelArray[index].y;
 		newModel->pVertices[index].z = m_plyReader->pTheModelArray[index].z;
+
+		if (m_plyReader->pTheModelArray[index].x < newModel->min_x) newModel->min_x = m_plyReader->pTheModelArray[index].x;
+		if (m_plyReader->pTheModelArray[index].x > newModel->max_x) newModel->max_x = m_plyReader->pTheModelArray[index].x;
+		if (m_plyReader->pTheModelArray[index].y < newModel->min_y) newModel->min_y = m_plyReader->pTheModelArray[index].y;
+		if (m_plyReader->pTheModelArray[index].y > newModel->max_y) newModel->max_y = m_plyReader->pTheModelArray[index].y;
+		if (m_plyReader->pTheModelArray[index].z < newModel->min_z) newModel->min_z = m_plyReader->pTheModelArray[index].z;
+		if (m_plyReader->pTheModelArray[index].z > newModel->max_z) newModel->max_z = m_plyReader->pTheModelArray[index].z;
 
 		newModel->pVertices[index].r = m_plyReader->pTheModelArray[index].red;
 		newModel->pVertices[index].g = m_plyReader->pTheModelArray[index].green;

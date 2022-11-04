@@ -21,6 +21,6 @@ public:
 	bool			m_isWireframe;
 	bool			m_bDoNotLight;
 	bool			m_bIsVisible;
-
+	bool			m_displayBoundingBox;
 };
 

@@ -208,6 +208,9 @@ void cProjectUI::renderMeshUI() {
 		ImGui::Text("Is Visible?"); ImGui::SameLine();
 		// isVisible Checkbox
 		ImGui::Checkbox("##Visible?", &m_projectManager->m_selectedMesh->m_bIsVisible);
+		ImGui::Text("Display BoundingBox?"); ImGui::SameLine();
+		// isVisible Checkbox
+		ImGui::Checkbox("##Display BoundingBox", &m_projectManager->m_selectedMesh->m_displayBoundingBox);
 	} else {
 		ImGui::BulletText("No Mesh Selected.");
 	}
