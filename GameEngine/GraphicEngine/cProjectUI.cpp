@@ -312,14 +312,16 @@ void cProjectUI::renderLighthUI() {
 				}
 			}
 		}
-		// Inner Angle
-		ImGui::Text("Inner Angle");
-		ImGui::SameLine();
-		ImGui::DragFloat("##InnerAngleSlider", &m_projectManager->m_selectedLight->m_param1.y, 0.1f, 0.0f, 0.0f, "%.2f");
-		// Outer Angle
-		ImGui::Text("Outer Angle");
-		ImGui::SameLine();
-		ImGui::DragFloat("##OuterAngleSlider", &m_projectManager->m_selectedLight->m_param1.z, 0.1f, 0.0f, 0.0f, "%.2f");
+		if (current_item == "Spot Light") {
+			// Inner Angle
+			ImGui::Text("Inner Angle");
+			ImGui::SameLine();
+			ImGui::DragFloat("##InnerAngleSlider", &m_projectManager->m_selectedLight->m_param1.y, 0.1f, 0.0f, 0.0f, "%.2f");
+			// Outer Angle
+			ImGui::Text("Outer Angle");
+			ImGui::SameLine();
+			ImGui::DragFloat("##OuterAngleSlider", &m_projectManager->m_selectedLight->m_param1.z, 0.1f, 0.0f, 0.0f, "%.2f");
+		}
 		// Variable for ImGui to control RGB
 		ImGui::Text("Specular Reflection");
 		float spec4f[4] = { m_projectManager->m_selectedLight->m_specular.r,
@@ -350,7 +352,7 @@ void cProjectUI::renderLighthUI() {
 		ImGui::SameLine();
 		ImGui::DragFloat("##QuadraticInput", &m_projectManager->m_selectedLight->m_attenuation.z, 0.01f, 0.0f, 0.0f, "%.7f");
 		// Distance Cut Off
-		ImGui::Text("Distance Cut-Off");
+		ImGui::Text("Dist. Cut-Off");
 		ImGui::SameLine();
 		ImGui::DragFloat("##Cut-OffInput", &m_projectManager->m_selectedLight->m_attenuation.w, 0.001f, 0.0f, 0.0f, "%.2f");
 		// Turn On/Off Checkbox

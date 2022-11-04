@@ -562,40 +562,131 @@
 			<param2 x="1" y="0" z="0" w="1" />
 		</light>
 	</scene>
-	<scene title="2.Graphics MidTerm" camEyeX="0" camEyeY="50" camEyeZ="250" camTarX="-20" camTarY="30" camTarZ="0">
+	<scene title="2.Graphics MidTerm" camEyeX="0" camEyeY="50" camEyeZ="250" camTarX="-20" camTarY="30" camTarZ="0" />
+	<scene title="3.Physics MidTerm" camEyeX="0" camEyeY="200" camEyeZ="-370" camTarX="0" camTarY="0" camTarZ="0">
 		<model path="assets/midterm/terrain.ply" title="Terrain">
 			<mesh id="Terrain">
-				<position x="-150" y="-100" z="-100" />
-				<rotate x="-0.800000012" y="0" z="0" />
-				<useColor value="false" />
-				<color r="0" g="0" b="0" a="1" />
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0.69607842" g="0.69607842" b="0.69607842" a="1" />
 				<scale value="1" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
 				<visible value="true" />
 			</mesh>
 		</model>
-		<model path="assets/dragon/SM_Env_Bone_Rigcage_01_rgb.ply" title="Dragon Rib">
-			<mesh id="Dragon Rib 01">
-				<position x="0" y="0" z="-40" />
+		<model path="assets/midterm/robot.ply" title="Robot">
+			<mesh id="Robot 01">
+				<position x="0" y="0" z="0" />
 				<rotate x="0" y="0" z="0" />
 				<useColor value="true" />
-				<color r="1" g="0.0490196347" b="0.0490196347" a="1" />
-				<scale value="1" />
+				<color r="0" g="1" b="0" a="1" />
+				<scale value="0.04" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+			</mesh>
+			<mesh id="Robot 02">
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0" g="1" b="0" a="1" />
+				<scale value="0.04" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+			</mesh>
+			<mesh id="Robot 03">
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0" g="1" b="0" a="1" />
+				<scale value="0.04" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+			</mesh>
+			<mesh id="Robot 04">
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0" g="1" b="0" a="1" />
+				<scale value="0.04" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+			</mesh>
+			<mesh id="Robot 05">
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0" g="1" b="0" a="1" />
+				<scale value="0.04" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+			</mesh>
+			<mesh id="Robot 06">
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0" g="1" b="0" a="1" />
+				<scale value="0.04" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+			</mesh>
+			<mesh id="Robot 07">
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0" g="1" b="0" a="1" />
+				<scale value="0.04" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+			</mesh>
+			<mesh id="Robot 08">
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0" g="1" b="0" a="1" />
+				<scale value="0.04" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+			</mesh>
+			<mesh id="Robot 09">
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0" g="1" b="0" a="1" />
+				<scale value="0.04" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+			</mesh>
+			<mesh id="Robot 10">
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0" g="1" b="0" a="1" />
+				<scale value="0.04" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
 				<visible value="true" />
 			</mesh>
 		</model>
 		<light id="Light 01" onoff="1" showmodel="true">
-			<position x="0.0" y="500.0" z="500.0" w="1.0" />
-			<diffuse x="1.0" y="1.0" z="1.0" w="1.0" />
-			<specular r="1.0" g="1.0" b="1.0" a="1.0" />
-			<attenuation x="0.1" y="0.001" z="0.0000001" w="1.0" />
-			<direction x="0.0" y="-1.0" z="0.0" w="1.0" />
-			<param1 x="2.0" y="0.0" z="0.0" w="1.0" />
-			<param2 x="1.0" y="0.0" z="0.0" w="1.0" />
+			<position x="0" y="500" z="500" w="1" />
+			<diffuse x="1" y="1" z="1" w="1" />
+			<specular r="1" g="1" b="1" a="1" />
+			<attenuation x="0.100000001" y="0.00100000005" z="1.00000001e-07" w="1" />
+			<direction x="0" y="-1" z="0" w="1" />
+			<param1 x="2" y="0" z="0" w="1" />
+			<param2 x="1" y="0" z="0" w="1" />
 		</light>
 	</scene>
-	<scene title="3.Physics Proj#2" camEyeX="0" camEyeY="0" camEyeZ="0" camTarX="0" camTarY="0" camTarZ="0" />
+	<scene title="4.Physics Proj#2" camEyeX="0" camEyeY="0" camEyeZ="0" camTarX="0" camTarY="0" camTarZ="0" />
 </graphicsLibrary>
