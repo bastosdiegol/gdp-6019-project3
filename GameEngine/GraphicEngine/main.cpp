@@ -27,6 +27,10 @@
 glm::vec3* g_cameraEye;
 // Global Camera Eye that will be pointing to the Selected Scene Target
 glm::vec3* g_cameraTarget;
+// Global Project Manager
+cProjectManager* g_ProjectManager;
+// Patterns MidTerm Global Variables
+std::vector<glm::vec3>* g_vterrainCenter;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	const float CAMERA_MOVE_SPEED = 1.0f;
@@ -56,6 +60,32 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 }
 
+void caculateTerrainTrianglesCenter(cModel* terrainModel) {
+	g_vterrainCenter = new std::vector<glm::vec3>();
+	// Initial reserve to contain all the centers for the terrain
+	g_vterrainCenter->reserve(terrainModel->numberOfTriangles);
+	glm::vec3 triangleCenter;
+
+	// We gonna iterate through each triangle of the model
+	for (int i = 0; i < terrainModel->numberOfIndices; i) {
+		// Center Triangle Terrain
+		// = (CenterX, CenterZ)
+		// CenterX = (V1x + V2x + V3x) / 3
+		triangleCenter.x = (terrainModel->pVertices[ terrainModel->pIndices[i+0] ].x +
+							terrainModel->pVertices[ terrainModel->pIndices[i+1] ].x +
+							terrainModel->pVertices[ terrainModel->pIndices[i+2] ].x ) / 3;
+		// CenterZ = (V1z + V2z + V3z) / 3
+		triangleCenter.z = (terrainModel->pVertices[ terrainModel->pIndices[i+0] ].z +
+							terrainModel->pVertices[ terrainModel->pIndices[i+1] ].z +
+							terrainModel->pVertices[ terrainModel->pIndices[i+2] ].z ) / 3;
+		// For the height we gonna consider the first vertice Y
+		triangleCenter.y =  terrainModel->pVertices[ terrainModel->pIndices[i] ].y;
+
+		g_vterrainCenter->push_back(triangleCenter);
+		i += 3;
+	}
+}
+
 static void error_callback(int error, const char* description) {
 	fprintf(stderr, "Glfw Error %d: %s\n", error, description);
 }
@@ -67,8 +97,14 @@ void graphicsMidTermGameLoop() {
 	// TODO
 }
 
-void engineMidTermGameLoop() {
+void patternsMidTermGameLoop() {
 	// TODO
+	if (g_vterrainCenter == nullptr) {
+		caculateTerrainTrianglesCenter(g_ProjectManager->m_selectedScene->m_mMeshes.find("Terrain")->second->m_parentModel);
+
+	}
+
+	DEBUG_PRINT(".");
 }
 
 void physicsProjTwoGameLoop() {
@@ -134,7 +170,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	// Creates my Project Manager
-	cProjectManager* g_ProjectManager = new cProjectManager(shaderID);
+	g_ProjectManager = new cProjectManager(shaderID);
 	
 	// Creates my Project Manager UI - ImGui Window
 	cProjectUI g_projectUI(g_ProjectManager);
@@ -175,8 +211,8 @@ int main(int argc, char* argv[]) {
 				graphicsProjOneGameLoop();
 			else if (g_ProjectManager->m_selectedScene->m_name == "2.Graphics MidTerm")
 				graphicsMidTermGameLoop();
-			else if (g_ProjectManager->m_selectedScene->m_name == "3.Engine MidTerm")
-				engineMidTermGameLoop();
+			else if (g_ProjectManager->m_selectedScene->m_name == "3.Patterns MidTerm")
+				patternsMidTermGameLoop();
 			else if (g_ProjectManager->m_selectedScene->m_name == "4.Physics Proj#2")
 				physicsProjTwoGameLoop();
 		}

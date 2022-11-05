@@ -563,7 +563,7 @@
 		</light>
 	</scene>
 	<scene title="2.Graphics MidTerm" camEyeX="0" camEyeY="50" camEyeZ="250" camTarX="-20" camTarY="30" camTarZ="0" />
-	<scene title="3.Physics MidTerm" camEyeX="0" camEyeY="200" camEyeZ="-370" camTarX="0" camTarY="0" camTarZ="0">
+	<scene title="3.Patterns MidTerm" camEyeX="0" camEyeY="200" camEyeZ="-370" camTarX="0" camTarY="0" camTarZ="0">
 		<model path="assets/midterm/terrain.ply" title="Terrain">
 			<mesh id="Terrain">
 				<position x="0" y="0" z="0" />
