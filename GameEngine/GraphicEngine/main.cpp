@@ -30,7 +30,7 @@ glm::vec3* g_cameraTarget;
 // Global Project Manager
 cProjectManager* g_ProjectManager;
 // Patterns MidTerm Global Variables
-std::vector<glm::vec3>* g_vterrainCenter;
+std::vector<glm::vec3>* g_vTerrainTrianglesCenter;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	const float CAMERA_MOVE_SPEED = 1.0f;
@@ -61,9 +61,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 
 void caculateTerrainTrianglesCenter(cModel* terrainModel) {
-	g_vterrainCenter = new std::vector<glm::vec3>();
+	g_vTerrainTrianglesCenter = new std::vector<glm::vec3>();
 	// Initial reserve to contain all the centers for the terrain
-	g_vterrainCenter->reserve(terrainModel->numberOfTriangles);
+	g_vTerrainTrianglesCenter->reserve(terrainModel->numberOfTriangles);
 	glm::vec3 triangleCenter;
 
 	// We gonna iterate through each triangle of the model
@@ -81,7 +81,7 @@ void caculateTerrainTrianglesCenter(cModel* terrainModel) {
 		// For the height we gonna consider the first vertice Y
 		triangleCenter.y =  terrainModel->pVertices[ terrainModel->pIndices[i] ].y;
 
-		g_vterrainCenter->push_back(triangleCenter);
+		g_vTerrainTrianglesCenter->push_back(triangleCenter);
 		i += 3;
 	}
 }
@@ -99,7 +99,7 @@ void graphicsMidTermGameLoop() {
 
 void patternsMidTermGameLoop() {
 	// TODO
-	if (g_vterrainCenter == nullptr) {
+	if (g_vTerrainTrianglesCenter == nullptr) {
 		caculateTerrainTrianglesCenter(g_ProjectManager->m_selectedScene->m_mMeshes.find("Terrain")->second->m_parentModel);
 
 	}

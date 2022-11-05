@@ -13,25 +13,50 @@
 cRobotFactory* cRobotFactory::m_robotFactory = nullptr;
 
 cRobotFactory::cRobotFactory() {
-	DEBUG_PRINT("cRobotFactory::cRobotFactory()");
+	DEBUG_PRINT("cRobotFactory::cRobotFactory()\n");
 }
 
 cRobotFactory::~cRobotFactory() {
-	DEBUG_PRINT("cRobotFactory::~cRobotFactory()");
-	delete m_robotFactory;
+	DEBUG_PRINT("cRobotFactory::~cRobotFactory()\n");
+	for (int i = 0; i < m_vRobots.size(); i++) {
+		m_vRobots[i]->~iRobot();
+	}
 }
 
 cRobotFactory* cRobotFactory::GetInstance() {
-	DEBUG_PRINT("cRobotFactory::GetInstance()");
+	DEBUG_PRINT("cRobotFactory::GetInstance()\n");
 	if (m_robotFactory == nullptr) {
 		m_robotFactory = new cRobotFactory();
 	}
 	return m_robotFactory;
 }
 
-iRobot* cRobotFactory::buildARobot() {
-	DEBUG_PRINT("cRobotFactory::buildARobot()");	
+iRobot* cRobotFactory::BuildARobot() {
+	DEBUG_PRINT("cRobotFactory::buildARobot()\n");	
 	iRobot* newRobot = new cRobot();
+	// We could receive the min and max X for reference by lets go hardcoded for while
+	newRobot->m_position.x = RandFloat(-128.0f, 128.0f);
+	// We gonna set Y later comparing with the closest triangle
+	newRobot->m_position.y = 0.0f;
+	newRobot->m_position.z = RandFloat(-128.0f, 128.0f);
 	this->m_vRobots.push_back(newRobot);
 	return newRobot;	 
+}
+
+void cRobotFactory::Update(double deltaTime) {
+	DEBUG_PRINT("cRobotFactory::Update(%f)\n", deltaTime);
+	for (int i = 0; i < m_vRobots.size(); i++) {
+		if (m_vRobots[i]->m_health > 0) {
+			m_vRobots[i]->Update(deltaTime);
+		}
+	}
+}
+
+// Utility function for a random range of two floats
+float RandFloat(float min, float max) {
+	DEBUG_PRINT("RandFloat(%f, %f)\n", min, max);
+	float random = ((float)rand()) / (float)RAND_MAX;
+	float diff = max - min;
+	float r = random * diff;
+	return min + r;
 }
