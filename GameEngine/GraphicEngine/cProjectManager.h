@@ -9,6 +9,12 @@
 
 #define PROJECT_SAVE_FILE "graphicLibrary.xml"
 
+enum GameState {
+	NEW_GAME,
+	RUNNING,
+	SHUTING_DRAWN
+};
+
 class cProjectManager {	
 private:
 	std::map<std::string, cScene*>	m_mScenes;			// List of Scenes Available
@@ -24,8 +30,9 @@ public:
 	cLight*						m_selectedLight;	// Selected Light
 	bool						isNewScene;			// True everytime a user changes the scene
 	bool						m_isGameLoopEnabled;
-	cVAOManager* m_VAOManager;
-	cLightManager* m_lightManager;
+	GameState					m_GameLoopState;
+	cVAOManager*				m_VAOManager;
+	cLightManager*				m_lightManager;
 	/// <summary>
 	/// Default Constructor - also Loads Save File
 	/// </summary>

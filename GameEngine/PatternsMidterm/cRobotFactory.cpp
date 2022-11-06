@@ -35,10 +35,10 @@ iRobot* cRobotFactory::BuildARobot() {
 	DEBUG_PRINT("cRobotFactory::buildARobot()\n");	
 	iRobot* newRobot = new cRobot();
 	// We could receive the min and max X for reference by lets go hardcoded for while
-	newRobot->m_position.x = RandFloat(-128.0f, 128.0f);
+	static_cast<cRobot*>(newRobot)->m_position.x = RandFloat(-128.0f, 128.0f);
 	// We gonna set Y later comparing with the closest triangle
-	newRobot->m_position.y = 0.0f;
-	newRobot->m_position.z = RandFloat(-128.0f, 128.0f);
+	static_cast<cRobot*>(newRobot)->m_position.y = 0.0f;
+	static_cast<cRobot*>(newRobot)->m_position.z = RandFloat(-128.0f, 128.0f);
 	this->m_vRobots.push_back(newRobot);
 	return newRobot;	 
 }
@@ -46,10 +46,30 @@ iRobot* cRobotFactory::BuildARobot() {
 void cRobotFactory::Update(double deltaTime) {
 	DEBUG_PRINT("cRobotFactory::Update(%f)\n", deltaTime);
 	for (int i = 0; i < m_vRobots.size(); i++) {
-		if (m_vRobots[i]->m_health > 0) {
+		if (static_cast<cRobot*>(m_vRobots[i])->m_health > 0) {
 			m_vRobots[i]->Update(deltaTime);
 		}
 	}
+}
+
+void cRobotFactory::adjustRobotHeightPos(unsigned int robotId, float y) {
+	DEBUG_PRINT("cRobotFactory::adjustRobotHeightPos(%d, %f)\n", robotId, y);
+	for (int i = 0; i < m_vRobots.size(); i++) {
+		if (m_vRobots[i]->getID() == robotId) {
+			static_cast<cRobot*>(m_vRobots[i])->m_position.y = y;
+		}
+	}
+}
+
+iRobot* cRobotFactory::getRobot(int index) {
+	return m_vRobots[index];
+}
+
+void cRobotFactory::setNewRandomPosition(iRobot* robot) {
+	static_cast<cRobot*>(robot)->m_position.x = RandFloat(-128.0f, 128.0f);
+	// We gonna set Y later comparing with the closest triangle
+	static_cast<cRobot*>(robot)->m_position.y = 0.0f;
+	static_cast<cRobot*>(robot)->m_position.z = RandFloat(-128.0f, 128.0f);
 }
 
 // Utility function for a random range of two floats

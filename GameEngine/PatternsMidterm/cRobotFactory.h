@@ -27,6 +27,23 @@ public:
 	/// Calls Update() on all Robots that are alive
 	/// </summary>
 	void Update(double deltaTime);
+	/// <summary>
+	/// Sets a new height for a robot
+	/// </summary>
+	/// <param name="robotId">ID of the robot who will have height adjusted</param>
+	/// <param name="y">Float value for new y axis</param>
+	void adjustRobotHeightPos(unsigned int robotId, float y);
+	/// <summary>
+	/// Returns the Robot present in the array
+	/// </summary>
+	/// <param name="index">index of the robot on the array</param>
+	/// <returns>A instance of a Robot</returns>
+	iRobot* getRobot(int index);
+	/// <summary>
+	/// Receives a robot and set a new random position on the terrain
+	/// </summary>
+	/// <param name="robot">Pointer to the robot who will get a new position</param>
+	void setNewRandomPosition(iRobot* robot);
 
 private:
 	std::vector<iRobot*> m_vRobots;

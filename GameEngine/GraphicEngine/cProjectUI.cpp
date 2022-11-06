@@ -19,6 +19,12 @@ void cProjectUI::renderUI() {
 			}
 			ImGui::EndMenu();
 		}
+		if (ImGui::BeginMenu("Game State")) {
+			if (ImGui::MenuItem("New Game")) {
+				m_projectManager->m_GameLoopState = GameState::NEW_GAME;
+			}
+			ImGui::EndMenu();
+		}
 		ImGui::EndMenuBar();
 	}
 
