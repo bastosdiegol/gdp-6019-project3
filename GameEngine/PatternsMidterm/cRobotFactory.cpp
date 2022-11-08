@@ -1,5 +1,6 @@
 #include "cRobotFactory.h"
 #include "cRobot.h"
+#include <glm/geometric.hpp>
 
 #ifdef _DEBUG
 #define DEBUG_LOG_ENABLED
@@ -70,6 +71,35 @@ void cRobotFactory::setNewRandomPosition(iRobot* robot) {
 	// We gonna set Y later comparing with the closest triangle
 	static_cast<cRobot*>(robot)->m_position.y = 0.0f;
 	static_cast<cRobot*>(robot)->m_position.z = RandFloat(-128.0f, 128.0f);
+}
+
+iRobot* cRobotFactory::findNearestRobot(iRobot* robot) {
+	int indexClosestRobot = -1;
+	float smallestDistance = 128 * 1.414; // Diagonal of the Arena - just a big value
+	float newDistance;
+	for (int i = 0; i < m_vRobots.size(); i++) {
+		if (m_vRobots[i]->getID() != robot->getID()) {
+			newDistance = glm::distance(static_cast<cRobot*>(robot)->m_position.getGlmVec3(),
+										static_cast<cRobot*>(m_vRobots[0])->m_position.getGlmVec3());
+			if (newDistance < smallestDistance) {
+				// TODO: Conditional for Weapon Type here
+				// Laser and Bullet do something
+				// Bomb do another thing
+				Vector3 targetToRobot = static_cast<cRobot*>(m_vRobots[i])->m_position -
+										static_cast<cRobot*>(robot)->m_position;
+				targetToRobot.Normalize();
+				// Now we should iterate through the terrain
+				// But the terrain is on the Graphics Project
+				// =(
+				newDistance = smallestDistance;
+				indexClosestRobot = i;
+			}
+		}
+	}
+	if (indexClosestRobot == -1)
+		return nullptr;
+	else
+		return m_vRobots[indexClosestRobot];
 }
 
 // Utility function for a random range of two floats

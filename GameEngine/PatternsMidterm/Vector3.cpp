@@ -151,3 +151,22 @@ void Vector3::operator/=(const float& scalar) {
 void Vector3::vOut() {
 	std::cout << "(" << x << ", " << y << ", " << z << ")";
 }
+
+// Returns a glm::vec3 of a Vector3
+glm::vec3 Vector3::getGlmVec3() {
+	return glm::vec3(this->x, this->y, this->z);
+}
+
+// Normalize changes the values of the vector to be 
+// a unit length
+void Vector3::Normalize() {
+	float m = Magnitude();
+	x /= m;
+	y /= m;
+	z /= m;
+}
+
+// Magnitude will return the length of the vector
+float Vector3::Magnitude() {
+	return sqrt(x * x + y * y + z * z);
+}

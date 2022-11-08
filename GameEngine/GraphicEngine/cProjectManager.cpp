@@ -25,7 +25,7 @@ cProjectManager::cProjectManager(GLuint shaderID) {
 	m_selectedScene = nullptr;
 	m_selectedMesh = nullptr;
 	m_isGameLoopEnabled = false;
-	m_GameLoopState = GameState::NEW_GAME;
+	m_GameLoopState = GameState::STARTING_UP;
 }
 
 cProjectManager::~cProjectManager() {
@@ -48,7 +48,7 @@ bool cProjectManager::LoadScene(std::string name) {
 	this->m_selectedMesh = nullptr;
 	this->m_selectedLight = nullptr;
 	this->m_isGameLoopEnabled = false;
-	m_GameLoopState = GameState::NEW_GAME;
+	m_GameLoopState = GameState::STARTING_UP;
 
 	// Create a document object
 	pugi::xml_document graphicsLibrary;

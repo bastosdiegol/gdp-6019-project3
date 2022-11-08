@@ -44,6 +44,12 @@ public:
 	/// </summary>
 	/// <param name="robot">Pointer to the robot who will get a new position</param>
 	void setNewRandomPosition(iRobot* robot);
+	/// <summary>
+	/// Iterates through m_vRobots to find the closest robot
+	/// </summary>
+	/// <param name="robot">Receives the asking Robot</param>
+	/// <returns>Returns the closest Robot</returns>
+	iRobot* findNearestRobot(iRobot* robot);
 
 private:
 	std::vector<iRobot*> m_vRobots;

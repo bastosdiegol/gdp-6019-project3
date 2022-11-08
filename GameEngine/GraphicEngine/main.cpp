@@ -6,18 +6,18 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
-#include <cRobotFactory.h>
-
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "cProjectManager.h"
 #include "cProjectUI.h"
 #include "cShaderManager.h"
+#include <cRobotFactory.h>
 #include <cRobot.h>
 //#include "cLightHelper.h"
 
-#define TOTAL_NUM_OF_ROBOTS 10
+// Scene Main Loops, Globals and Functions
+#include "PatternsMidtermCommons.h"
 
 #ifdef _DEBUG
 #define DEBUG_LOG_ENABLED
@@ -34,9 +34,6 @@ glm::vec3* g_cameraEye;
 glm::vec3* g_cameraTarget;
 // Global Project Manager
 cProjectManager* g_ProjectManager;
-// Patterns MidTerm Global Variables
-std::vector<glm::vec3>* g_vTerrainTrianglesCenter;
-cRobotFactory* g_robotFactory = cRobotFactory::GetInstance();
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	const float CAMERA_MOVE_SPEED = 1.0f;
@@ -66,53 +63,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 }
 
-void adjustRobotHeight(iRobot* robot) {
-	for (int i = 0; i < g_vTerrainTrianglesCenter->size(); i++) {
-	}
-}
-
-int calculateClosestTerrainTriangle(glm::vec3 position) {
-	float minDistance = glm::distance(g_vTerrainTrianglesCenter->at(0), position);
-	float curDistance;
-	int faceIndex = 0; // Stores the index of the closest triangle
-	for (int i = 0; i < g_vTerrainTrianglesCenter->size(); i++) {
-		// gets the distance of the current face
-		curDistance = glm::distance(g_vTerrainTrianglesCenter->at(i), position);
-		// Checks if the current face is the closest face
-		if (curDistance < minDistance) {
-			minDistance = curDistance;
-			faceIndex = i;
-		}
-	}
-	return faceIndex;
-}
-
-void caculateTerrainTrianglesCenter(cModel* terrainModel) {
-	g_vTerrainTrianglesCenter = new std::vector<glm::vec3>();
-	// Initial reserve to contain all the centers for the terrain
-	g_vTerrainTrianglesCenter->reserve(terrainModel->numberOfTriangles);
-	glm::vec3 triangleCenter;
-
-	// We gonna iterate through each triangle of the model
-	for (int i = 0; i < terrainModel->numberOfIndices; i) {
-		// Center Triangle Terrain
-		// = (CenterX, CenterZ)
-		// CenterX = (V1x + V2x + V3x) / 3
-		triangleCenter.x = (terrainModel->pVertices[ terrainModel->pIndices[i+0] ].x +
-							terrainModel->pVertices[ terrainModel->pIndices[i+1] ].x +
-							terrainModel->pVertices[ terrainModel->pIndices[i+2] ].x ) / 3;
-		// CenterZ = (V1z + V2z + V3z) / 3
-		triangleCenter.z = (terrainModel->pVertices[ terrainModel->pIndices[i+0] ].z +
-							terrainModel->pVertices[ terrainModel->pIndices[i+1] ].z +
-							terrainModel->pVertices[ terrainModel->pIndices[i+2] ].z ) / 3;
-		// For the height we gonna consider the first vertice Y
-		triangleCenter.y =  terrainModel->pVertices[ terrainModel->pIndices[i] ].y;
-
-		g_vTerrainTrianglesCenter->push_back(triangleCenter);
-		i += 3;
-	}
-}
-
 static void error_callback(int error, const char* description) {
 	fprintf(stderr, "Glfw Error %d: %s\n", error, description);
 }
@@ -122,50 +72,6 @@ void graphicsProjOneGameLoop() {
 
 void graphicsMidTermGameLoop() {
 	// TODO
-}
-
-void patternsMidTermGameLoop() {
-	// TODO
-	if (g_vTerrainTrianglesCenter == nullptr) {
-		caculateTerrainTrianglesCenter(g_ProjectManager->m_selectedScene->m_mMeshes.find("Terrain")->second->m_parentModel);
-
-		iRobot* theRobot;
-		int closestFaceIndex;
-		for (int i = 0; i < TOTAL_NUM_OF_ROBOTS; i++) {
-			theRobot = g_robotFactory->BuildARobot();
-			closestFaceIndex = calculateClosestTerrainTriangle(glm::vec3(static_cast<cRobot*>(theRobot)->m_position.x,
-																		 static_cast<cRobot*>(theRobot)->m_position.y,
-																		 static_cast<cRobot*>(theRobot)->m_position.z));
-			static_cast<cRobot*>(theRobot)->m_position.y = g_vTerrainTrianglesCenter->at(closestFaceIndex).y;
-		}
-	}
-	if (g_ProjectManager->m_GameLoopState == GameState::NEW_GAME) {
-		iRobot* theRobot;
-		int closestFaceIndex;
-		for (int i = 0; i < TOTAL_NUM_OF_ROBOTS; i++) {
-			theRobot = g_robotFactory->getRobot(i);
-			g_robotFactory->setNewRandomPosition(theRobot);
-			closestFaceIndex = calculateClosestTerrainTriangle(glm::vec3(static_cast<cRobot*>(theRobot)->m_position.x,
-																		 static_cast<cRobot*>(theRobot)->m_position.y,
-																		 static_cast<cRobot*>(theRobot)->m_position.z));
-			static_cast<cRobot*>(theRobot)->m_position.y = g_vTerrainTrianglesCenter->at(closestFaceIndex).y;
-		}
-		g_ProjectManager->m_GameLoopState = GameState::RUNNING;
-	}
-	if (g_ProjectManager->m_GameLoopState == GameState::RUNNING) {
-		iRobot* theRobot;
-		// Time to Update the Mesh Position
-		std::map<std::string, cMeshObject*>::iterator itMeshes;
-		itMeshes = g_ProjectManager->m_selectedScene->m_mMeshes.begin();
-		// Iterates through all meshes
-		for (int i = 0; i < TOTAL_NUM_OF_ROBOTS; i++) {
-			theRobot = g_robotFactory->getRobot(i);
-			itMeshes->second->m_position.x = static_cast<cRobot*>(theRobot)->m_position.x;
-			itMeshes->second->m_position.y = static_cast<cRobot*>(theRobot)->m_position.y;
-			itMeshes->second->m_position.z = static_cast<cRobot*>(theRobot)->m_position.z;
-			itMeshes++;
-		}
-	}
 }
 
 void physicsProjTwoGameLoop() {

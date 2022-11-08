@@ -10,6 +10,7 @@
 #define PROJECT_SAVE_FILE "graphicLibrary.xml"
 
 enum GameState {
+	STARTING_UP,
 	NEW_GAME,
 	RUNNING,
 	SHUTING_DRAWN

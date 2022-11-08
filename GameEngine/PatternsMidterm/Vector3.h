@@ -1,4 +1,5 @@
 #pragma once
+#include <glm/vec3.hpp>
 
 class Vector3 {
 	// private area
@@ -86,4 +87,14 @@ public:
 
 	//Function that streams each axis position stored
 	void vOut();
+
+	// Returns a glm::vec3 of a Vector3
+	glm::vec3 getGlmVec3();
+
+	// Normalize changes the values of the vector to be 
+	// a unit length
+	void Normalize();
+
+	// Magnitude will return the length of the vector
+	float Magnitude();
 };
