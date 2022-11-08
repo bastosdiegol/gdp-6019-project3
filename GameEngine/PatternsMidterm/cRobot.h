@@ -10,9 +10,13 @@ public:
     cRobot();
     ~cRobot();
 
-    void Update(double deltaTime);
-    unsigned int getID();
-    void ChangeSpawnLocation();
+    void            Update(double deltaTime);
+    unsigned int    getID();
+    void            setPosition(float x, float y, float z);
+    Vector3         getPosition();
+    float           getHealth();
+    void            setHeight(float y);
+    void            ChangeSpawnLocation();
 private:
     unsigned int    m_id;
 

@@ -30,3 +30,21 @@ void cRobot::Update(double deltaTime) {
 unsigned int cRobot::getID() {
 	return this->m_id;
 }
+
+void cRobot::setPosition(float x, float y, float z) {
+	this->m_position.x = x;
+	this->m_position.y = y;
+	this->m_position.z = z;
+}
+
+Vector3 cRobot::getPosition() {
+	return this->m_position;
+}
+
+float cRobot::getHealth() {
+	return this->m_health;
+}
+
+void cRobot::setHeight(float y) {
+	this->m_position.y = y;
+}

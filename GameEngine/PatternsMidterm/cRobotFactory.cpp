@@ -47,7 +47,7 @@ iRobot* cRobotFactory::BuildARobot() {
 void cRobotFactory::Update(double deltaTime) {
 	DEBUG_PRINT("cRobotFactory::Update(%f)\n", deltaTime);
 	for (int i = 0; i < m_vRobots.size(); i++) {
-		if (static_cast<cRobot*>(m_vRobots[i])->m_health > 0) {
+		if (m_vRobots[i]->getHealth() > 0) {
 			m_vRobots[i]->Update(deltaTime);
 		}
 	}
@@ -57,7 +57,7 @@ void cRobotFactory::adjustRobotHeightPos(unsigned int robotId, float y) {
 	DEBUG_PRINT("cRobotFactory::adjustRobotHeightPos(%d, %f)\n", robotId, y);
 	for (int i = 0; i < m_vRobots.size(); i++) {
 		if (m_vRobots[i]->getID() == robotId) {
-			static_cast<cRobot*>(m_vRobots[i])->m_position.y = y;
+			m_vRobots[i]->setHeight(y);
 		}
 	}
 }
@@ -67,10 +67,10 @@ iRobot* cRobotFactory::getRobot(int index) {
 }
 
 void cRobotFactory::setNewRandomPosition(iRobot* robot) {
-	static_cast<cRobot*>(robot)->m_position.x = RandFloat(-128.0f, 128.0f);
 	// We gonna set Y later comparing with the closest triangle
-	static_cast<cRobot*>(robot)->m_position.y = 0.0f;
-	static_cast<cRobot*>(robot)->m_position.z = RandFloat(-128.0f, 128.0f);
+	robot->setPosition(RandFloat(-128.0f, 128.0f),
+					   0.0f,
+					   RandFloat(-128.0f, 128.0f));
 }
 
 iRobot* cRobotFactory::findNearestRobot(iRobot* robot) {
@@ -79,20 +79,19 @@ iRobot* cRobotFactory::findNearestRobot(iRobot* robot) {
 	float newDistance;
 	for (int i = 0; i < m_vRobots.size(); i++) {
 		if (m_vRobots[i]->getID() != robot->getID()) {
-			newDistance = glm::distance(static_cast<cRobot*>(robot)->m_position.getGlmVec3(),
-										static_cast<cRobot*>(m_vRobots[0])->m_position.getGlmVec3());
+			newDistance = glm::distance(robot->getPosition().getGlmVec3(),
+										m_vRobots[0]->getPosition().getGlmVec3());
 			if (newDistance < smallestDistance) {
 				// TODO: Conditional for Weapon Type here
 				// Laser and Bullet do something
 				// Bomb do another thing
-				Vector3 targetToRobot = static_cast<cRobot*>(m_vRobots[i])->m_position -
-										static_cast<cRobot*>(robot)->m_position;
+				Vector3 targetToRobot = m_vRobots[i]->getPosition() -
+										robot->getPosition();
 				targetToRobot.Normalize();
-				// Now we should iterate through the terrain
-				// But the terrain is on the Graphics Project
-				// =(
-				newDistance = smallestDistance;
-				indexClosestRobot = i;
+				if (hasLineOfSight(robot, m_vRobots[i], targetToRobot)) {
+					newDistance = smallestDistance;
+					indexClosestRobot = i;
+				}
 			}
 		}
 	}
@@ -102,9 +101,53 @@ iRobot* cRobotFactory::findNearestRobot(iRobot* robot) {
 		return m_vRobots[indexClosestRobot];
 }
 
+void cRobotFactory::setTerrain(cModel* terrain) {
+	this->m_terrain = terrain;
+}
+
+bool cRobotFactory::hasLineOfSight(iRobot* robot, iRobot* target, Vector3 direction) {
+	for (int terrainIndex = 0; terrainIndex < m_terrain->numberOfTriangles; terrainIndex++) {
+		// TODO: Now we should iterate through the terrain
+	}
+	return false;
+}
+
+void cRobotFactory::caculatePlaneTrianglesCenter(cModel* terrainModel) {
+	m_vPlaneTrianglesCenter = new std::vector<glm::vec3>();
+	// Initial reserve to contain all the centers for the terrain
+	//g_vTerrainTrianglesCenter->reserve(terrainModel->numberOfTriangles);
+	glm::vec3 triangleCenter;
+
+	// We gonna iterate through each triangle of the model
+	for (int i = 0; i < terrainModel->numberOfIndices; i) {
+		// Checks if this triangle is a plane (all 3 vertices has same Y)
+		if ((terrainModel->pVertices[terrainModel->pIndices[i + 0]].y ==
+			terrainModel->pVertices[terrainModel->pIndices[i + 1]].y) &&
+			(terrainModel->pVertices[terrainModel->pIndices[i + 0]].y ==
+				terrainModel->pVertices[terrainModel->pIndices[i + 2]].y)) {
+
+			// Center Triangle Terrain
+			// = (CenterX, CenterZ)
+			// CenterX = (V1x + V2x + V3x) / 3
+			triangleCenter.x = (terrainModel->pVertices[terrainModel->pIndices[i + 0]].x +
+				terrainModel->pVertices[terrainModel->pIndices[i + 1]].x +
+				terrainModel->pVertices[terrainModel->pIndices[i + 2]].x) / 3;
+			// CenterZ = (V1z + V2z + V3z) / 3
+			triangleCenter.z = (terrainModel->pVertices[terrainModel->pIndices[i + 0]].z +
+				terrainModel->pVertices[terrainModel->pIndices[i + 1]].z +
+				terrainModel->pVertices[terrainModel->pIndices[i + 2]].z) / 3;
+			// For the height we gonna consider the first vertice Y
+			triangleCenter.y = terrainModel->pVertices[terrainModel->pIndices[i]].y;
+
+			m_vPlaneTrianglesCenter->push_back(triangleCenter);
+		}
+		i += 3;
+	}
+}
+
 // Utility function for a random range of two floats
 float RandFloat(float min, float max) {
-	DEBUG_PRINT("RandFloat(%f, %f)\n", min, max);
+	//DEBUG_PRINT("RandFloat(%f, %f)\n", min, max);
 	float random = ((float)rand()) / (float)RAND_MAX;
 	float diff = max - min;
 	float r = random * diff;

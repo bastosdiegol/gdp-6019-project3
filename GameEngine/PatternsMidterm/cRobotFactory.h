@@ -1,5 +1,6 @@
 #pragma once
 #include "iRobot.h"
+#include "cModel.h"
 #include <vector>
 
 class cRobotFactory {
@@ -12,6 +13,8 @@ public:
 	~cRobotFactory();
 	cRobotFactory(cRobotFactory& other) = delete;
 	void operator=(const cRobotFactory&) = delete;
+
+	std::vector<glm::vec3>* m_vPlaneTrianglesCenter;
 
 	/// <summary>
 	/// Singleton Method for Getting an Instance of this class
@@ -50,9 +53,28 @@ public:
 	/// <param name="robot">Receives the asking Robot</param>
 	/// <returns>Returns the closest Robot</returns>
 	iRobot* findNearestRobot(iRobot* robot);
+	/// <summary>
+	/// Sets the terrain
+	/// </summary>
+	/// <param name="terrain">Receives the pointer of a cModel class</param>
+	void setTerrain(cModel* terrain);
+	/// <summary>
+	/// Checks if a robot has line of sight to another robot
+	/// </summary>
+	/// <param name="robot">The robot whos trying to reach another robot</param>
+	/// <param name="target">The robot target</param>
+	/// <param name="direction">The normalized Vector of the direction</param>
+	/// <returns></returns>
+	bool hasLineOfSight(iRobot* robot, iRobot* target, Vector3 direction);
+	/// <summary>
+	/// Iterates through the triangle of a plane and stores all plane triagnles
+	/// </summary>
+	/// <param name="terrainModel">Pointer to the terrain Model</param>
+	void caculatePlaneTrianglesCenter(cModel* terrainModel);
 
 private:
 	std::vector<iRobot*> m_vRobots;
+	cModel*				 m_terrain;
 };
 
 // Utility function for a random range of two floats
