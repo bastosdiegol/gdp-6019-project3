@@ -41,6 +41,7 @@ iRobot* cRobotFactory::BuildARobot() {
 	static_cast<cRobot*>(newRobot)->m_position.y = 0.0f;
 	static_cast<cRobot*>(newRobot)->m_position.z = RandFloat(-128.0f, 128.0f);
 	this->m_vRobots.push_back(newRobot);
+	this->m_mMapOfTargets.try_emplace(newRobot->getID(), -1); // Adds the robot with no target
 	return newRobot;	 
 }
 
@@ -75,50 +76,94 @@ void cRobotFactory::setNewRandomPosition(iRobot* robot) {
 
 iRobot* cRobotFactory::findNearestRobot(iRobot* robot) {
 	int indexClosestRobot = -1;
-	float smallestDistance = 128 * 1.414; // Diagonal of the Arena - just a big value
+	float smallestDistance = 256 * 1.414; // Diagonal of the Arena - just a big value
 	float newDistance;
 	for (int i = 0; i < m_vRobots.size(); i++) {
 		if (m_vRobots[i]->getID() != robot->getID()) {
+			DEBUG_PRINT("	New Target Robot[%d] Position(%.1f,%.1f,%.1f) found.\n", m_vRobots[i]->getID(), m_vRobots[i]->getPosition().x
+				, m_vRobots[i]->getPosition().y, m_vRobots[i]->getPosition().z);
+			DEBUG_PRINT("		... Comparing Distance [Origin, Target] = %f\n", glm::distance(robot->getPosition().getGlmVec3(),
+				m_vRobots[i]->getPosition().getGlmVec3()));
+			DEBUG_PRINT("		... Comparing Distance [Target, Origin] = %f\n", glm::distance(m_vRobots[i]->getPosition().getGlmVec3(),
+				robot->getPosition().getGlmVec3()));
 			newDistance = glm::distance(robot->getPosition().getGlmVec3(),
-										m_vRobots[0]->getPosition().getGlmVec3());
+										m_vRobots[i]->getPosition().getGlmVec3());
 			if (newDistance < smallestDistance) {
 				// TODO: Conditional for Weapon Type here
 				// Laser and Bullet do something
 				// Bomb do another thing
-				Vector3 targetToRobot = m_vRobots[i]->getPosition() -
-										robot->getPosition();
+				DEBUG_PRINT("			New small distance ... From Robot [%d] To Robot[%d] Distance to it: %f.\n", robot->getID(), m_vRobots[i]->getID(), newDistance);
+				Vector3 targetToRobot = m_vRobots[i]->getPosition() - robot->getPosition();
 				targetToRobot.Normalize();
-				if (hasLineOfSight(robot, m_vRobots[i], targetToRobot)) {
-					newDistance = smallestDistance;
+				DEBUG_PRINT("			Normal Vector to Target Robot[%d]: ", m_vRobots[i]->getID());
+				targetToRobot.vOut(); DEBUG_PRINT("\n");
+				if (hasLineOfSight(robot, m_vRobots[i], targetToRobot.getGlmVec3())) {
+					smallestDistance = newDistance;
 					indexClosestRobot = i;
-				}
+					DEBUG_PRINT("				Has LOS!\n");
+				}else
+
+					DEBUG_PRINT("				LOS check FAILED!\n");
 			}
 		}
 	}
-	if (indexClosestRobot == -1)
+	if (indexClosestRobot == -1) {
+		std::map<int, int>::iterator it = m_mMapOfTargets.find(robot->getID());
+		if (it != m_mMapOfTargets.end())
+			it->second = -1; // Set's no target for this robot
 		return nullptr;
-	else
+	}
+	else {
+		std::map<int, int>::iterator it = m_mMapOfTargets.find(robot->getID());
+		if (it != m_mMapOfTargets.end())
+			it->second = m_vRobots[indexClosestRobot]->getID(); // Set's new target for this robot
 		return m_vRobots[indexClosestRobot];
+	}
 }
 
 void cRobotFactory::setTerrain(cModel* terrain) {
 	this->m_terrain = terrain;
 }
 
-bool cRobotFactory::hasLineOfSight(iRobot* robot, iRobot* target, Vector3 direction) {
-	for (int terrainIndex = 0; terrainIndex < m_terrain->numberOfTriangles; terrainIndex++) {
-		// TODO: Now we should iterate through the terrain
+bool cRobotFactory::hasLineOfSight(iRobot* robot, iRobot* target, glm::vec3 direction) {
+	// Initial Position of the LOS
+
+	DEBUG_PRINT("				Checking LOS ... Robot[%d] to Target Robot[%d].\n", robot->getID(), target->getID());
+	glm::vec3 curPosition = robot->getPosition().getGlmVec3() + glm::vec3(0.0f, 5.0f, 0.0f);
+	float dt = 0.1f;
+	glm::vec3 movementPerStep = direction * 5.0f;
+	float age = 6.0f;
+	int indexClosestTriangle;
+	float distanceToTarget = glm::distance(curPosition, target->getPosition().getGlmVec3());
+	do {
+		if (distanceToTarget < ENEMY_RADIUS) {
+			DEBUG_PRINT("				LOS ok! Enemy can be hit.");
+			return true;
+		}
+		indexClosestTriangle = calculateClosestTerrainTriangle(curPosition, m_vTerrainTrianglesCenter);
+		if (m_vTerrainTrianglesCenter->at(indexClosestTriangle).y > curPosition.y) {
+			DEBUG_PRINT("				closestTriangle.y(%.1f) > curPosition.y(%.1f) !\n", m_vTerrainTrianglesCenter->at(indexClosestTriangle).y, curPosition.y);
+			DEBUG_PRINT("				distanceToTarget(%.1f), age(%f)!\n", distanceToTarget, age);
+			return false;
+		}
+		curPosition += movementPerStep;
+		DEBUG_PRINT("				distanceToTarget(%f)!\n", distanceToTarget);
+		distanceToTarget = glm::distance(curPosition, target->getPosition().getGlmVec3());
+		age -= dt;
+	} while ( distanceToTarget > 0 && age > 0);
+	if (age < 0) {
+		DEBUG_PRINT("				Checking died of old age(%f)!\n", age);
+		return false;
 	}
-	return false;
+	DEBUG_PRINT("				distanceToTarget(%.1f) > age(%f)!\n", distanceToTarget, age);
+	return true;
 }
 
-void cRobotFactory::caculatePlaneTrianglesCenter(cModel* terrainModel) {
+void cRobotFactory::caculateTrianglesCenter(cModel* terrainModel) {
 	m_vPlaneTrianglesCenter = new std::vector<glm::vec3>();
-	// Initial reserve to contain all the centers for the terrain
-	//g_vTerrainTrianglesCenter->reserve(terrainModel->numberOfTriangles);
 	glm::vec3 triangleCenter;
-
 	// We gonna iterate through each triangle of the model
+	// And just save plane (no height difference) triangles
 	for (int i = 0; i < terrainModel->numberOfIndices; i) {
 		// Checks if this triangle is a plane (all 3 vertices has same Y)
 		if ((terrainModel->pVertices[terrainModel->pIndices[i + 0]].y ==
@@ -143,6 +188,46 @@ void cRobotFactory::caculatePlaneTrianglesCenter(cModel* terrainModel) {
 		}
 		i += 3;
 	}
+
+	// Initial reserve to containing all triangles centers part of the terrain
+	m_vTerrainTrianglesCenter = new std::vector<glm::vec3>();
+	m_vTerrainTrianglesCenter->reserve(terrainModel->numberOfTriangles);
+	// We gonna iterate through each triangle of the model
+	for (int i = 0; i < terrainModel->numberOfIndices; i) {
+			// Center Triangle Terrain
+			// = (CenterX, CenterZ)
+			// CenterX = (V1x + V2x + V3x) / 3
+			triangleCenter.x = (terrainModel->pVertices[terrainModel->pIndices[i + 0]].x +
+								terrainModel->pVertices[terrainModel->pIndices[i + 1]].x +
+								terrainModel->pVertices[terrainModel->pIndices[i + 2]].x) / 3;
+			/*triangleCenter.y = (terrainModel->pVertices[terrainModel->pIndices[i + 0]].y +
+								terrainModel->pVertices[terrainModel->pIndices[i + 1]].y +
+								terrainModel->pVertices[terrainModel->pIndices[i + 2]].y) / 3;*/
+			// For the height we gonna consider the first vertice Y
+			triangleCenter.y = terrainModel->pVertices[terrainModel->pIndices[i]].y;
+			triangleCenter.z = (terrainModel->pVertices[terrainModel->pIndices[i + 0]].z +
+								terrainModel->pVertices[terrainModel->pIndices[i + 1]].z +
+								terrainModel->pVertices[terrainModel->pIndices[i + 2]].z) / 3;
+
+			m_vTerrainTrianglesCenter->push_back(triangleCenter);
+		i += 3;
+	}
+}
+
+int cRobotFactory::calculateClosestTerrainTriangle(glm::vec3 position, std::vector<glm::vec3>* triVector) {
+	float minDistance = glm::distance(triVector->at(0), position);
+	float curDistance;
+	int faceIndex = 0; // Stores the index of the closest triangle
+	for (int i = 0; i < triVector->size(); i++) {
+		// gets the distance of the current face
+		curDistance = glm::distance(triVector->at(i), position);
+		// Checks if the current face is the closest face
+		if (curDistance < minDistance) {
+			minDistance = curDistance;
+			faceIndex = i;
+		}
+	}
+	return faceIndex;
 }
 
 // Utility function for a random range of two floats

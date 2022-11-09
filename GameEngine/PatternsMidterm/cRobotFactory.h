@@ -2,6 +2,9 @@
 #include "iRobot.h"
 #include "cModel.h"
 #include <vector>
+#include <map>
+
+#define ENEMY_RADIUS 6
 
 class cRobotFactory {
 protected:
@@ -14,7 +17,10 @@ public:
 	cRobotFactory(cRobotFactory& other) = delete;
 	void operator=(const cRobotFactory&) = delete;
 
-	std::vector<glm::vec3>* m_vPlaneTrianglesCenter;
+	std::vector<glm::vec3>* m_vPlaneTrianglesCenter;	// just plane surfaces for spawn
+	std::vector<glm::vec3>* m_vTerrainTrianglesCenter;  // all terrain triangles
+	// This map stores current assigned targets found for each robot
+	std::map<int, int> m_mMapOfTargets;
 
 	/// <summary>
 	/// Singleton Method for Getting an Instance of this class
@@ -65,12 +71,19 @@ public:
 	/// <param name="target">The robot target</param>
 	/// <param name="direction">The normalized Vector of the direction</param>
 	/// <returns></returns>
-	bool hasLineOfSight(iRobot* robot, iRobot* target, Vector3 direction);
+	bool hasLineOfSight(iRobot* robot, iRobot* target, glm::vec3 direction);
 	/// <summary>
 	/// Iterates through the triangle of a plane and stores all plane triagnles
 	/// </summary>
 	/// <param name="terrainModel">Pointer to the terrain Model</param>
-	void caculatePlaneTrianglesCenter(cModel* terrainModel);
+	void caculateTrianglesCenter(cModel* terrainModel);
+	/// <summary>
+	/// Calculates the closest triangle to a certain position
+	/// </summary>
+	/// <param name="position">Receives the initial position</param>
+	/// <param name="triVector">Receives the vector of triangles for distance check</param>
+	/// <returns>Returns the index of the closest triangle</returns>
+	int calculateClosestTerrainTriangle(glm::vec3 position, std::vector<glm::vec3>* triVector);
 
 private:
 	std::vector<iRobot*> m_vRobots;
