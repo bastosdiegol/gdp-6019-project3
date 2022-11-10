@@ -33,6 +33,8 @@ void cLightManager::LoadLightUniformLocations(unsigned int shaderID, std::map<st
 		itLight->second->direction_UniformLocation	= glGetUniformLocation(shaderID, "theLights[0].direction");
 		itLight->second->param1_UniformLocation		= glGetUniformLocation(shaderID, "theLights[0].param1");
 		itLight->second->param2_UniformLocation		= glGetUniformLocation(shaderID, "theLights[0].param2");
+	} else {
+		return;
 	}
 	itLight++;
 	if(itLight != p_mapOfLights->end()){
@@ -55,6 +57,8 @@ void cLightManager::LoadLightUniformLocations(unsigned int shaderID, std::map<st
 		itLight->second->direction_UniformLocation	= glGetUniformLocation(shaderID, "theLights[2].direction");
 		itLight->second->param1_UniformLocation		= glGetUniformLocation(shaderID, "theLights[2].param1");
 		itLight->second->param2_UniformLocation		= glGetUniformLocation(shaderID, "theLights[2].param2");
+	} else {
+		return;
 	}
 	itLight++;
 	if(itLight != p_mapOfLights->end()){
@@ -65,6 +69,44 @@ void cLightManager::LoadLightUniformLocations(unsigned int shaderID, std::map<st
 		itLight->second->direction_UniformLocation	= glGetUniformLocation(shaderID, "theLights[3].direction");
 		itLight->second->param1_UniformLocation		= glGetUniformLocation(shaderID, "theLights[3].param1");
 		itLight->second->param2_UniformLocation		= glGetUniformLocation(shaderID, "theLights[3].param2");
+	} else {
+		return;
+	}
+	itLight++;
+	if(itLight != p_mapOfLights->end()){
+		itLight->second->position_UniformLocation	= glGetUniformLocation(shaderID, "theLights[4].position");
+		itLight->second->diffuse_UniformLocation	= glGetUniformLocation(shaderID, "theLights[4].diffuse");
+		itLight->second->specular_UniformLocation	= glGetUniformLocation(shaderID, "theLights[4].specular");
+		itLight->second->atten_UniformLocation		= glGetUniformLocation(shaderID, "theLights[4].atten");
+		itLight->second->direction_UniformLocation	= glGetUniformLocation(shaderID, "theLights[4].direction");
+		itLight->second->param1_UniformLocation		= glGetUniformLocation(shaderID, "theLights[4].param1");
+		itLight->second->param2_UniformLocation		= glGetUniformLocation(shaderID, "theLights[4].param2");
+	} else {
+		return;
+	}
+	itLight++;
+	if(itLight != p_mapOfLights->end()){
+		itLight->second->position_UniformLocation	= glGetUniformLocation(shaderID, "theLights[5].position");
+		itLight->second->diffuse_UniformLocation	= glGetUniformLocation(shaderID, "theLights[5].diffuse");
+		itLight->second->specular_UniformLocation	= glGetUniformLocation(shaderID, "theLights[5].specular");
+		itLight->second->atten_UniformLocation		= glGetUniformLocation(shaderID, "theLights[5].atten");
+		itLight->second->direction_UniformLocation	= glGetUniformLocation(shaderID, "theLights[5].direction");
+		itLight->second->param1_UniformLocation		= glGetUniformLocation(shaderID, "theLights[5].param1");
+		itLight->second->param2_UniformLocation		= glGetUniformLocation(shaderID, "theLights[5].param2");
+	} else {
+		return;
+	}
+	itLight++;
+	if(itLight != p_mapOfLights->end()){
+		itLight->second->position_UniformLocation	= glGetUniformLocation(shaderID, "theLights[6].position");
+		itLight->second->diffuse_UniformLocation	= glGetUniformLocation(shaderID, "theLights[6].diffuse");
+		itLight->second->specular_UniformLocation	= glGetUniformLocation(shaderID, "theLights[6].specular");
+		itLight->second->atten_UniformLocation		= glGetUniformLocation(shaderID, "theLights[6].atten");
+		itLight->second->direction_UniformLocation	= glGetUniformLocation(shaderID, "theLights[6].direction");
+		itLight->second->param1_UniformLocation		= glGetUniformLocation(shaderID, "theLights[6].param1");
+		itLight->second->param2_UniformLocation		= glGetUniformLocation(shaderID, "theLights[6].param2");
+	} else {
+		return;
 	}
 }
 

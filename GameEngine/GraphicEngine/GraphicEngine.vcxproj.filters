@@ -170,6 +170,9 @@
     <ClInclude Include="PatternsMidtermCommons.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="GraphicsMidtermCommons.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\fragmentShader01.glsl">

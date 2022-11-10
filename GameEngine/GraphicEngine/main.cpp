@@ -18,6 +18,7 @@
 
 // Scene Main Loops, Globals and Functions
 #include "PatternsMidtermCommons.h"
+#include "GraphicsMidtermCommons.h"
 
 #ifdef _DEBUG
 #define DEBUG_LOG_ENABLED
@@ -65,17 +66,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 static void error_callback(int error, const char* description) {
 	fprintf(stderr, "Glfw Error %d: %s\n", error, description);
-}
-
-void graphicsProjOneGameLoop() {
-}
-
-void graphicsMidTermGameLoop() {
-	// TODO
-}
-
-void physicsProjTwoGameLoop() {
-	// TODO
 }
 
 int main(int argc, char* argv[]) {
@@ -188,14 +178,10 @@ int main(int argc, char* argv[]) {
 			// Then if there's a selected Scene
 			g_ProjectManager->m_selectedScene != nullptr) {
 			// Then choose the correct game loop for the specified scene
-			if (g_ProjectManager->m_selectedScene->m_name == "1.Graphics Proj#1")
-				graphicsProjOneGameLoop();
-			else if (g_ProjectManager->m_selectedScene->m_name == "2.Graphics MidTerm")
-				graphicsMidTermGameLoop();
-			else if (g_ProjectManager->m_selectedScene->m_name == "3.Patterns MidTerm")
+			if (g_ProjectManager->m_selectedScene->m_name == "3.Graphics MidTerm Night")
+				graphicsMidTermNightGameLoop();
+			else if (g_ProjectManager->m_selectedScene->m_name == "4.Patterns MidTerm")
 				patternsMidTermGameLoop();
-			else if (g_ProjectManager->m_selectedScene->m_name == "4.Physics Proj#2")
-				physicsProjTwoGameLoop();
 		}
 
 		// If new Scene

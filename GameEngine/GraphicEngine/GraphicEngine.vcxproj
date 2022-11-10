@@ -179,6 +179,7 @@
     <ClInclude Include="cScene.h" />
     <ClInclude Include="cShaderManager.h" />
     <ClInclude Include="cVAOManager.h" />
+    <ClInclude Include="GraphicsMidtermCommons.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_glfw.h" />

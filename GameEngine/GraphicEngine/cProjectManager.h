@@ -13,7 +13,7 @@ enum GameState {
 	STARTING_UP,
 	NEW_GAME,
 	RUNNING,
-	SHUTING_DRAWN
+	SHUTING_DOWN
 };
 
 class cProjectManager {	
