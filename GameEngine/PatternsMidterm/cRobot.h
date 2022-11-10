@@ -1,11 +1,13 @@
 #pragma once
 #include "iRobot.h"
+#include "iWeapon.h"
 
 class cRobot :
     public iRobot {
 public:
     Vector3		    m_position;
     float		    m_health;
+    iWeapon*        m_weapon;
 
     cRobot();
     ~cRobot();
@@ -16,6 +18,8 @@ public:
     Vector3         getPosition();
     float           getHealth();
     void            setHeight(float y);
+    void            setWeapon(iWeapon* weapon);
+    std::string     getWeaponName();
     void            ChangeSpawnLocation();
 private:
     unsigned int    m_id;

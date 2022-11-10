@@ -158,6 +158,9 @@ bool cProjectManager::LoadScene(std::string name) {
 					meshInfo = meshInfo.next_sibling();
 					// Reads isVisible
 					newMeshObj->m_bIsVisible = meshInfo.attribute("value").as_bool();
+					meshInfo = meshInfo.next_sibling();
+					// Reads isVisible
+					newMeshObj->m_displayBoundingBox = meshInfo.attribute("value").as_bool();
 
 					// Adds the newly created Mesh to the Scene Map of Meshes
 					newScene->m_mMeshes.try_emplace(newMeshObj->m_meshName, newMeshObj);

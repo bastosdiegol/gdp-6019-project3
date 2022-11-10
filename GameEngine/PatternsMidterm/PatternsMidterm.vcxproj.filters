@@ -30,7 +30,13 @@
     <ClInclude Include="iWeapon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cWeapon.h">
+    <ClInclude Include="cWeaponLOS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cWeaponAssembler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cWeaponBallistic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -47,7 +53,13 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cWeapon.cpp">
+    <ClCompile Include="cWeaponLOS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cWeaponAssembler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cWeaponBallistic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -48,3 +48,11 @@ float cRobot::getHealth() {
 void cRobot::setHeight(float y) {
 	this->m_position.y = y;
 }
+
+void cRobot::setWeapon(iWeapon* weapon) {
+	this->m_weapon = weapon;
+}
+
+std::string cRobot::getWeaponName() {
+	return this->m_weapon->getName();
+}

@@ -2,7 +2,7 @@
 #include "iWeapon.h"
 #include <string>
 
-class cWeapon :
+class cWeaponLOS :
     public iWeapon {
 public:
     std::string m_name;
@@ -10,9 +10,10 @@ public:
     float       m_damageRadius;
     float       m_reloadRate;
 
-    cWeapon(std::string name, float damagePerShot, float damageRadius, float reloadRate);
-    ~cWeapon();
+    cWeaponLOS(std::string name, float damagePerShot, float damageRadius, float reloadRate);
+    ~cWeaponLOS();
 
     void Fire();
+    std::string getName();
 };
 

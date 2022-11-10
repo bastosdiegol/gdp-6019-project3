@@ -144,7 +144,9 @@
   <ItemGroup>
     <ClInclude Include="cRobot.h" />
     <ClInclude Include="cRobotFactory.h" />
-    <ClInclude Include="cWeapon.h" />
+    <ClInclude Include="cWeaponBallistic.h" />
+    <ClInclude Include="cWeaponLOS.h" />
+    <ClInclude Include="cWeaponAssembler.h" />
     <ClInclude Include="iRobot.h" />
     <ClInclude Include="iWeapon.h" />
     <ClInclude Include="Vector3.h" />
@@ -152,7 +154,9 @@
   <ItemGroup>
     <ClCompile Include="cRobot.cpp" />
     <ClCompile Include="cRobotFactory.cpp" />
-    <ClCompile Include="cWeapon.cpp" />
+    <ClCompile Include="cWeaponBallistic.cpp" />
+    <ClCompile Include="cWeaponLOS.cpp" />
+    <ClCompile Include="cWeaponAssembler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Vector3.cpp" />
   </ItemGroup>

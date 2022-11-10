@@ -168,22 +168,6 @@ int main(int argc, char* argv[]) {
 
 		glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
 
-		// Game Loop
-		// First I check If I want to enable the game loop
-		if (g_ProjectManager->m_isGameLoopEnabled && 
-			// Then if there's a selected Scene
-			g_ProjectManager->m_selectedScene != nullptr) {
-			// Then choose the correct game loop for the specified scene
-			if (g_ProjectManager->m_selectedScene->m_name == "1.Graphics Proj#1")
-				graphicsProjOneGameLoop();
-			else if (g_ProjectManager->m_selectedScene->m_name == "2.Graphics MidTerm")
-				graphicsMidTermGameLoop();
-			else if (g_ProjectManager->m_selectedScene->m_name == "3.Patterns MidTerm")
-				patternsMidTermGameLoop();
-			else if (g_ProjectManager->m_selectedScene->m_name == "4.Physics Proj#2")
-				physicsProjTwoGameLoop();
-		}
-
 		// Start the Dear ImGui frame
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -196,6 +180,23 @@ int main(int argc, char* argv[]) {
 			g_projectUI.renderMeshUI();
 		if(g_projectUI.isLightSelected)
 			g_projectUI.renderLighthUI();
+
+
+		// Game Loop
+		// First I check If I want to enable the game loop
+		if (g_ProjectManager->m_isGameLoopEnabled &&
+			// Then if there's a selected Scene
+			g_ProjectManager->m_selectedScene != nullptr) {
+			// Then choose the correct game loop for the specified scene
+			if (g_ProjectManager->m_selectedScene->m_name == "1.Graphics Proj#1")
+				graphicsProjOneGameLoop();
+			else if (g_ProjectManager->m_selectedScene->m_name == "2.Graphics MidTerm")
+				graphicsMidTermGameLoop();
+			else if (g_ProjectManager->m_selectedScene->m_name == "3.Patterns MidTerm")
+				patternsMidTermGameLoop();
+			else if (g_ProjectManager->m_selectedScene->m_name == "4.Physics Proj#2")
+				physicsProjTwoGameLoop();
+		}
 
 		// If new Scene
 		if (g_ProjectManager->isNewScene) {
@@ -338,8 +339,30 @@ int main(int argc, char* argv[]) {
 
 					// Use Colour vCol
 					glUniform1f(bUseRGBA_Colour_ULocID, (GLfloat)GL_TRUE);
-					// Set White BoundingBox
-					glUniform4f(RGBA_Colour_ULocID, 1.0f, 1.0f, 1.0f, 1.0f);
+					if (g_ProjectManager->m_selectedScene->m_name == "3.Patterns MidTerm" &&
+						g_ProjectManager->m_isGameLoopEnabled) {
+						size_t pos = itMeshes->second->m_meshName.find(" ");
+						std::string token;
+						int robotID;
+						iRobot* theRobot;
+						if (pos != std::string::npos) {
+							token = itMeshes->second->m_meshName.substr(0, pos);
+							if (token == "Robot") {
+								robotID = std::stoi(itMeshes->second->m_meshName.substr(pos, pos + 2));
+								theRobot = g_robotFactory->getRobot(robotID-1);
+								if (theRobot->getWeaponName() == "Laser") {
+									glUniform4f(RGBA_Colour_ULocID, 0.0f, 1.0f, 0.0f, 1.0f);
+								} else if (theRobot->getWeaponName() == "Bomb") {
+									glUniform4f(RGBA_Colour_ULocID, 1.0f, 0.0f, 0.0f, 1.0f);
+								} else if (theRobot->getWeaponName() == "Bullet") {
+									glUniform4f(RGBA_Colour_ULocID, 0.0f, 0.0f, 1.0f, 1.0f);
+								}
+							}
+						}
+					} else {
+						// Set White BoundingBox
+						glUniform4f(RGBA_Colour_ULocID, 1.0f, 1.0f, 1.0f, 1.0f);
+					}
 					// Do Not Light the BB
 					glUniform1f(bDoNotLight_Colour_ULocID, (GLfloat)GL_TRUE);
 
@@ -433,6 +456,9 @@ int main(int argc, char* argv[]) {
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
+
+		/*if(g_ProjectManager->m_GameLoopState == GameState::RUNNING)
+			system("pause");*/
 	}
 
 	delete g_ProjectManager;

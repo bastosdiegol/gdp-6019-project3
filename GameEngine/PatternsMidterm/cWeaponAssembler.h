@@ -22,5 +22,13 @@ public:
 	/// </summary>
 	/// <returns>A pointer to the built Weapon</returns>
 	iWeapon* BuildAWeapon(void);
+
 };
 
+/// <summary>
+	/// Utility function to generate a random integer
+	/// </summary>
+	/// <param name="min">Receives manimum int</param>
+	/// <param name="max">Receives max int</param>
+	/// <returns>Returns random int between min and max</returns>
+int RandInt(int min, int max);

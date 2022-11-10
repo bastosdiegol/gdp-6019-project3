@@ -1,5 +1,6 @@
 #pragma once
 #include "iRobot.h"
+#include "iWeapon.h"
 #include "cModel.h"
 #include <vector>
 #include <map>
@@ -31,7 +32,7 @@ public:
 	/// Builds a Single iRobot and adds it to the array of Robots
 	/// </summary>
 	/// <returns>A pointer to the built Robot</returns>
-	iRobot* BuildARobot(void);
+	iRobot* BuildARobot(iWeapon* weapon);
 	/// <summary>
 	/// Calls Update() on all Robots that are alive
 	/// </summary>

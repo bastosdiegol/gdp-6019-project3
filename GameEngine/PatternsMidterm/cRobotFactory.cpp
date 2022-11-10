@@ -32,14 +32,13 @@ cRobotFactory* cRobotFactory::GetInstance() {
 	return m_robotFactory;
 }
 
-iRobot* cRobotFactory::BuildARobot() {
+iRobot* cRobotFactory::BuildARobot(iWeapon* weapon) {
 	DEBUG_PRINT("cRobotFactory::buildARobot()\n");	
 	iRobot* newRobot = new cRobot();
 	// We could receive the min and max X for reference by lets go hardcoded for while
-	static_cast<cRobot*>(newRobot)->m_position.x = RandFloat(-128.0f, 128.0f);
 	// We gonna set Y later comparing with the closest triangle
-	static_cast<cRobot*>(newRobot)->m_position.y = 0.0f;
-	static_cast<cRobot*>(newRobot)->m_position.z = RandFloat(-128.0f, 128.0f);
+	newRobot->setPosition(RandFloat(-128.0f, 128.0f), 0.0f, RandFloat(-128.0f, 128.0f));
+	newRobot->setWeapon(weapon);
 	this->m_vRobots.push_back(newRobot);
 	this->m_mMapOfTargets.try_emplace(newRobot->getID(), -1); // Adds the robot with no target
 	return newRobot;	 
@@ -129,7 +128,7 @@ bool cRobotFactory::hasLineOfSight(iRobot* robot, iRobot* target, glm::vec3 dire
 	// Initial Position of the LOS
 
 	DEBUG_PRINT("				Checking LOS ... Robot[%d] to Target Robot[%d].\n", robot->getID(), target->getID());
-	glm::vec3 curPosition = robot->getPosition().getGlmVec3() + glm::vec3(0.0f, 5.0f, 0.0f);
+	glm::vec3 curPosition = robot->getPosition().getGlmVec3() + glm::vec3(0.0f, 5.0f, 0.0f); // Height off-set for weapon
 	float dt = 0.1f;
 	glm::vec3 movementPerStep = direction * 5.0f;
 	float age = 6.0f;

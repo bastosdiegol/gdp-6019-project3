@@ -4,6 +4,7 @@
 #include <glm/geometric.hpp>
 
 #include <cRobotFactory.h>
+#include <cWeaponAssembler.h>
 #include <cRobot.h>
 #include "cProjectManager.h"
 #include "cModel.h"
@@ -24,6 +25,7 @@ extern cProjectManager* g_ProjectManager;
 // Patterns MidTerm Global Variables
 
 cRobotFactory* g_robotFactory = cRobotFactory::GetInstance();
+cWeaponAssembler* g_weaponAssembler = cWeaponAssembler::GetInstance();
 
 // Patterns MidTerm Functions
 void adjustRobotHeight(iRobot* robot);
@@ -43,9 +45,11 @@ void patternsMidTermGameLoop() {
 		g_robotFactory->setTerrain(terrain);
 
 		iRobot* theRobot;
+		iWeapon* theWeapon;
 		int closestFaceIndex;
 		for (int i = 0; i < TOTAL_NUM_OF_ROBOTS; i++) {
-			theRobot = g_robotFactory->BuildARobot();
+			theWeapon = g_weaponAssembler->BuildAWeapon();
+			theRobot = g_robotFactory->BuildARobot(theWeapon);
 			closestFaceIndex = g_robotFactory->calculateClosestTerrainTriangle(theRobot->getPosition().getGlmVec3(),
 																			   g_robotFactory->m_vPlaneTrianglesCenter);
 			glm::vec3 posFaceIndex = g_robotFactory->m_vPlaneTrianglesCenter->at(closestFaceIndex);
@@ -100,6 +104,5 @@ void patternsMidTermGameLoop() {
 			itMeshes->second->m_position = theRobot->getPosition().getGlmVec3();
 			itMeshes++;
 		}
-		exit(-1);
 	}
 }
