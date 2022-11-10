@@ -562,7 +562,169 @@
 			<param2 x="1" y="0" z="0" w="1" />
 		</light>
 	</scene>
-	<scene title="2.Graphics MidTerm" camEyeX="0" camEyeY="50" camEyeZ="250" camTarX="-20" camTarY="30" camTarZ="0" />
+	<scene title="2.Graphics MidTerm Day" camEyeX="-10" camEyeY="121.800003" camEyeZ="0" camTarX="0" camTarY="82.0999985" camTarZ="0">
+		<model path="assets/graphics_midterm/outputRenormalized.ply" title="Terrain">
+			<mesh id="Terrain">
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0.29409647" g="0.475490212" b="0.24706845" a="1" />
+				<scale value="0.5" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+		</model>
+		<model path="assets/graphics_midterm/water.ply" title="Water">
+			<mesh id="Water">
+				<position x="0" y="0.400000006" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="0.29409647" g="0.475490212" b="0.24706845" a="1" />
+				<scale value="0.5" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+		</model>
+		<model path="assets/graphics_midterm/Small_Factory_3d_model_xyz_n.ply" title="Small Factory">
+			<mesh id="Small Factory">
+				<position x="33.7000008" y="43.7000008" z="-16.5" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0.490196049" g="0.565167308" b="1" a="1" />
+				<scale value="1.5" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+		</model>
+		<model path="assets/graphics_midterm/Lighthouse_Combined_xyz_n.ply" title="Lighthouse">
+			<mesh id="Lighthouse">
+				<position x="-7.5" y="18" z="-50.2000008" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0.995098054" g="0.450060964" b="0.356089026" a="1" />
+				<scale value="2" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+		</model>
+		<model path="assets/graphics_midterm/Wood_House_xyz_n.ply" title="Wood House">
+			<mesh id="Wood House">
+				<position x="16.7000008" y="7.80000019" z="-44.4000015" />
+				<rotate x="0" y="2.0999999" z="0" />
+				<useColor value="true" />
+				<color r="1" g="0.845588207" b="0.416666687" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+		</model>
+		<model path="assets/graphics_midterm/Old_House_Combined_xyz_n.ply" title="Old House">
+			<mesh id="Old House">
+				<position x="25.7000008" y="6.9000001" z="-45.2000008" />
+				<rotate x="0" y="-5.69999981" z="0" />
+				<useColor value="true" />
+				<color r="0.480392158" g="0.322477788" b="0.197808519" a="1" />
+				<scale value="3" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+		</model>
+		<model path="assets/graphics_midterm/tree1_xyz_n.ply" title="Big Tree">
+			<mesh id="Big Tree 01">
+				<position x="2.9000001" y="21.7000008" z="-9.69999981" />
+				<rotate x="0" y="-5.69999981" z="0" />
+				<useColor value="true" />
+				<color r="0.0530564599" g="0.90196079" b="0" a="1" />
+				<scale value="0.0399999991" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+		</model>
+		<model path="assets/graphics_midterm/tree3_xyz_n.ply" title="Slim Tree">
+			<mesh id="Slim Tree 01">
+				<position x="30.7000008" y="1.10000002" z="49.9000015" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0.254901946" g="1" b="0.298731267" a="1" />
+				<scale value="3" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+		</model>
+		<model path="assets/graphics_midterm/palm-centred_xyz_n.ply" title="Palm Tree">
+			<mesh id="Palm Tree 01">
+				<position x="19.8999996" y="15.3999996" z="-35.2000008" />
+				<rotate x="4.69999981" y="-6.30000019" z="2.70000005" />
+				<useColor value="true" />
+				<color r="0" g="0.161764681" b="0" a="1" />
+				<scale value="0.00400000019" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+		</model>
+		<model path="assets/graphics_midterm/Trees_xyz_n.ply" title="Winter Tree">
+			<mesh id="Winter Tree 01">
+				<position x="-1.10000002" y="12.3000002" z="31.2999992" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0.563725471" g="0.563725471" b="0.563725471" a="1" />
+				<scale value="0.5" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+			<mesh id="Winter Tree 02">
+				<position x="-1.10000002" y="14.6999998" z="38.7999992" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0.563725471" g="0.563725471" b="0.563725471" a="1" />
+				<scale value="0.5" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+			<mesh id="Winter Tree 03">
+				<position x="-11.3999996" y="10.5" z="32.2999992" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0.563725471" g="0.563725471" b="0.563725471" a="1" />
+				<scale value="0.5" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+		</model>
+		<light id="Light 01" onoff="1" showmodel="true">
+			<position x="500" y="500" z="0" w="1" />
+			<diffuse x="0.975490212" y="0.975490212" z="0.975490212" w="1" />
+			<specular r="0.215686262" g="0.215437487" b="0.213571683" a="1" />
+			<attenuation x="0.100000001" y="0.00100000005" z="1.00000001e-07" w="1" />
+			<direction x="0" y="-1" z="0" w="1" />
+			<param1 x="2" y="20" z="100" w="1" />
+			<param2 x="1" y="0" z="0" w="1" />
+		</light>
+	</scene>
 	<scene title="3.Patterns MidTerm" camEyeX="0" camEyeY="200" camEyeZ="-370" camTarX="0" camTarY="0" camTarZ="0">
 		<model path="assets/midterm/terrain.ply" title="Terrain">
 			<mesh id="Terrain">

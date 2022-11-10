@@ -340,7 +340,7 @@ int main(int argc, char* argv[]) {
 					// Use Colour vCol
 					glUniform1f(bUseRGBA_Colour_ULocID, (GLfloat)GL_TRUE);
 					if (g_ProjectManager->m_selectedScene->m_name == "3.Patterns MidTerm" &&
-						g_ProjectManager->m_isGameLoopEnabled) {
+						g_ProjectManager->m_GameLoopState == RUNNING) {
 						size_t pos = itMeshes->second->m_meshName.find(" ");
 						std::string token;
 						int robotID;
