@@ -31,6 +31,7 @@ cWeaponAssembler* g_weaponAssembler = cWeaponAssembler::GetInstance();
 cParticleSystem*  g_particleSystem	= new cParticleSystem(glm::vec3(0.0f), 10);
 
 void patternsMidTermGameLoop() {
+	bool p_movementTriggered = false;
 	// Checks if there's no instance of Terrain Triangles Center
 	// And if the it's the game first loop
 	if (g_robotFactory->m_vPlaneTrianglesCenter == nullptr) {
@@ -44,6 +45,7 @@ void patternsMidTermGameLoop() {
 			theWeapon = g_weaponAssembler->BuildAWeapon();
 			theRobot = g_robotFactory->BuildARobot(theWeapon);
 			g_robotFactory->setNewRandomPosition(theRobot);
+			p_movementTriggered = true;
 		}
 		// Sets new Game Loop State
 		g_ProjectManager->m_GameLoopState = GameState::RUNNING;
@@ -56,6 +58,7 @@ void patternsMidTermGameLoop() {
 		for (int i = 0; i < TOTAL_NUM_OF_ROBOTS; i++) {
 			theRobot = g_robotFactory->getRobot(i);
 			g_robotFactory->setNewRandomPosition(theRobot);
+			p_movementTriggered = true;
 		}
 		// Sets new Game Loop State
 		g_ProjectManager->m_GameLoopState = GameState::RUNNING;
@@ -96,13 +99,23 @@ void patternsMidTermGameLoop() {
 				if (theRobot->getWeapon()->getCooldown() <= 0) {
 					DEBUG_PRINT("Robot[%d] Position(%.1f, %.1f, %.1f) looking up for targets.\n", theRobot->getID(), theRobot->getPosition().x
 						, theRobot->getPosition().y, theRobot->getPosition().z);
-					iRobot* target = g_robotFactory->findNearestRobot(theRobot);
+					iRobot* target;
+					// Checks if theres any robot moving
+					if (g_robotFactory->hasAnyRobotChangedPlace) {
+						// There was movement - Find closest robot
+						target = g_robotFactory->findNearestRobot(theRobot);
+					} else {
+						// No movement - Gets last target
+						target = theRobot->getCurTarget();
+					}
+					// Checks target pointer
 					if (target == nullptr) {
 						DEBUG_PRINT("!!! Robot[%d] found no target.\n", theRobot->getID());
 						// Forgets any previous target
 						theRobot->setCurTarget(nullptr);
 						// Changes the robot spawn point
 						g_robotFactory->setNewRandomPosition(theRobot);
+						p_movementTriggered = true;
 					} else {
 						DEBUG_PRINT("!!! Robot[%d] found target Robot[%d]\n", theRobot->getID(), target->getID());
 						// Saves currrent target
@@ -140,5 +153,10 @@ void patternsMidTermGameLoop() {
 		}
 
 		g_particleSystem->Integrate(DT);
+	}
+	if (p_movementTriggered) {
+		g_robotFactory->hasAnyRobotChangedPlace = true;
+	} else {
+		g_robotFactory->hasAnyRobotChangedPlace = false;
 	}
 }

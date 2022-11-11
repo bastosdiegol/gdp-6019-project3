@@ -20,6 +20,7 @@ public:
 
 	std::vector<glm::vec3>* m_vPlaneTrianglesCenter;	// just plane surfaces for spawn
 	std::vector<glm::vec3>* m_vTerrainTrianglesCenter;  // all terrain triangles
+	bool					hasAnyRobotChangedPlace;
 
 	/// <summary>
 	/// Singleton Method for Getting an Instance of this class

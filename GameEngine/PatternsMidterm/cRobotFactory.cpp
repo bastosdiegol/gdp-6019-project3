@@ -15,6 +15,10 @@ cRobotFactory* cRobotFactory::m_robotFactory = nullptr;
 
 cRobotFactory::cRobotFactory() {
 	DEBUG_PRINT("cRobotFactory::cRobotFactory()\n");
+	this->hasAnyRobotChangedPlace	= false;
+	this->m_terrain					= nullptr;
+	this->m_vPlaneTrianglesCenter	= nullptr;
+	this->m_vTerrainTrianglesCenter = nullptr;
 }
 
 cRobotFactory::~cRobotFactory() {
