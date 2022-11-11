@@ -34,7 +34,7 @@ public:
 	/// <summary>
 	/// Calls Update() on all Robots that are alive
 	/// </summary>
-	void Update(double deltaTime);
+	void Update(float deltaTime);
 	/// <summary>
 	/// Sets a new height for a robot
 	/// </summary>
@@ -83,6 +83,13 @@ public:
 	/// <param name="triVector">Receives the vector of triangles for distance check</param>
 	/// <returns>Returns the index of the closest triangle</returns>
 	int calculateClosestTerrainTriangle(glm::vec3 position, std::vector<glm::vec3>* triVector);
+	/// <summary>
+	/// Creates a particle that goes toward the target
+	/// Associates this particle with the attacking robot
+	/// </summary>
+	/// <param name="robot">Attacking robot</param>
+	/// <param name="target">Target</param>
+	void fire(iRobot* robot, iRobot* target);
 
 private:
 	std::vector<iRobot*> m_vRobots;

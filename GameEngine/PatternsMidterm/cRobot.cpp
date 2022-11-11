@@ -21,10 +21,12 @@ cRobot::cRobot() {
 
 cRobot::~cRobot() {
 	DEBUG_PRINT("cRobot::~cRobot()\n");
+	delete m_weapon;
 }
 
-void cRobot::Update(double deltaTime) {
+void cRobot::Update(float deltaTime) {
 	DEBUG_PRINT("cRobot::Update(%f)\n", deltaTime);
+	this->m_weapon->Update(deltaTime);
 }
 
 unsigned int cRobot::getID() {
@@ -43,6 +45,10 @@ Vector3 cRobot::getPosition() {
 
 float cRobot::getHealth() {
 	return this->m_health;
+}
+
+iWeapon* cRobot::getWeapon() {
+	return m_weapon;
 }
 
 void cRobot::setHeight(float y) {

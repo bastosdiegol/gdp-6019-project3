@@ -9,11 +9,14 @@ public:
     float       m_damagePerShot;
     float       m_damageRadius;
     float       m_reloadRate;
+    float       m_cooldown;
 
     cWeaponLOS(std::string name, float damagePerShot, float damageRadius, float reloadRate);
     ~cWeaponLOS();
 
+    void Update(float deltaTime);
     void Fire();
     std::string getName();
+    float getCooldown();
 };
 

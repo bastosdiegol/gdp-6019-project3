@@ -69,19 +69,28 @@ void patternsMidTermGameLoop() {
 		// Iterates through all meshes
 		for (int i = 0; i < TOTAL_NUM_OF_ROBOTS; i++) {
 			theRobot = g_robotFactory->getRobot(i);
-			DEBUG_PRINT("Robot[%d] Position(%.1f, %.1f, %.1f) looking up for targets.\n", theRobot->getID(), theRobot->getPosition().x
-				, theRobot->getPosition().y, theRobot->getPosition().z);
-			iRobot* target = g_robotFactory->findNearestRobot(theRobot);
-			if (target == nullptr) {
-				DEBUG_PRINT("!!! Robot[%d] found no target.\n", theRobot->getID());
-				// Changes the robot spawn point
-				g_robotFactory->setNewRandomPosition(theRobot);
-			} else {
-				DEBUG_PRINT("!!! Robot[%d] found target Robot[%d]\n", theRobot->getID(), target->getID());
-				// TODO: FIRE!
+			// Checks if the Weapon has Cooldown to Fire
+			// If it has Cooldown Look up for an enemy then fire!
+			// Else does nothing
+			if(theRobot->getWeapon()->getCooldown() <= 0){
+				DEBUG_PRINT("Robot[%d] Position(%.1f, %.1f, %.1f) looking up for targets.\n", theRobot->getID(), theRobot->getPosition().x
+					, theRobot->getPosition().y, theRobot->getPosition().z);
+				iRobot* target = g_robotFactory->findNearestRobot(theRobot);
+				if (target == nullptr) {
+					DEBUG_PRINT("!!! Robot[%d] found no target.\n", theRobot->getID());
+					// Changes the robot spawn point
+					g_robotFactory->setNewRandomPosition(theRobot);
+				} else {
+					DEBUG_PRINT("!!! Robot[%d] found target Robot[%d]\n", theRobot->getID(), target->getID());
+					// Fires toward the target
+					g_robotFactory->fire(theRobot, target);
+				}
+				itMeshes->second->m_position = theRobot->getPosition().getGlmVec3();
+				itMeshes++;
 			}
-			itMeshes->second->m_position = theRobot->getPosition().getGlmVec3();
-			itMeshes++;
+			// Finally We update the Robot
+			// This is age the Cooldown allowing to robot to shoot again
+			theRobot->Update(DT);
 		}
 
 		g_particleSystem->Integrate(DT);

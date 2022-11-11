@@ -15,17 +15,27 @@ cWeaponLOS::cWeaponLOS(std::string name, float damagePerShot, float damageRadius
 	m_damagePerShot = damagePerShot;
 	m_damageRadius	= damageRadius;
 	m_reloadRate	= reloadRate;
+	m_cooldown		= 0.0f;
 }
 
 cWeaponLOS::~cWeaponLOS() {
 	DEBUG_PRINT("cWeapon::~cWeapon()\n");
 }
 
+void cWeaponLOS::Update(float deltaTime) {
+	m_cooldown -= deltaTime;
+}
+
 void cWeaponLOS::Fire() {
 	DEBUG_PRINT("cWeaponLOS::Fire()\n");
+	this->m_cooldown = this->m_reloadRate;
 	return;
 }
 
 std::string cWeaponLOS::getName() {
 	return this->m_name;
+}
+
+float cWeaponLOS::getCooldown() {
+	return m_cooldown;
 }

@@ -14,16 +14,18 @@ public:
     cRobot();
     ~cRobot();
 
-    void            Update(double deltaTime);
+    void            Update(float deltaTime);
     unsigned int    getID();
+    // Setters
     void            setPosition(float x, float y, float z);
-    Vector3         getPosition();
-    float           getHealth();
     void            setHeight(float y);
     void            setWeapon(iWeapon* weapon);
-    std::string     getWeaponName();
-    //void            ChangeSpawnLocation();
     void            setProjectile(cParticle* projectile);
+    // Getters
+    Vector3         getPosition();
+    float           getHealth();
+    iWeapon*        getWeapon();
+    std::string     getWeaponName();
     cParticle*      getFiredProjectile();
 private:
     unsigned int    m_id;

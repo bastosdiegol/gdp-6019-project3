@@ -33,7 +33,7 @@ cRobotFactory* cRobotFactory::GetInstance() {
 }
 
 iRobot* cRobotFactory::BuildARobot(iWeapon* weapon) {
-	DEBUG_PRINT("cRobotFactory::buildARobot()\n");	
+	DEBUG_PRINT("cRobotFactory::buildARobot()\n");
 	iRobot* newRobot = new cRobot();
 	// We could receive the min and max X for reference by lets go hardcoded for while
 	// We gonna set Y later comparing with the closest triangle
@@ -43,7 +43,7 @@ iRobot* cRobotFactory::BuildARobot(iWeapon* weapon) {
 	return newRobot;	 
 }
 
-void cRobotFactory::Update(double deltaTime) {
+void cRobotFactory::Update(float deltaTime) {
 	DEBUG_PRINT("cRobotFactory::Update(%f)\n", deltaTime);
 	for (int i = 0; i < m_vRobots.size(); i++) {
 		if (m_vRobots[i]->getHealth() > 0) {
@@ -77,7 +77,7 @@ void cRobotFactory::setNewRandomPosition(iRobot* robot) {
 
 iRobot* cRobotFactory::findNearestRobot(iRobot* robot) {
 	int indexClosestRobot = -1;
-	float smallestDistance = 256 * 1.414; // Diagonal of the Arena - just a big value
+	float smallestDistance = 256 * 1.414f; // Diagonal of the Arena - just a big value
 	float newDistance;
 	for (int i = 0; i < m_vRobots.size(); i++) {
 		if (m_vRobots[i]->getID() != robot->getID() && 
@@ -224,6 +224,10 @@ int cRobotFactory::calculateClosestTerrainTriangle(glm::vec3 position, std::vect
 		}
 	}
 	return faceIndex;
+}
+
+void cRobotFactory::fire(iRobot* robot, iRobot* target) {
+	DEBUG_PRINT("cRobotFactory::fire(%d, %d)\n", robot->getID(), target->getID());
 }
 
 // Utility function for a random range of two floats
