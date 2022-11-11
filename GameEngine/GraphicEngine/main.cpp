@@ -180,7 +180,9 @@ int main(int argc, char* argv[]) {
 			// Then choose the correct game loop for the specified scene
 			if (g_ProjectManager->m_selectedScene->m_name == "3.Graphics MidTerm Night")
 				graphicsMidTermNightGameLoop();
-			else if (g_ProjectManager->m_selectedScene->m_name == "4.Patterns MidTerm")
+			else if (g_ProjectManager->m_selectedScene->m_name == "4.Graphics MidTerm Flies Away")
+				graphicsMidTermFliesAwayGameLoop();
+			else if (g_ProjectManager->m_selectedScene->m_name == "5.Patterns MidTerm")
 				patternsMidTermGameLoop();
 		}
 
@@ -325,7 +327,7 @@ int main(int argc, char* argv[]) {
 
 					// Use Colour vCol
 					glUniform1f(bUseRGBA_Colour_ULocID, (GLfloat)GL_TRUE);
-					if (g_ProjectManager->m_selectedScene->m_name == "3.Patterns MidTerm" &&
+					if (g_ProjectManager->m_selectedScene->m_name == "5.Patterns MidTerm" &&
 						g_ProjectManager->m_GameLoopState == RUNNING) {
 						size_t pos = itMeshes->second->m_meshName.find(" ");
 						std::string token;
