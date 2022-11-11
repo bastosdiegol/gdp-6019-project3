@@ -938,18 +938,18 @@
 		</light>
 		<light id="Light Ship Lantern1" onoff="1" showmodel="false">
 			<position x="32.4000015" y="45.9000015" z="-16.7000008" w="1" />
-			<diffuse x="1" y="0.905132651" z="0.539215684" w="1" />
-			<specular r="1" g="0.839100361" b="0.544117689" a="1" />
-			<attenuation x="8" y="5" z="0.320001006" w="1" />
+			<diffuse x="1" y="0" z="0" w="1" />
+			<specular r="1" g="0" b="0" a="1" />
+			<attenuation x="0.6" y="10" z="0.00001" w="1" />
 			<direction x="0" y="0" z="0" w="1" />
 			<param1 x="0" y="10" z="20" w="1" />
 			<param2 x="1" y="0" z="0" w="1" />
 		</light>
 		<light id="Light Ship Lantern2" onoff="1" showmodel="false">
 			<position x="32.4199982" y="46.0499992" z="-15.7600002" w="1" />
-			<diffuse x="1" y="0.905132651" z="0.539215684" w="1" />
-			<specular r="1" g="0.839100361" b="0.544117689" a="1" />
-			<attenuation x="8" y="5" z="0.350001007" w="1" />
+			<diffuse x="0" y="0" z="1" w="1" />
+			<specular r="0" g="0" b="1" a="1" />
+			<attenuation x="0.6" y="10" z="0.00001" w="1" />
 			<direction x="0" y="0" z="0" w="1" />
 			<param1 x="0" y="10" z="20" w="1" />
 			<param2 x="1" y="0" z="0" w="1" />
@@ -1168,18 +1168,18 @@
 		</light>
 		<light id="Light Ship Lantern1" onoff="1" showmodel="false">
 			<position x="32.4000015" y="45.9000015" z="-16.7000008" w="1" />
-			<diffuse x="1" y="0.905132651" z="0.539215684" w="1" />
-			<specular r="1" g="0.839100361" b="0.544117689" a="1" />
-			<attenuation x="8" y="5" z="0.320001006" w="1" />
+			<diffuse x="1" y="0" z="0" w="1" />
+			<specular r="1" g="0" b="0" a="1" />
+			<attenuation x="0.6" y="10" z="0.00001" w="1" />
 			<direction x="0" y="0" z="0" w="1" />
 			<param1 x="0" y="10" z="20" w="1" />
 			<param2 x="1" y="0" z="0" w="1" />
 		</light>
 		<light id="Light Ship Lantern2" onoff="1" showmodel="false">
 			<position x="32.4199982" y="46.0499992" z="-15.7600002" w="1" />
-			<diffuse x="1" y="0.905132651" z="0.539215684" w="1" />
-			<specular r="1" g="0.839100361" b="0.544117689" a="1" />
-			<attenuation x="8" y="5" z="0.350001007" w="1" />
+			<diffuse x="0" y="0" z="1" w="1" />
+			<specular r="0" g="0" b="1" a="1" />
+			<attenuation x="0.6" y="10" z="0.00001" w="1" />
 			<direction x="0" y="0" z="0" w="1" />
 			<param1 x="0" y="10" z="20" w="1" />
 			<param2 x="1" y="0" z="0" w="1" />

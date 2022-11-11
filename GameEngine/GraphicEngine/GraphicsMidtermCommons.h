@@ -130,7 +130,7 @@ void graphicsMidTermNightGameLoop() {
 			std::map<std::string, cLight*>::iterator itLight
 				= g_ProjectManager->m_selectedScene->m_mLights.find("Light Ship Lantern1");
 			// Update Mesh Position
-			itLight->second->m_position += g_skyShipLight1Pos;
+			itLight->second->m_position = g_skyShipLight1Pos;
 		}
 		// Checks if the Sky Ship Light2 position arrived at the end
 		if (glm::distance(g_skyShipLight2Pos, g_skyShipLight2Destination) > 0.5) {
@@ -291,7 +291,7 @@ void graphicsMidTermFliesAwayGameLoop() {
 			std::map<std::string, cLight*>::iterator itLight
 				= g_ProjectManager->m_selectedScene->m_mLights.find("Light Ship Lantern1");
 			// Update Mesh Position
-			itLight->second->m_position += g_skyShipLight1Pos;
+			itLight->second->m_position = g_skyShipLight1Pos;
 		}
 		// Checks if the Sky Ship Light2 position arrived at the end
 		if (glm::distance(g_skyShipLight2Pos, g_skyShipLight2Destination) > 0.5) {
