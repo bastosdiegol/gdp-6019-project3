@@ -41,7 +41,7 @@ glm::vec4 g_skyShipLight1MovementStep;
 glm::vec4 g_skyShipLight2MovementStep;
 glm::vec4 g_skyShipSpotLightMovementStep;
 // Destination Offset
-glm::vec3 g_destinationOffset = glm::vec3(0.0f, 0.0f, 100.0f);
+glm::vec3 g_destinationOffset = glm::vec3(0.0f, 0.0f, 50.0f);
 
 void graphicsMidTermNightGameLoop() {
 
@@ -118,9 +118,6 @@ void graphicsMidTermNightGameLoop() {
 				= g_ProjectManager->m_selectedScene->m_mMeshes.find("Sky Ship");
 			// Update Mesh Position
 			itMesh->second->m_position = g_skyShipPos;
-		} else {
-			// Arrived at the end - Restart
-			g_ProjectManager->m_GameLoopState = GameState::NEW_GAME;
 		}
 		// Checks if the Sky Ship Light1 position arrived at the end
 		if (glm::distance(g_skyShipLight1Pos, g_skyShipLight1Destination) > 0.5) {

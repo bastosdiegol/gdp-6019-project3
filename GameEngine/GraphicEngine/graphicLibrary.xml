@@ -725,7 +725,7 @@
 			<param2 x="1" y="0" z="0" w="1" />
 		</light>
 	</scene>
-	<scene title="3.Graphics MidTerm Night" camEyeX="121" camEyeY="92.8000031" camEyeZ="-24" camTarX="34.0999985" camTarY="43.7000008" camTarZ="-16.2000008">
+	<scene title="3.Graphics MidTerm Night" camEyeX="100" camEyeY="80.80" camEyeZ="-15" camTarX="35.4" camTarY="36.7" camTarZ="-22">
 		<model path="assets/graphics_midterm/outputRenormalized.ply" title="Terrain">
 			<mesh id="Terrain">
 				<position x="0" y="0" z="0" />
@@ -767,7 +767,7 @@
 		</model>
 		<model path="assets/graphics_midterm/Sky_Pirate_Decimated_Cannons_Combined_xyz_n.ply" title="Sky Ship">
 			<mesh id="Sky Ship">
-				<position x="32.4000015" y="45.5" z="-16.7000008" />
+				<position x="32.4000015" y="45.5" z="-66.2000008" />
 				<rotate x="0" y="0" z="0" />
 				<useColor value="true" />
 				<color r="0.344867051" g="0.30392158" b="1" a="1" />
@@ -937,7 +937,7 @@
 			<param2 x="1" y="0" z="0" w="1" />
 		</light>
 		<light id="Light Ship Lantern1" onoff="1" showmodel="false">
-			<position x="32.4000015" y="45.9000015" z="-16.7000008" w="1" />
+			<position x="32.4000015" y="45.9000015" z="-66.2000008" w="1" />
 			<diffuse x="1" y="0" z="0" w="1" />
 			<specular r="1" g="0" b="0" a="1" />
 			<attenuation x="0.6" y="10" z="0.00001" w="1" />
@@ -946,7 +946,7 @@
 			<param2 x="1" y="0" z="0" w="1" />
 		</light>
 		<light id="Light Ship Lantern2" onoff="1" showmodel="false">
-			<position x="32.4199982" y="46.0499992" z="-15.7600002" w="1" />
+			<position x="32.4199982" y="46.0499992" z="-65.2600002" w="1" />
 			<diffuse x="0" y="0" z="1" w="1" />
 			<specular r="0" g="0" b="1" a="1" />
 			<attenuation x="0.6" y="10" z="0.00001" w="1" />
