@@ -16,6 +16,7 @@ cRobot::cRobot() {
 	this->m_id = cRobot::m_nextID;
 	cRobot::m_nextID += ID_VALUE_INCREMENT;
 	this->m_health = 100.0f;
+	this->m_firedProjectile = nullptr;
 }
 
 cRobot::~cRobot() {
@@ -55,4 +56,12 @@ void cRobot::setWeapon(iWeapon* weapon) {
 
 std::string cRobot::getWeaponName() {
 	return this->m_weapon->getName();
+}
+
+void cRobot::setProjectile(cParticle* projectile) {
+	this->m_firedProjectile = projectile;
+}
+
+cParticle* cRobot::getFiredProjectile() {
+	return this->m_firedProjectile;
 }

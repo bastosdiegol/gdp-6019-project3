@@ -1,4 +1,5 @@
 #pragma once
+#include <cParticle.h>
 #include "iRobot.h"
 #include "iWeapon.h"
 
@@ -8,6 +9,7 @@ public:
     Vector3		    m_position;
     float		    m_health;
     iWeapon*        m_weapon;
+    cParticle*      m_firedProjectile;
 
     cRobot();
     ~cRobot();
@@ -21,6 +23,8 @@ public:
     void            setWeapon(iWeapon* weapon);
     std::string     getWeaponName();
     void            ChangeSpawnLocation();
+    void            setProjectile(cParticle* projectile);
+    cParticle*      getFiredProjectile();
 private:
     unsigned int    m_id;
 

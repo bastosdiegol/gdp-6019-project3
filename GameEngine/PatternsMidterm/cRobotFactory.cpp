@@ -78,7 +78,8 @@ iRobot* cRobotFactory::findNearestRobot(iRobot* robot) {
 	float smallestDistance = 256 * 1.414; // Diagonal of the Arena - just a big value
 	float newDistance;
 	for (int i = 0; i < m_vRobots.size(); i++) {
-		if (m_vRobots[i]->getID() != robot->getID()) {
+		if (m_vRobots[i]->getID() != robot->getID() && 
+			m_vRobots[i]->getHealth() > 0.0f ) {
 			DEBUG_PRINT("	New Target Robot[%d] Position(%.1f,%.1f,%.1f) found.\n", m_vRobots[i]->getID(), m_vRobots[i]->getPosition().x
 				, m_vRobots[i]->getPosition().y, m_vRobots[i]->getPosition().z);
 			DEBUG_PRINT("		... Comparing Distance [Origin, Target] = %f\n", glm::distance(robot->getPosition().getGlmVec3(),

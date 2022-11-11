@@ -5,6 +5,7 @@
 
 #include <cRobotFactory.h>
 #include <cWeaponAssembler.h>
+#include <cParticleSystem.h>
 #include <cRobot.h>
 #include "cProjectManager.h"
 #include "cModel.h"
@@ -19,13 +20,15 @@
 #endif
 
 #define TOTAL_NUM_OF_ROBOTS 10
+#define DT 0.1f
 
 extern cProjectManager* g_ProjectManager;
 
 // Patterns MidTerm Global Variables
 
-cRobotFactory* g_robotFactory = cRobotFactory::GetInstance();
+cRobotFactory*	  g_robotFactory	= cRobotFactory::GetInstance();
 cWeaponAssembler* g_weaponAssembler = cWeaponAssembler::GetInstance();
+cParticleSystem*  g_particleSystem	= new cParticleSystem(glm::vec3(0.0f), 10);
 
 // Patterns MidTerm Functions
 void adjustRobotHeight(iRobot* robot);
@@ -104,5 +107,7 @@ void patternsMidTermGameLoop() {
 			itMeshes->second->m_position = theRobot->getPosition().getGlmVec3();
 			itMeshes++;
 		}
+
+		g_particleSystem->Integrate(DT);
 	}
 }

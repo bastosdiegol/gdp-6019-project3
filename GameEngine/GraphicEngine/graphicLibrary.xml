@@ -943,7 +943,7 @@
 			<attenuation x="0.6" y="10" z="0.00001" w="1" />
 			<direction x="0" y="0" z="0" w="1" />
 			<param1 x="0" y="10" z="20" w="1" />
-			<param2 x="1" y="0" z="0" w="1" />
+			<param2 x="0" y="0" z="0" w="1" />
 		</light>
 		<light id="Light Ship Lantern2" onoff="1" showmodel="false">
 			<position x="32.4199982" y="46.0499992" z="-65.2600002" w="1" />

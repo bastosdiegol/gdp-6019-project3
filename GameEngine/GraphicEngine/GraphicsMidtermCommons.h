@@ -128,6 +128,11 @@ void graphicsMidTermNightGameLoop() {
 				= g_ProjectManager->m_selectedScene->m_mLights.find("Light Ship Lantern1");
 			// Update Mesh Position
 			itLight->second->m_position = g_skyShipLight1Pos;
+			if (itLight->second->isOn()) {
+				itLight->second->TurnOff();
+			} else {
+				itLight->second->TurnOn();
+			}
 		}
 		// Checks if the Sky Ship Light2 position arrived at the end
 		if (glm::distance(g_skyShipLight2Pos, g_skyShipLight2Destination) > 0.5) {
@@ -138,6 +143,11 @@ void graphicsMidTermNightGameLoop() {
 				= g_ProjectManager->m_selectedScene->m_mLights.find("Light Ship Lantern2");
 			// Update Mesh Position
 			itLight->second->m_position = g_skyShipLight2Pos;
+			if (itLight->second->isOn()) {
+				itLight->second->TurnOff();
+			} else {
+				itLight->second->TurnOn();
+			}
 		}
 	}
 
