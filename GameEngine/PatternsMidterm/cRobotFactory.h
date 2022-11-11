@@ -20,8 +20,6 @@ public:
 
 	std::vector<glm::vec3>* m_vPlaneTrianglesCenter;	// just plane surfaces for spawn
 	std::vector<glm::vec3>* m_vTerrainTrianglesCenter;  // all terrain triangles
-	// This map stores current assigned targets found for each robot
-	std::map<int, int> m_mMapOfTargets;
 
 	/// <summary>
 	/// Singleton Method for Getting an Instance of this class

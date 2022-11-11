@@ -164,13 +164,3 @@ unsigned int cParticleSystem::getNumParticles() {
 unsigned int cParticleSystem::getNumParticlesAvail() {
 	return this->numParticlesAvail;
 }
-
-
-// Utility function for a random range of two floats
-float RandFloat(float min, float max) {
-	if (max == min)
-		return 0.f;
-
-	int diff = (max - min) * 1000;
-	return min + (rand() % diff) / 1000.0f;
-}

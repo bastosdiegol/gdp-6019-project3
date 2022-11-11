@@ -50,6 +50,3 @@ private:
 	glm::vec3 position;
 
 };
-
-// Utility function for a random range of two floats
-float RandFloat(float min, float max);

@@ -40,7 +40,6 @@ iRobot* cRobotFactory::BuildARobot(iWeapon* weapon) {
 	newRobot->setPosition(RandFloat(-128.0f, 128.0f), 0.0f, RandFloat(-128.0f, 128.0f));
 	newRobot->setWeapon(weapon);
 	this->m_vRobots.push_back(newRobot);
-	this->m_mMapOfTargets.try_emplace(newRobot->getID(), -1); // Adds the robot with no target
 	return newRobot;	 
 }
 
@@ -67,10 +66,13 @@ iRobot* cRobotFactory::getRobot(int index) {
 }
 
 void cRobotFactory::setNewRandomPosition(iRobot* robot) {
-	// We gonna set Y later comparing with the closest triangle
 	robot->setPosition(RandFloat(-128.0f, 128.0f),
 					   0.0f,
 					   RandFloat(-128.0f, 128.0f));
+	int closestFaceIndex = calculateClosestTerrainTriangle(robot->getPosition().getGlmVec3(),
+															this->m_vPlaneTrianglesCenter);
+	glm::vec3 posFaceIndex = this->m_vPlaneTrianglesCenter->at(closestFaceIndex);
+	robot->setPosition(posFaceIndex.x, posFaceIndex.y, posFaceIndex.z);
 }
 
 iRobot* cRobotFactory::findNearestRobot(iRobot* robot) {
@@ -108,15 +110,9 @@ iRobot* cRobotFactory::findNearestRobot(iRobot* robot) {
 		}
 	}
 	if (indexClosestRobot == -1) {
-		std::map<int, int>::iterator it = m_mMapOfTargets.find(robot->getID());
-		if (it != m_mMapOfTargets.end())
-			it->second = -1; // Set's no target for this robot
 		return nullptr;
 	}
 	else {
-		std::map<int, int>::iterator it = m_mMapOfTargets.find(robot->getID());
-		if (it != m_mMapOfTargets.end())
-			it->second = m_vRobots[indexClosestRobot]->getID(); // Set's new target for this robot
 		return m_vRobots[indexClosestRobot];
 	}
 }

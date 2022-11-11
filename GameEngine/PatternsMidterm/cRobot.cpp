@@ -25,7 +25,6 @@ cRobot::~cRobot() {
 
 void cRobot::Update(double deltaTime) {
 	DEBUG_PRINT("cRobot::Update(%f)\n", deltaTime);
-	delete this;
 }
 
 unsigned int cRobot::getID() {

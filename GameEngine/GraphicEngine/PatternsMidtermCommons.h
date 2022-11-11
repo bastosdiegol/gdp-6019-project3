@@ -30,15 +30,6 @@ cRobotFactory*	  g_robotFactory	= cRobotFactory::GetInstance();
 cWeaponAssembler* g_weaponAssembler = cWeaponAssembler::GetInstance();
 cParticleSystem*  g_particleSystem	= new cParticleSystem(glm::vec3(0.0f), 10);
 
-// Patterns MidTerm Functions
-void adjustRobotHeight(iRobot* robot);
-void patternsMidTermGameLoop();
-
-void adjustRobotHeight(iRobot* robot) {
-	for (int i = 0; i < g_robotFactory->m_vPlaneTrianglesCenter->size(); i++) {
-	}
-}
-
 void patternsMidTermGameLoop() {
 	// Checks if there's no instance of Terrain Triangles Center
 	// And if the it's the game first loop
@@ -49,14 +40,10 @@ void patternsMidTermGameLoop() {
 
 		iRobot* theRobot;
 		iWeapon* theWeapon;
-		int closestFaceIndex;
 		for (int i = 0; i < TOTAL_NUM_OF_ROBOTS; i++) {
 			theWeapon = g_weaponAssembler->BuildAWeapon();
 			theRobot = g_robotFactory->BuildARobot(theWeapon);
-			closestFaceIndex = g_robotFactory->calculateClosestTerrainTriangle(theRobot->getPosition().getGlmVec3(),
-																			   g_robotFactory->m_vPlaneTrianglesCenter);
-			glm::vec3 posFaceIndex = g_robotFactory->m_vPlaneTrianglesCenter->at(closestFaceIndex);
-			theRobot->setPosition(posFaceIndex.x, posFaceIndex.y, posFaceIndex.z);
+			g_robotFactory->setNewRandomPosition(theRobot);
 		}
 		// Sets new Game Loop State
 		g_ProjectManager->m_GameLoopState = GameState::RUNNING;
@@ -66,14 +53,9 @@ void patternsMidTermGameLoop() {
 	// Checks if it's a new game request
 	if (g_ProjectManager->m_GameLoopState == GameState::NEW_GAME) {
 		iRobot* theRobot;
-		int closestFaceIndex;
 		for (int i = 0; i < TOTAL_NUM_OF_ROBOTS; i++) {
 			theRobot = g_robotFactory->getRobot(i);
 			g_robotFactory->setNewRandomPosition(theRobot);
-			closestFaceIndex = g_robotFactory->calculateClosestTerrainTriangle(theRobot->getPosition().getGlmVec3(),
-																			   g_robotFactory->m_vPlaneTrianglesCenter);
-			glm::vec3 posFaceIndex = g_robotFactory->m_vPlaneTrianglesCenter->at(closestFaceIndex);
-			theRobot->setPosition(posFaceIndex.x, posFaceIndex.y, posFaceIndex.z);
 		}
 		// Sets new Game Loop State
 		g_ProjectManager->m_GameLoopState = GameState::RUNNING;
@@ -89,17 +71,11 @@ void patternsMidTermGameLoop() {
 			theRobot = g_robotFactory->getRobot(i);
 			DEBUG_PRINT("Robot[%d] Position(%.1f, %.1f, %.1f) looking up for targets.\n", theRobot->getID(), theRobot->getPosition().x
 				, theRobot->getPosition().y, theRobot->getPosition().z);
-			std::map<int, int>::iterator it = g_robotFactory->m_mMapOfTargets.find(theRobot->getID());
-			if (it != g_robotFactory->m_mMapOfTargets.end()) {
-				if (it->second != -1) {
-					// TODO: FIRE!
-					continue;
-				}
-			}
 			iRobot* target = g_robotFactory->findNearestRobot(theRobot);
 			if (target == nullptr) {
 				DEBUG_PRINT("!!! Robot[%d] found no target.\n", theRobot->getID());
-				// TODO: choose another spawn location
+				// Changes the robot spawn point
+				g_robotFactory->setNewRandomPosition(theRobot);
 			} else {
 				DEBUG_PRINT("!!! Robot[%d] found target Robot[%d]\n", theRobot->getID(), target->getID());
 				// TODO: FIRE!

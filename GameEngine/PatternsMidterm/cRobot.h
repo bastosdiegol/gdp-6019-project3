@@ -22,7 +22,7 @@ public:
     void            setHeight(float y);
     void            setWeapon(iWeapon* weapon);
     std::string     getWeaponName();
-    void            ChangeSpawnLocation();
+    //void            ChangeSpawnLocation();
     void            setProjectile(cParticle* projectile);
     cParticle*      getFiredProjectile();
 private:
