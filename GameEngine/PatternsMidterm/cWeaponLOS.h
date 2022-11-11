@@ -15,7 +15,8 @@ public:
     ~cWeaponLOS();
 
     void Update(float deltaTime);
-    void Fire();
+    void Fire(); 
+    void setCooldown();
     std::string getName();
     float getCooldown();
 };

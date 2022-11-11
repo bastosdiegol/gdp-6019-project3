@@ -7,6 +7,7 @@ public:
 
 	virtual void Update(float deltaTime) = 0;
 	virtual void Fire() = 0;
+	virtual void setCooldown() = 0;
 	virtual std::string getName() = 0;
 	virtual float getCooldown() = 0;
 };

@@ -67,6 +67,14 @@ void cRobot::setProjectile(cParticle* projectile) {
 	this->m_firedProjectile = projectile;
 }
 
+void cRobot::setCurTarget(iRobot* target) {
+	this->m_curTarget = target;
+}
+
 cParticle* cRobot::getFiredProjectile() {
 	return this->m_firedProjectile;
+}
+
+iRobot* cRobot::getCurTarget() {
+	return this->m_curTarget;
 }

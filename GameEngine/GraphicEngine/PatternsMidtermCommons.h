@@ -63,30 +63,76 @@ void patternsMidTermGameLoop() {
 	// Checks if its the game main loop
 	if (g_ProjectManager->m_GameLoopState == GameState::RUNNING) {
 		iRobot* theRobot;
-		// Time to Update the Mesh Position
 		std::map<std::string, cMeshObject*>::iterator itMeshes;
 		itMeshes = g_ProjectManager->m_selectedScene->m_mMeshes.begin();
-		// Iterates through all meshes
+		// Iterates through all robots
 		for (int i = 0; i < TOTAL_NUM_OF_ROBOTS; i++) {
 			theRobot = g_robotFactory->getRobot(i);
-			// Checks if the Weapon has Cooldown to Fire
-			// If it has Cooldown Look up for an enemy then fire!
-			// Else does nothing
-			if(theRobot->getWeapon()->getCooldown() <= 0){
-				DEBUG_PRINT("Robot[%d] Position(%.1f, %.1f, %.1f) looking up for targets.\n", theRobot->getID(), theRobot->getPosition().x
-					, theRobot->getPosition().y, theRobot->getPosition().z);
-				iRobot* target = g_robotFactory->findNearestRobot(theRobot);
-				if (target == nullptr) {
-					DEBUG_PRINT("!!! Robot[%d] found no target.\n", theRobot->getID());
-					// Changes the robot spawn point
-					g_robotFactory->setNewRandomPosition(theRobot);
+			// Checks if the Robot has a currently active projectile flying around
+			if (theRobot->getFiredProjectile() != nullptr) {
+				// Checks if the Projectile is Alive
+				// If it has hit the target or not
+				if (theRobot->getFiredProjectile()->getAge() > 0) {
+					// Checks if the projectile is arounnd the target radius
+					if (glm::distance(theRobot->getFiredProjectile()->getPosition(),
+						theRobot->getCurTarget()->getPosition().getGlmVec3()) < ENEMY_RADIUS) {
+						// TODO: enemy takes damage
+						
+						// Kills the particle by set age negative
+						theRobot->getFiredProjectile()->setAge(-1.0f);
+						// Forgets this projectile
+						theRobot->setProjectile(nullptr);
+					}
 				} else {
-					DEBUG_PRINT("!!! Robot[%d] found target Robot[%d]\n", theRobot->getID(), target->getID());
-					// Fires toward the target
-					g_robotFactory->fire(theRobot, target);
+					// Forgets the projectile pointer since its dead
+					theRobot->setProjectile(nullptr);
+					// Enable the weapon by reseting the cooldown
+					theRobot->getWeapon()->setCooldown();
 				}
-				itMeshes->second->m_position = theRobot->getPosition().getGlmVec3();
-				itMeshes++;
+			} else {
+				// Checks if the Weapon has Cooldown to Fire
+				// If it has Cooldown Look up for an enemy then fire!
+				// Else does nothing
+				if (theRobot->getWeapon()->getCooldown() <= 0) {
+					DEBUG_PRINT("Robot[%d] Position(%.1f, %.1f, %.1f) looking up for targets.\n", theRobot->getID(), theRobot->getPosition().x
+						, theRobot->getPosition().y, theRobot->getPosition().z);
+					iRobot* target = g_robotFactory->findNearestRobot(theRobot);
+					if (target == nullptr) {
+						DEBUG_PRINT("!!! Robot[%d] found no target.\n", theRobot->getID());
+						// Forgets any previous target
+						theRobot->setCurTarget(nullptr);
+						// Changes the robot spawn point
+						g_robotFactory->setNewRandomPosition(theRobot);
+					} else {
+						DEBUG_PRINT("!!! Robot[%d] found target Robot[%d]\n", theRobot->getID(), target->getID());
+						// Saves currrent target
+						theRobot->setCurTarget(target);
+						// Fires toward the target
+						cParticle* particle = g_particleSystem->AllocateParticle(theRobot->getPosition().getGlmVec3() + glm::vec3(0.0f, 5.0f, 0.0f),
+							(target->getPosition() - theRobot->getPosition()).getGlmVec3(),
+							glm::vec3(0.0f),	//acceleration
+							3.0f,  //age
+							1.0f,	//damping
+							1.0f);	//mass
+						theRobot->setProjectile(particle);
+						//g_robotFactory->fire(theRobot, target);
+					}
+					// Time to Update the Mesh Position
+					itMeshes->second->m_position = theRobot->getPosition().getGlmVec3();
+					// Sets mesh color to current robot HP
+					if (theRobot->getHealth() > 75.0f ) {
+						itMeshes->second->m_RGBA_colour = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f); // Green
+					} else if (theRobot->getHealth() > 50.0f) {
+						itMeshes->second->m_RGBA_colour = glm::vec4(1.0f, 1.0f, 0.0f, 1.0f); // Yellow
+					} else if (theRobot->getHealth() > 25.0f) {
+						itMeshes->second->m_RGBA_colour = glm::vec4(1.0f, 0.59f, 0.22f, 1.0f); // Orange
+					} else if (theRobot->getHealth() > 0.0f) {
+						itMeshes->second->m_RGBA_colour = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f); // Red
+					} else {
+						itMeshes->second->m_RGBA_colour = glm::vec4(0.7f, 0.7f, 0.7f, 1.0f); // Gray
+					}
+					itMeshes++; // Next Mesh
+				}
 			}
 			// Finally We update the Robot
 			// This is age the Cooldown allowing to robot to shoot again

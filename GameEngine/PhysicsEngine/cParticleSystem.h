@@ -20,7 +20,7 @@ public:
 	void AllocateParticle(glm::vec3 upVector);
 	// Method that grabs a dead Particlle from the pool and make it alive
 	// accepts Position Up Vector, Acceleration, Age, Damping and Mass
-	void AllocateParticle(glm::vec3 position, glm::vec3 upVector, glm::vec3 acceleration, float age, float damping, float mass);
+	cParticle* AllocateParticle(glm::vec3 position, glm::vec3 upVector, glm::vec3 acceleration, float age, float damping, float mass);
 	// Method that Integrate all living particles
 	// Accetps a float deltaType
 	void Integrate(float dt);

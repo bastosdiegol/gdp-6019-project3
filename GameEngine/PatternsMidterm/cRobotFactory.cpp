@@ -228,6 +228,7 @@ int cRobotFactory::calculateClosestTerrainTriangle(glm::vec3 position, std::vect
 
 void cRobotFactory::fire(iRobot* robot, iRobot* target) {
 	DEBUG_PRINT("cRobotFactory::fire(%d, %d)\n", robot->getID(), target->getID());
+	//cParticle* particle 
 }
 
 // Utility function for a random range of two floats

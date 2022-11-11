@@ -65,18 +65,18 @@ void cParticleSystem::AllocateParticle(glm::vec3 upVector) {
 
 // Method that grabs a dead Particlle from the pool and make it alive
 // accepts Position Up Vector, Acceleration, Age, Damping and Mass
-void cParticleSystem::AllocateParticle(glm::vec3 position, glm::vec3 upVector, glm::vec3 acceleration, float age, float damping, float mass) {
+cParticle* cParticleSystem::AllocateParticle(glm::vec3 position, glm::vec3 upVector, glm::vec3 acceleration, float age, float damping, float mass) {
 	DEBUG_PRINT("cParticleSystem::AllocateParticle(munition type);\n");
 	// Checks if there are particles available
 	if (numParticlesAvail == 0) {
 		DEBUG_PRINT("cParticleSystem::AllocateParticle - Error - All particles are alive, can't create a new particle!\n");
-		return;
+		return nullptr;
 	}
 	// Cheks if particle available at index is alive
 	cParticle& p = particles[indexAvailParticle];
 	if (p.getAge() >= 0) {
 		DEBUG_PRINT("cParticleSystem::AllocateParticle - Error - Oldest particle still alive, can't create a new particle!\n");
-		return;
+		return nullptr;
 	}
 
 	// Transform the dead particle into a living one
@@ -91,7 +91,7 @@ void cParticleSystem::AllocateParticle(glm::vec3 position, glm::vec3 upVector, g
 	this->numParticlesAvail--;
 	// Checks if index is at the end of the vector, if so index = 0, else index++
 	indexAvailParticle == (numParticles - 1) ? indexAvailParticle = 0 : indexAvailParticle++;
-	return;
+	return &p;
 }
 
 // Method that Integrate all living particles

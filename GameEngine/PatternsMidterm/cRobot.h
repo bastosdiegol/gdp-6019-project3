@@ -10,6 +10,7 @@ public:
     float		    m_health;
     iWeapon*        m_weapon;
     cParticle*      m_firedProjectile;
+    iRobot*         m_curTarget;
 
     cRobot();
     ~cRobot();
@@ -21,12 +22,15 @@ public:
     void            setHeight(float y);
     void            setWeapon(iWeapon* weapon);
     void            setProjectile(cParticle* projectile);
+    void            setCurTarget(iRobot* target);
     // Getters
     Vector3         getPosition();
     float           getHealth();
     iWeapon*        getWeapon();
     std::string     getWeaponName();
     cParticle*      getFiredProjectile();
+    iRobot*         getCurTarget();
+
 private:
     unsigned int    m_id;
 
