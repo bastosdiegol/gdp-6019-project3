@@ -13,24 +13,28 @@ unsigned int cRobot::m_nextID = cRobot::STARTING_ID;
 
 cRobot::cRobot() {
 	DEBUG_PRINT("cRobot::cRobot()\n");
-	this->m_id = cRobot::m_nextID;
-	cRobot::m_nextID += ID_VALUE_INCREMENT;
-	this->m_health = 100.0f;
-	this->m_firedProjectile = nullptr;
+	this->m_id				= cRobot::m_nextID;
+	cRobot::m_nextID		+= ID_VALUE_INCREMENT;
+	this->m_health			= 100.0f;
+	this->m_firedProjectile	= nullptr;
+	this->m_curTarget		= nullptr;
+	this->m_weapon			= nullptr;
 }
 
 cRobot::~cRobot() {
-	DEBUG_PRINT("cRobot::~cRobot()\n");
 	delete m_weapon;
 }
 
 void cRobot::Update(float deltaTime) {
-	DEBUG_PRINT("cRobot::Update(%f)\n", deltaTime);
 	this->m_weapon->Update(deltaTime);
 }
 
 unsigned int cRobot::getID() {
 	return this->m_id;
+}
+
+void cRobot::setHealth(float hp) {
+	this->m_health = hp;
 }
 
 void cRobot::setPosition(float x, float y, float z) {

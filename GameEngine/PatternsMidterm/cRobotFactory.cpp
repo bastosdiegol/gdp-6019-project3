@@ -1,5 +1,6 @@
 #include "cRobotFactory.h"
 #include "cRobot.h"
+#include <time.h>
 #include <glm/geometric.hpp>
 
 #ifdef _DEBUG
@@ -19,6 +20,7 @@ cRobotFactory::cRobotFactory() {
 	this->m_terrain					= nullptr;
 	this->m_vPlaneTrianglesCenter	= nullptr;
 	this->m_vTerrainTrianglesCenter = nullptr;
+	srand(time(NULL));
 }
 
 cRobotFactory::~cRobotFactory() {
@@ -233,6 +235,15 @@ int cRobotFactory::calculateClosestTerrainTriangle(glm::vec3 position, std::vect
 void cRobotFactory::fire(iRobot* robot, iRobot* target) {
 	DEBUG_PRINT("cRobotFactory::fire(%d, %d)\n", robot->getID(), target->getID());
 	//cParticle* particle 
+}
+
+void cRobotFactory::ApplyDamage(iRobot* attackingRobot, iRobot* target, float damage) {
+	target->setHealth( target->getHealth() - damage );
+	// Checks to see if target died
+	if (target->getHealth() < 0) {
+		attackingRobot->setCurTarget(nullptr);
+		target->setCurTarget(nullptr);
+	}
 }
 
 // Utility function for a random range of two floats

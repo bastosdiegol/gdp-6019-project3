@@ -26,11 +26,6 @@ void cWeaponBallistic::Update(float deltaTime) {
 	this->m_cooldown -= deltaTime;
 }
 
-void cWeaponBallistic::Fire() {
-	DEBUG_PRINT("cWeaponBallistic::Fire()\n");
-	return;
-}
-
 void cWeaponBallistic::setCooldown() {
 	this->m_cooldown = m_reloadRate;
 }
@@ -41,4 +36,8 @@ std::string cWeaponBallistic::getName() {
 
 float cWeaponBallistic::getCooldown() {
 	return m_cooldown;
+}
+
+float cWeaponBallistic::getDamagePerShot() {
+	return this->m_damagePerShot;
 }

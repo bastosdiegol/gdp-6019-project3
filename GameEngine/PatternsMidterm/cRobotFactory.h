@@ -5,7 +5,7 @@
 #include <vector>
 #include <map>
 
-#define ENEMY_RADIUS 6
+#define ENEMY_RADIUS 7
 
 class cRobotFactory {
 protected:
@@ -91,6 +91,12 @@ public:
 	/// <param name="robot">Attacking robot</param>
 	/// <param name="target">Target</param>
 	void fire(iRobot* robot, iRobot* target);
+	/// <summary>
+	/// Reduces the Health of a Robot
+	/// </summary>
+	/// <param name="target">Receives the robot who will take damage</param>
+	/// <param name="damage">Receives the damage that will be applied</param>
+	void ApplyDamage(iRobot* attackingRobot, iRobot* target, float damage);
 
 private:
 	std::vector<iRobot*> m_vRobots;

@@ -1200,7 +1200,7 @@
 			</mesh>
 		</model>
 		<model path="assets/midterm/robot.ply" title="Robot">
-			<mesh id="Robot 01">
+			<mesh id="Robot 1">
 				<position x="0" y="0" z="0" />
 				<rotate x="0" y="0" z="0" />
 				<useColor value="true" />
@@ -1211,7 +1211,7 @@
 				<visible value="true" />
 				<boundingBox value="true" />
 			</mesh>
-			<mesh id="Robot 02">
+			<mesh id="Robot 2">
 				<position x="0" y="0" z="0" />
 				<rotate x="0" y="0" z="0" />
 				<useColor value="true" />
@@ -1222,7 +1222,7 @@
 				<visible value="true" />
 				<boundingBox value="true" />
 			</mesh>
-			<mesh id="Robot 03">
+			<mesh id="Robot 3">
 				<position x="0" y="0" z="0" />
 				<rotate x="0" y="0" z="0" />
 				<useColor value="true" />
@@ -1233,7 +1233,7 @@
 				<visible value="true" />
 				<boundingBox value="true" />
 			</mesh>
-			<mesh id="Robot 04">
+			<mesh id="Robot 4">
 				<position x="0" y="0" z="0" />
 				<rotate x="0" y="0" z="0" />
 				<useColor value="true" />
@@ -1244,7 +1244,7 @@
 				<visible value="true" />
 				<boundingBox value="true" />
 			</mesh>
-			<mesh id="Robot 05">
+			<mesh id="Robot 5">
 				<position x="0" y="0" z="0" />
 				<rotate x="0" y="0" z="0" />
 				<useColor value="true" />
@@ -1255,7 +1255,7 @@
 				<visible value="true" />
 				<boundingBox value="true" />
 			</mesh>
-			<mesh id="Robot 06">
+			<mesh id="Robot 6">
 				<position x="0" y="0" z="0" />
 				<rotate x="0" y="0" z="0" />
 				<useColor value="true" />
@@ -1266,7 +1266,7 @@
 				<visible value="true" />
 				<boundingBox value="true" />
 			</mesh>
-			<mesh id="Robot 07">
+			<mesh id="Robot 7">
 				<position x="0" y="0" z="0" />
 				<rotate x="0" y="0" z="0" />
 				<useColor value="true" />
@@ -1277,7 +1277,7 @@
 				<visible value="true" />
 				<boundingBox value="true" />
 			</mesh>
-			<mesh id="Robot 08">
+			<mesh id="Robot 8">
 				<position x="0" y="0" z="0" />
 				<rotate x="0" y="0" z="0" />
 				<useColor value="true" />
@@ -1288,7 +1288,7 @@
 				<visible value="true" />
 				<boundingBox value="true" />
 			</mesh>
-			<mesh id="Robot 09">
+			<mesh id="Robot 9">
 				<position x="0" y="0" z="0" />
 				<rotate x="0" y="0" z="0" />
 				<useColor value="true" />
@@ -1309,6 +1309,118 @@
 				<doNotLight value="false" />
 				<visible value="true" />
 				<boundingBox value="true" />
+			</mesh>
+		</model>
+		<model path="assets/midterm/bullet.ply" title="Bullet">
+			<mesh id="Bullet 1">
+				<position x="0" y="-30" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="1" g="1" b="1" a="1" />
+				<scale value="10" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+			<mesh id="Bullet 2">
+				<position x="0" y="-30" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="1" g="1" b="1" a="1" />
+				<scale value="10" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+			<mesh id="Bullet 3">
+				<position x="0" y="-30" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="1" g="1" b="1" a="1" />
+				<scale value="10" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+			<mesh id="Bullet 4">
+				<position x="0" y="-30" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="1" g="1" b="1" a="1" />
+				<scale value="10" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+			<mesh id="Bullet 5">
+				<position x="0" y="-30" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="1" g="1" b="1" a="1" />
+				<scale value="10" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+			<mesh id="Bullet 6">
+				<position x="0" y="-30" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="1" g="1" b="1" a="1" />
+				<scale value="10" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+			<mesh id="Bullet 7">
+				<position x="0" y="-30" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="1" g="1" b="1" a="1" />
+				<scale value="10" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+			<mesh id="Bullet 8">
+				<position x="0" y="-30" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="1" g="1" b="1" a="1" />
+				<scale value="10" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+			<mesh id="Bullet 9">
+				<position x="0" y="-30" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="1" g="1" b="1" a="1" />
+				<scale value="10" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+			<mesh id="Bullet 10">
+				<position x="0" y="-30" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="1" g="1" b="1" a="1" />
+				<scale value="10" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
 			</mesh>
 		</model>
 		<light id="Light 01" onoff="1" showmodel="true">

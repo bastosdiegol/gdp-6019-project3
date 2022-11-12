@@ -26,11 +26,6 @@ void cWeaponLOS::Update(float deltaTime) {
 	m_cooldown -= deltaTime;
 }
 
-void cWeaponLOS::Fire() {
-	DEBUG_PRINT("cWeaponLOS::Fire()\n");
-	return;
-}
-
 void cWeaponLOS::setCooldown() {
 	this->m_cooldown = this->m_reloadRate;
 }
@@ -41,4 +36,8 @@ std::string cWeaponLOS::getName() {
 
 float cWeaponLOS::getCooldown() {
 	return m_cooldown;
+}
+
+float cWeaponLOS::getDamagePerShot() {
+	return this->m_damagePerShot;
 }

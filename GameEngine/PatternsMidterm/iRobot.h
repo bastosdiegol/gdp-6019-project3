@@ -11,6 +11,7 @@ public:
 	virtual unsigned int getID(void) = 0;
 	virtual void Update(float deltaTime) = 0;
 	// Setters
+	virtual void setHealth(float hp) = 0;
 	virtual void setPosition(float x, float y, float z) = 0;
 	virtual void setHeight(float y) = 0;
 	virtual void setWeapon(iWeapon* weapon) = 0;

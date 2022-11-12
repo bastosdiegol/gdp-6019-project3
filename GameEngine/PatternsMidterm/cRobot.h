@@ -18,6 +18,7 @@ public:
     void            Update(float deltaTime);
     unsigned int    getID();
     // Setters
+    void            setHealth(float hp);
     void            setPosition(float x, float y, float z);
     void            setHeight(float y);
     void            setWeapon(iWeapon* weapon);
