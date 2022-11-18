@@ -1433,5 +1433,41 @@
 			<param2 x="1" y="0" z="0" w="1" />
 		</light>
 	</scene>
-	<scene title="6.Physics Proj#2" camEyeX="0" camEyeY="0" camEyeZ="0" camTarX="0" camTarY="0" camTarZ="0" />
+	<scene title="6.Physics Proj#2" camEyeX="110.800003" camEyeY="500" camEyeZ="-152.300003" camTarX="126" camTarY="100" camTarZ="126">
+		<model path="assets/physics_proj2/terrain.ply" title="Terrain">
+			<mesh id="Terrain">
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0.818627477" g="0.815558851" b="0.814614594" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+		</model>
+		<model path="assets/physics_proj2/glider.ply" title="Glider">
+			<mesh id="Glider">
+				<position x="180" y="122.199997" z="145" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="true" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+		</model>
+		<light id="Light 01" onoff="1" showmodel="false">
+			<position x="500" y="500" z="0" w="1" />
+			<diffuse x="0.872548997" y="0.872548997" z="0.872548997" w="1" />
+			<specular r="0.215686262" g="0.215437487" b="0.213571683" a="1" />
+			<attenuation x="0.100000001" y="0.00100000005" z="1.00000001e-07" w="1" />
+			<direction x="0" y="-1" z="0" w="1" />
+			<param1 x="2" y="20" z="100" w="1" />
+			<param2 x="1" y="0" z="0" w="1" />
+		</light>
+	</scene>
 </graphicsLibrary>

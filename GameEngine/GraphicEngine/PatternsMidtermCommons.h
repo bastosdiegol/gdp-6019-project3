@@ -143,7 +143,7 @@ void patternsMidTermGameLoop() {
 							cParticle* particle = g_particleSystem->AllocateParticle(theRobot->getPosition().getGlmVec3() + glm::vec3(0.0f, 5.0f, 0.0f),
 								(target->getPosition() - theRobot->getPosition()).getGlmVec3(),
 								glm::vec3(0.0f),	//acceleration
-								6.0f,  //age
+								10.0f,  //age
 								1.0f,	//damping
 								1.0f);	//mass
 							DEBUG_PRINT("Robot[%d] fired towards Robot[%d]\n", theRobot->getID(), target->getID());
