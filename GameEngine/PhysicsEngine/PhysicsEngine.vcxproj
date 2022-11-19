@@ -141,12 +141,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="cParticle.h" />
     <ClInclude Include="cParticleSystem.h" />
+    <ClInclude Include="PhysicsMath.h" />
+    <ClInclude Include="PhysicsObject.h" />
+    <ClInclude Include="Shapes.h" />
+    <ClInclude Include="Vector3.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cParticle.cpp" />
     <ClCompile Include="cParticleSystem.cpp" />
+    <ClCompile Include="PhysicsMath.cpp" />
+    <ClCompile Include="PhysicsObject.cpp" />
+    <ClCompile Include="Shapes.cpp" />
+    <ClCompile Include="Vector3.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
