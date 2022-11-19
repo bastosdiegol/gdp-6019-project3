@@ -14,8 +14,9 @@ PhysicsSystem::~PhysicsSystem() {
 	//  -> edit: Nope, use this for array of pointers
 }
 
-PhysicsObject* PhysicsSystem::CreatePhysicsObject(const Vector3& position, iShape* shape) {
-	PhysicsObject* physicsObject = new PhysicsObject(position);
+PhysicsObject* PhysicsSystem::CreatePhysicsObject(cMeshObject* mesh, iShape* shape) {
+	PhysicsObject* physicsObject = new PhysicsObject(mesh->m_position);
+	physicsObject->parentMesh = mesh;
 	physicsObject->pShape = shape;
 	m_PhysicsObjects.push_back(physicsObject);
 	return physicsObject;

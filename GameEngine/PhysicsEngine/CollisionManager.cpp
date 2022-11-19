@@ -10,10 +10,10 @@ void CollisionManager::addModelToAABBEnviroment(PhysicsSystem* physSys, cModel* 
 								  model->pVertices[ model->pIndices[i] ].z)   + position);
 		Point b = Point(glm::vec3(model->pVertices[ model->pIndices[i+1] ].x,
 								  model->pVertices[ model->pIndices[i+1] ].y,
-								  model->pVertices[ model->pIndices[i+1] ].z)   + position);
+								  model->pVertices[ model->pIndices[i+1] ].z) + position);
 		Point c = Point(glm::vec3(model->pVertices[ model->pIndices[i+2] ].x,
 								  model->pVertices[ model->pIndices[i+2] ].y,
-								  model->pVertices[ model->pIndices[i+2] ].z)   + position);
+								  model->pVertices[ model->pIndices[i+2] ].z) + position);
 
 		int hashA = CalculateHashValue(a);
 		int hashB = CalculateHashValue(b);

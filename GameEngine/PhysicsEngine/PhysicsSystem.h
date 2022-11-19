@@ -9,10 +9,12 @@
 
 class PhysicsSystem {
 public:
+	std::vector<PhysicsObject*> m_PhysicsObjects;
+
 	PhysicsSystem();
 	~PhysicsSystem();
 
-	PhysicsObject* CreatePhysicsObject(const Vector3& position, iShape* shape);
+	PhysicsObject* CreatePhysicsObject(cMeshObject* mesh, iShape* shape);
 	void AddSpring(Spring* spring);
 	void UpdateStep(float duration);
 	void AddTriangleToAABBCollisionCheck(int hash, Triangle* triangle);
@@ -38,7 +40,6 @@ private:
 	//bool CollisionTest(AABB* a, AABB* b);			// Not implementing
 	//bool CollisionTest(Triangle* a, Triangle* b);	// Not implementing
 
-	std::vector<PhysicsObject*> m_PhysicsObjects;
 	std::vector<Spring*> m_Springs;
 	std::map<int, std::vector<Triangle*>> m_AABBStructure;
 };

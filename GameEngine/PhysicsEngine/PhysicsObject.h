@@ -3,6 +3,7 @@
 #include "Vector3.h"
 #include "BoundingBox.h"
 #include "Shapes.h"
+#include "cMeshObject.h"
 
 class PhysicsObject {
 	// Private area
@@ -33,9 +34,10 @@ public:
 	inline const Vector3& GetVelocity() const {	return velocity; }
 	inline const Vector3& GetAcceleration() const {	return acceleration; }
 
-	BoundingBox* pBoundingBox;
-	iShape* pShape;
-	unsigned char type;
+	BoundingBox*	pBoundingBox;
+	iShape*			pShape;
+	unsigned char	type;
+	cMeshObject*	parentMesh;
 
 private:
 	friend class PhysicsSystem;
