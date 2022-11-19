@@ -14,11 +14,13 @@
 #include "cShaderManager.h"
 #include <cRobotFactory.h>
 #include <cRobot.h>
+#include "PhysicsSystem.h"
 //#include "cLightHelper.h"
 
 // Scene Main Loops, Globals and Functions
 #include "PatternsMidtermCommons.h"
 #include "GraphicsMidtermCommons.h"
+#include "PhysicsProjectTwoCommons.h"
 
 #ifdef _DEBUG
 #define DEBUG_LOG_ENABLED
@@ -35,6 +37,8 @@ glm::vec3* g_cameraEye;
 glm::vec3* g_cameraTarget;
 // Global Project Manager
 cProjectManager* g_ProjectManager;
+// Global Physics System
+PhysicsSystem* g_PhysicsSystem;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	const float CAMERA_MOVE_SPEED = 1.0f;
@@ -128,6 +132,9 @@ int main(int argc, char* argv[]) {
 
 	// Creates my Project Manager
 	g_ProjectManager = new cProjectManager(shaderID);
+
+	// Creates my Physics System
+	g_PhysicsSystem = new PhysicsSystem();
 	
 	// Creates my Project Manager UI - ImGui Window
 	cProjectUI g_projectUI(g_ProjectManager);
@@ -184,6 +191,8 @@ int main(int argc, char* argv[]) {
 				graphicsMidTermFliesAwayGameLoop();
 			else if (g_ProjectManager->m_selectedScene->m_name == "5.Patterns MidTerm")
 				patternsMidTermGameLoop();
+			else if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
+				PhysicsProjectTwoGameLoop();
 		}
 
 		// If new Scene
@@ -450,6 +459,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	delete g_ProjectManager;
+	delete g_PhysicsSystem;
 
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();

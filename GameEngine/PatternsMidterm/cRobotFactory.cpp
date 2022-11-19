@@ -75,7 +75,7 @@ void cRobotFactory::setNewRandomPosition(iRobot* robot) {
 	robot->setPosition(RandFloat(-128.0f, 128.0f),
 					   0.0f,
 					   RandFloat(-128.0f, 128.0f));
-	int closestFaceIndex = calculateClosestTerrainTriangle(robot->getPosition().getGlmVec3(),
+	int closestFaceIndex = calculateClosestTerrainTriangle(robot->getPosition().GetGLM(),
 															this->m_vPlaneTrianglesCenter);
 	glm::vec3 posFaceIndex = this->m_vPlaneTrianglesCenter->at(closestFaceIndex);
 	robot->setPosition(posFaceIndex.x, posFaceIndex.y, posFaceIndex.z);
@@ -90,12 +90,12 @@ iRobot* cRobotFactory::findNearestRobot(iRobot* robot) {
 			m_vRobots[i]->getHealth() > 0.0f ) {
 			DEBUG_PRINT("	New Target Robot[%d] Position(%.1f,%.1f,%.1f) found.\n", m_vRobots[i]->getID(), m_vRobots[i]->getPosition().x
 				, m_vRobots[i]->getPosition().y, m_vRobots[i]->getPosition().z);
-			DEBUG_PRINT("		... Comparing Distance [Origin, Target] = %f\n", glm::distance(robot->getPosition().getGlmVec3(),
-				m_vRobots[i]->getPosition().getGlmVec3()));
-			DEBUG_PRINT("		... Comparing Distance [Target, Origin] = %f\n", glm::distance(m_vRobots[i]->getPosition().getGlmVec3(),
-				robot->getPosition().getGlmVec3()));
-			newDistance = glm::distance(robot->getPosition().getGlmVec3(),
-										m_vRobots[i]->getPosition().getGlmVec3());
+			DEBUG_PRINT("		... Comparing Distance [Origin, Target] = %f\n", glm::distance(robot->getPosition().GetGLM(),
+				m_vRobots[i]->getPosition().GetGLM()));
+			DEBUG_PRINT("		... Comparing Distance [Target, Origin] = %f\n", glm::distance(m_vRobots[i]->getPosition().GetGLM(),
+				robot->getPosition().GetGLM()));
+			newDistance = glm::distance(robot->getPosition().GetGLM(),
+										m_vRobots[i]->getPosition().GetGLM());
 			if (newDistance < smallestDistance) {
 				// TODO: Conditional for Weapon Type here
 				// Laser and Bullet do something
@@ -104,8 +104,7 @@ iRobot* cRobotFactory::findNearestRobot(iRobot* robot) {
 				Vector3 targetToRobot = m_vRobots[i]->getPosition() - robot->getPosition();
 				targetToRobot.Normalize();
 				DEBUG_PRINT("			Normal Vector to Target Robot[%d]: ", m_vRobots[i]->getID());
-				targetToRobot.vOut(); DEBUG_PRINT("\n");
-				if (hasLineOfSight(robot, m_vRobots[i], targetToRobot.getGlmVec3())) {
+				if (hasLineOfSight(robot, m_vRobots[i], targetToRobot.GetGLM())) {
 					smallestDistance = newDistance;
 					indexClosestRobot = i;
 					DEBUG_PRINT("				Has LOS!\n");
@@ -131,12 +130,12 @@ bool cRobotFactory::hasLineOfSight(iRobot* robot, iRobot* target, glm::vec3 dire
 	// Initial Position of the LOS
 
 	DEBUG_PRINT("				Checking LOS ... Robot[%d] to Target Robot[%d].\n", robot->getID(), target->getID());
-	glm::vec3 curPosition = robot->getPosition().getGlmVec3() + glm::vec3(0.0f, 5.0f, 0.0f); // Height off-set for weapon
+	glm::vec3 curPosition = robot->getPosition().GetGLM() + glm::vec3(0.0f, 5.0f, 0.0f); // Height off-set for weapon
 	float dt = 0.1f;
 	glm::vec3 movementPerStep = direction * 5.0f;
 	float age = 6.0f;
 	int indexClosestTriangle;
-	float distanceToTarget = glm::distance(curPosition, target->getPosition().getGlmVec3());
+	float distanceToTarget = glm::distance(curPosition, target->getPosition().GetGLM());
 	do {
 		if (distanceToTarget < ENEMY_RADIUS) {
 			DEBUG_PRINT("				LOS ok! Enemy can be hit.");
@@ -150,7 +149,7 @@ bool cRobotFactory::hasLineOfSight(iRobot* robot, iRobot* target, glm::vec3 dire
 		}
 		curPosition += movementPerStep;
 		DEBUG_PRINT("				distanceToTarget(%f)!\n", distanceToTarget);
-		distanceToTarget = glm::distance(curPosition, target->getPosition().getGlmVec3());
+		distanceToTarget = glm::distance(curPosition, target->getPosition().GetGLM());
 		age -= dt;
 	} while ( distanceToTarget > 0 && age > 0);
 	if (age < 0) {

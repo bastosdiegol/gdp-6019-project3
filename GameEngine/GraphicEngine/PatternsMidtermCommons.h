@@ -65,7 +65,7 @@ void patternsMidTermGameLoop() {
 			std::string meshName = "Robot " + std::to_string(theRobot->getID() + 1);
 			std::map<std::string, cMeshObject*>::iterator itMeshes 
 				= g_ProjectManager->m_selectedScene->m_mMeshes.find(meshName);
-			itMeshes->second->m_position = theRobot->getPosition().getGlmVec3();
+			itMeshes->second->m_position = theRobot->getPosition().GetGLM();
 			itMeshes->second->m_displayBoundingBox = true;
 			// Resets its bullet Location
 			std::string projName = "Bullet " + std::to_string(theRobot->getID() + 1);
@@ -91,7 +91,7 @@ void patternsMidTermGameLoop() {
 					if (theRobot->getFiredProjectile()->getAge() > 0) {
 						// Checks if the projectile is arounnd the target radius
 						if (glm::distance(theRobot->getFiredProjectile()->getPosition(),
-							theRobot->getCurTarget()->getPosition().getGlmVec3()) < ENEMY_RADIUS) {
+							theRobot->getCurTarget()->getPosition().GetGLM()) < ENEMY_RADIUS) {
 							DEBUG_PRINT("The robot[%d] has hit the robot[%d]\n", theRobot->getID(), theRobot->getCurTarget()->getID());
 							// Applies damage to the target
 							g_robotFactory->ApplyDamage(theRobot, theRobot->getCurTarget(), theRobot->getWeapon()->getDamagePerShot());
@@ -140,8 +140,8 @@ void patternsMidTermGameLoop() {
 							// Saves currrent target
 							theRobot->setCurTarget(target);
 							// Fires toward the target
-							cParticle* particle = g_particleSystem->AllocateParticle(theRobot->getPosition().getGlmVec3() + glm::vec3(0.0f, 5.0f, 0.0f),
-								(target->getPosition() - theRobot->getPosition()).getGlmVec3(),
+							cParticle* particle = g_particleSystem->AllocateParticle(theRobot->getPosition().GetGLM() + glm::vec3(0.0f, 5.0f, 0.0f),
+								(target->getPosition() - theRobot->getPosition()).GetGLM(),
 								glm::vec3(0.0f),	//acceleration
 								10.0f,  //age
 								1.0f,	//damping
@@ -156,7 +156,7 @@ void patternsMidTermGameLoop() {
 			// Time to Update the Mesh Position
 			std::string meshName = "Robot " + std::to_string(theRobot->getID() + 1);
 			itMeshes = g_ProjectManager->m_selectedScene->m_mMeshes.find(meshName);
-			itMeshes->second->m_position = theRobot->getPosition().getGlmVec3();
+			itMeshes->second->m_position = theRobot->getPosition().GetGLM();
 			// Sets mesh color to current robot HP
 			if (theRobot->getHealth() > 75.0f) {
 				itMeshes->second->m_RGBA_colour = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f); // Green

@@ -10,7 +10,7 @@
 #endif
 
 cWeaponBallistic::cWeaponBallistic(std::string name, float damagePerShot, float damageRadius, float reloadRate) {
-	DEBUG_PRINT("cWeaponBallistic::cWeaponBallistic(%s, %f, %f, %f)\n", name, damagePerShot, damageRadius, reloadRate);
+	DEBUG_PRINT("cWeaponBallistic::cWeaponBallistic(%s, %f, %f, %f)\n", name.c_str(), damagePerShot, damageRadius, reloadRate);
 	m_name			= name;
 	m_damagePerShot = damagePerShot;
 	m_damageRadius	= damageRadius;
