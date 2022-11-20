@@ -39,32 +39,52 @@ glm::vec3* g_cameraTarget;
 cProjectManager* g_ProjectManager;
 // Global Physics System
 PhysicsSystem* g_PhysicsSystem;
+// Movable Actor
+iMovable* controllableActor;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-	const float CAMERA_MOVE_SPEED = 1.0f;
+	const float MOVE_SPEED = 20.0f;
 	if (key == GLFW_KEY_A)     // Left
 	{
-		g_cameraEye->x -= CAMERA_MOVE_SPEED;
+		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
+			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(MOVE_SPEED, 0.0f, 0.0f));
+		else
+			g_cameraEye->x -= MOVE_SPEED;
 	}
 	if (key == GLFW_KEY_D)     // Right
 	{
-		g_cameraEye->x += CAMERA_MOVE_SPEED;
+		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
+			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(-MOVE_SPEED, 0.0f, 0.0f));
+		else
+			g_cameraEye->x += MOVE_SPEED;
 	}
 	if (key == GLFW_KEY_W)     // Forward
 	{
-		g_cameraEye->z += CAMERA_MOVE_SPEED;
+		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
+			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(0.0f, 0.0f, MOVE_SPEED));
+		else
+			g_cameraEye->z += MOVE_SPEED;
 	}
 	if (key == GLFW_KEY_S)     // Backwards
 	{
-		g_cameraEye->z -= CAMERA_MOVE_SPEED;
+		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
+			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(0.0f, 0.0f, -MOVE_SPEED));
+		else
+			g_cameraEye->z -= MOVE_SPEED;
 	}
 	if (key == GLFW_KEY_Q)     // Down
 	{
-		g_cameraEye->y -= CAMERA_MOVE_SPEED;
+		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
+			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(0.0f, -MOVE_SPEED, 0.0f));
+		else
+			g_cameraEye->y -= MOVE_SPEED;
 	}
 	if (key == GLFW_KEY_E)     // Up
 	{
-		g_cameraEye->y += CAMERA_MOVE_SPEED;
+		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
+			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(0.0f, MOVE_SPEED, 0.0f));
+		else
+			g_cameraEye->y += MOVE_SPEED;
 	}
 }
 

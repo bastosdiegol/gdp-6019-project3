@@ -10,6 +10,7 @@
 class PhysicsSystem {
 public:
 	std::vector<PhysicsObject*> m_PhysicsObjects;
+	std::map<int, std::vector<Triangle*>> m_AABBStructure;
 
 	PhysicsSystem();
 	~PhysicsSystem();
@@ -41,5 +42,4 @@ private:
 	//bool CollisionTest(Triangle* a, Triangle* b);	// Not implementing
 
 	std::vector<Spring*> m_Springs;
-	std::map<int, std::vector<Triangle*>> m_AABBStructure;
 };

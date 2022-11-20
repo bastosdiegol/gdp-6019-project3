@@ -29,6 +29,9 @@ public:
 	void Integrate(float dt);
 	void ApplyForce(const Vector3& direction);
 	void KillAllForces();
+	void SetPosition(const Vector3& pos);
+	void SetVelocity(const Vector3& velocity);
+	void SetAcceleration(const Vector3& acceleration);
 
 	inline const Vector3& GetPosition() const {	return position; }
 	inline const Vector3& GetVelocity() const {	return velocity; }

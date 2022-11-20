@@ -4,8 +4,9 @@
 #include <glm/vec4.hpp>
 
 #include "cModel.h"
+#include "iMovable.h"
 
-class cMeshObject {
+class cMeshObject : public iMovable {
 public:
 	cMeshObject(cModel* parent);
 	~cMeshObject();
@@ -22,5 +23,10 @@ public:
 	bool			m_bDoNotLight;
 	bool			m_bIsVisible;
 	bool			m_displayBoundingBox;
+
+	glm::vec3	getGLMPosition();
+	Vector3		getVECPosition();
+	void		setPosition(glm::vec3 pos);
+	void		setPosition(Vector3 pos);
 };
 

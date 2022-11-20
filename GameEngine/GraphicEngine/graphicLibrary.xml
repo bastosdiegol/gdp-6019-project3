@@ -1449,7 +1449,7 @@
 		</model>
 		<model path="assets/physics_proj2/glider.ply" title="Glider">
 			<mesh id="Glider">
-				<position x="180" y="122.199997" z="145" />
+				<position x="180" y="260" z="145" />
 				<rotate x="0" y="0" z="0" />
 				<useColor value="true" />
 				<color r="1" g="0" b="0" a="1" />

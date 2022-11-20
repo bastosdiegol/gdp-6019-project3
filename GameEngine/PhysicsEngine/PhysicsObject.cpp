@@ -100,3 +100,15 @@ void PhysicsObject::ApplyForce(const Vector3& direction) {
 void PhysicsObject::KillAllForces() {
 	force.Set(0.f, 0.f, 0.f);
 }
+
+void PhysicsObject::SetPosition(const Vector3& pos) {
+	this->position = pos;
+}
+
+void PhysicsObject::SetVelocity(const Vector3& velocity) {
+	this->velocity = velocity;
+}
+
+void PhysicsObject::SetAcceleration(const Vector3& acceleration) {
+	this->acceleration = acceleration;
+}

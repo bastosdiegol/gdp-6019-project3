@@ -1,5 +1,6 @@
 #include "PhysicsSystem.h"
 #include "PhysicsUtils.h"
+#include "CollisionManager.h"
 
 PhysicsSystem::PhysicsSystem() {
 }
@@ -72,16 +73,33 @@ void PhysicsSystem::UpdateStep(float duration) {
 					////physObjA->KillAllForces();
 					physObjA->velocity.y = 0.0f;
 
-
 					// Bounce:
 					//physObjA->velocity = Vector3(0.0f) - physObjA->velocity * 0.8f;
 				}
 
 				if (physObjB->m_IsStatic == false)
 				{
-					physObjB->position.y = physObjB->prevPosition.y;
+					//physObjB->position.y = physObjB->prevPosition.y;
 					//physObjB->KillAllForces();
-					physObjB->velocity.y = 0.0f;
+					//physObjB->velocity.y = 0.0f;
+
+					if (shapeA->GetType() == ShapeType::SHAPE_TYPE_AABB &&
+						shapeB->GetType() == ShapeType::SHAPE_TYPE_SPHERE) {
+						collision = false;
+						CollisionManager collmanager;
+						int spherePosHash = collmanager.CalculateHashValue(physObjB->position);
+						for (int i = 0; i < m_AABBStructure[spherePosHash].size(); i++) {
+							Triangle* triangleI = m_AABBStructure[spherePosHash][i];
+
+							collision = CollisionTest(physObjA->position, triangleI, physObjB->position, shapeB);
+							//collision = CollisionTest(physObjB->position, shapeB, physObjA->position, triangleI);
+							if (collision) {
+								printf("Collided!!!\n");
+								physObjB->position.y = physObjB->prevPosition.y;
+								physObjB->velocity.y = 0.0f;
+							}
+						}
+					}
 
 					//physObjB->velocity = Vector3(0.0f) - physObjB->velocity * 0.8f;
 				}
