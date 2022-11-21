@@ -51,43 +51,68 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	{
 		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
 			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(MOVE_SPEED, 0.0f, 0.0f));
-		else
-			g_cameraEye->x -= MOVE_SPEED;
+		else {
+			g_cameraEye->x += MOVE_SPEED;
+			g_cameraTarget->x += MOVE_SPEED;
+		}
+
 	}
 	if (key == GLFW_KEY_D)     // Right
 	{
 		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
 			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(-MOVE_SPEED, 0.0f, 0.0f));
-		else
-			g_cameraEye->x += MOVE_SPEED;
+		else {
+			g_cameraEye->x -= MOVE_SPEED;
+			g_cameraTarget->x -= MOVE_SPEED;
+		}
 	}
 	if (key == GLFW_KEY_W)     // Forward
 	{
 		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
 			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(0.0f, 0.0f, MOVE_SPEED));
-		else
+		else {
 			g_cameraEye->z += MOVE_SPEED;
+			g_cameraTarget->z += MOVE_SPEED;
+		}
 	}
 	if (key == GLFW_KEY_S)     // Backwards
 	{
 		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
 			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(0.0f, 0.0f, -MOVE_SPEED));
-		else
+		else {
 			g_cameraEye->z -= MOVE_SPEED;
+			g_cameraTarget->z -= MOVE_SPEED;
+		}
 	}
 	if (key == GLFW_KEY_Q)     // Down
 	{
 		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
 			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(0.0f, -MOVE_SPEED, 0.0f));
-		else
+		else {
 			g_cameraEye->y -= MOVE_SPEED;
+			g_cameraTarget->y -= MOVE_SPEED;
+		}
 	}
 	if (key == GLFW_KEY_E)     // Up
 	{
 		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
 			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(0.0f, MOVE_SPEED, 0.0f));
-		else
+		else {
 			g_cameraEye->y += MOVE_SPEED;
+			g_cameraTarget->y += MOVE_SPEED;
+		}
+	}
+	if (key == GLFW_KEY_UP) {
+		g_cameraTarget->z += MOVE_SPEED;
+	}
+	if (key == GLFW_KEY_DOWN) {
+		g_cameraTarget->z -= MOVE_SPEED;
+	}
+	if (key == GLFW_KEY_LEFT) {
+		g_cameraTarget->x += MOVE_SPEED;
+	}
+	if (key == GLFW_KEY_RIGHT) {
+		g_cameraTarget->x -= MOVE_SPEED;
 	}
 }
 
