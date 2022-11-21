@@ -25,6 +25,7 @@
 #ifdef _DEBUG
 #define DEBUG_LOG_ENABLED
 #endif
+#include <FModManager.h>
 #ifdef DEBUG_LOG_ENABLED
 #define DEBUG_PRINT(x, ...) printf(x, __VA_ARGS__)
 #else
@@ -39,11 +40,13 @@ glm::vec3* g_cameraTarget;
 cProjectManager* g_ProjectManager;
 // Global Physics System
 PhysicsSystem* g_PhysicsSystem;
+// FMOD Manager
+FModManager* g_FModManager;
 // Movable Actor
 iMovable* controllableActor;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-	const float MOVE_SPEED = 20.0f;
+	const float MOVE_SPEED = 1.0f;
 	if (key == GLFW_KEY_A)     // Left
 	{
 		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
@@ -158,6 +161,25 @@ int main(int argc, char* argv[]) {
 	
 	// Creates my Project Manager UI - ImGui Window
 	cProjectUI g_projectUI(g_ProjectManager);
+
+	// Creates my FMod Manager - Using uncompressed files (false)
+	g_FModManager = new FModManager(FMOD_INIT_NORMAL, false);
+	// Creates Channel Groups
+	g_FModManager->createChannelGroup("ch0 master");
+	g_FModManager->createChannelGroup("ch1 music");
+	g_FModManager->createChannelGroup("ch2 fx");
+	// Creates Parent Child relation between channels
+	g_FModManager->setChannelGroupParent("ch0 master", "ch1 music");
+	g_FModManager->setChannelGroupParent("ch0 master", "ch2 fx");
+
+	// Sets initial volume for master channel to 20%
+	// WARNING: DO NOT PASS VOLUME VALUE ABOVE 1.0f
+	g_FModManager->setChannelGroupVolume("ch0 master", 0.7f);
+	g_FModManager->setChannelGroupVolume("ch1 music", 0.15f);
+	g_FModManager->setChannelGroupVolume("ch2 fx", 0.7f);
+
+	// Load all sounds from the XML File
+	//g_FModManager->loadSoundsFromFile();
 
 	// ImGui Window Color
 	//ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
@@ -330,6 +352,7 @@ int main(int argc, char* argv[]) {
 
 	delete g_ProjectManager;
 	delete g_PhysicsSystem;
+	delete g_FModManager;
 
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();

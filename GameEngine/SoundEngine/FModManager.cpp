@@ -54,6 +54,8 @@ FModManager::~FModManager() {
 		itChannels->second->~ChannelGroup();
 
 	// Clear the map tree
+	m_dsp.clear();
+	m_sounds.clear();
 	m_channel_groups.clear();
 	// Deletes the FMOD System
 	m_system->release();
