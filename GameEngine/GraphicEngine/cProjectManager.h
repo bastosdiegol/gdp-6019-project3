@@ -58,13 +58,21 @@ public:
 	/// <returns>True if saving was successful</returns>
 	bool SaveSelectedScene();
 
+	/// <summary>
+	/// Drawns an object on the Screen
+	/// </summary>
+	/// <param name="pCurrentMeshObject">Mesh to be drawn</param>
+	/// <param name="shaderID"></param>
+	/// <param name="mModel_location"></param>
+	/// <param name="mModelInverseTransform_location"></param>
+	/// <param name="parentModel">Default is identity matrix</param>
 	void DrawObject(cMeshObject* pCurrentMeshObject,            
-					GLuint shaderID,									// ID for the current shader
+					GLuint shaderID,								// ID for the current shader
 					//cBasicTextureManager* pTextureManager,
-					cVAOManager* pVAOManager,
-					GLint mModel_location,								// Uniform location of mModel matrix
+					//cVAOManager* pVAOManager,
+					GLint mModel_location,							// Uniform location of mModel matrix
 					GLint mModelInverseTransform_location,
-					glm::mat4x4 mat_PARENT_Model = glm::mat4x4(1.0f));	// The "parent's" model matrix
+					glm::mat4x4 parentModel = glm::mat4x4(1.0f));	// The "parent's" model matrix
 
 	friend class cProjectUI;
 };

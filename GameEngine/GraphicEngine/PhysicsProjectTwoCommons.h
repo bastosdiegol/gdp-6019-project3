@@ -66,6 +66,15 @@ void physicsProjectTwoStartingUp() {
 			iShape* ball = new Sphere(Point(0.0f, 0.0f, 0.0f), itMesh->second->m_scale);
 			// Adds the plane shape to the physics system
 			physObj = g_PhysicsSystem->CreatePhysicsObject(itMesh->second, ball);
+			// Now we gonna add "Child" Spheres for collision at the mesh extremes
+			for (int i = 0; i < itMesh->second->vecChildMeshes.size(); i++) {
+				// Creates "child" sphere
+				ball = new Sphere(Point(0.0f, 0.0f, 0.0f), itMesh->second->vecChildMeshes[i]->m_scale);
+				// Adds the child shape to the physics system
+				physObj = g_PhysicsSystem->CreatePhysicsObject(itMesh->second->vecChildMeshes[i], ball);
+				// These child object won't be moving, but following the main physic object
+				physObj->SetMass(-1.0f);
+			}
 		}
 	} else {
 		DEBUG_PRINT("Terrain not found!\n");
@@ -84,10 +93,13 @@ void physicsProjectTwoNewGame() {
 
 void physicsProjectTwoRunning() {
 	CollisionManager collmanager;
+	// Gravity Damping to the Glider Physic Object
+	g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(0.0f, 9.5f, 0.0f)); 
+
 	// Update Step
-	g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(0.0f, 9.5f, 0.0f)); // Gravity Damping to the Glider
 	g_PhysicsSystem->UpdateStep(0.01f);
-	// Update all Meshs to the current
+
+	// Update all Meshs to the current step
 	for (int i = 0; i < g_PhysicsSystem->m_PhysicsObjects.size(); i++) {
 		g_PhysicsSystem->m_PhysicsObjects[i]->parentMesh->m_position = g_PhysicsSystem->m_PhysicsObjects[i]->GetPosition().GetGLM();
 

@@ -242,178 +242,28 @@ int main(int argc, char* argv[]) {
 											 0.1f,
 											 10000.0f);
 
+
+			glUniformMatrix4fv(mView_location, 1, GL_FALSE, glm::value_ptr(matView));
+			glUniformMatrix4fv(mProjection_location, 1, GL_FALSE, glm::value_ptr(matProjection));
+
 			// Time to Draw the Meshes of Selected Scene
 			std::map<std::string, cMeshObject*>::iterator itMeshes;
 			itMeshes = g_ProjectManager->m_selectedScene->m_mMeshes.begin();
 			// Iterates through all meshes
 			for (itMeshes; itMeshes != g_ProjectManager->m_selectedScene->m_mMeshes.end(); itMeshes++) {
+
+				cMeshObject* pCurrentMeshObject = itMeshes->second;
+
 				// Skip this meshe if not visible
-				if (!itMeshes->second->m_bIsVisible)
+				if (!pCurrentMeshObject->m_bIsVisible)
 					continue;
 
-				glCullFace(GL_BACK);
-				glEnable(GL_DEPTH_TEST);
-
-				matModel = glm::mat4x4(1.0f);
-				// Apply Position Transformation
-				glm::mat4 matTranslation = glm::translate(glm::mat4(1.0f), itMeshes->second->m_position);
-				// Apply Rotation Transformation
-				glm::mat4 matRoationZ = glm::rotate(glm::mat4(1.0f), itMeshes->second->m_rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
-				glm::mat4 matRoationY = glm::rotate(glm::mat4(1.0f), itMeshes->second->m_rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
-				glm::mat4 matRoationX = glm::rotate(glm::mat4(1.0f), itMeshes->second->m_rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
-				// Scale the object
-				float uniformScale = itMeshes->second->m_scale;
-				glm::mat4 matScale = glm::scale(glm::mat4(1.0f), glm::vec3(uniformScale, uniformScale, uniformScale));
-				// Applying all these transformations to the Model
-				matModel = matModel * matTranslation;
-				matModel = matModel * matRoationX;
-				matModel = matModel * matRoationY;
-				matModel = matModel * matRoationZ;
-				matModel = matModel * matScale;
-
-				// Pass all the matrices to the Shader
-				glUniformMatrix4fv(mModel_location, 1, GL_FALSE, glm::value_ptr(matModel));
-				glUniformMatrix4fv(mView_location, 1, GL_FALSE, glm::value_ptr(matView));
-				glUniformMatrix4fv(mProjection_location, 1, GL_FALSE, glm::value_ptr(matProjection));
-
-				// Inverse transpose of a 4x4 matrix removes the right column and lower row
-				// Leaving only the rotation (the upper left 3x3 matrix values)
-				glm::mat4 mModelInverseTransform = glm::inverse(glm::transpose(matModel));
-				glUniformMatrix4fv(mModelInverseTransform_location, 1, GL_FALSE, glm::value_ptr(mModelInverseTransform));
-
-				// Wireframe Check
-				if (itMeshes->second->m_isWireframe)
-					glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-				else
-					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-				// Pass Colours to the Shader
-				GLint RGBA_Colour_ULocID = glGetUniformLocation(shaderID, "RGBA_Colour");
-				glUniform4f(RGBA_Colour_ULocID, itMeshes->second->m_RGBA_colour.r,
-												itMeshes->second->m_RGBA_colour.g,
-												itMeshes->second->m_RGBA_colour.b,
-												itMeshes->second->m_RGBA_colour.w);
-				// Pass the UseRGB boolean to the Shader
-				GLint bUseRGBA_Colour_ULocID = glGetUniformLocation(shaderID, "bUseRGBA_Colour");
-				if (itMeshes->second->m_bUse_RGBA_colour)
-					glUniform1f(bUseRGBA_Colour_ULocID, (GLfloat)GL_TRUE);
-				else
-					glUniform1f(bUseRGBA_Colour_ULocID, (GLfloat)GL_FALSE);
-
-				// Pass DoNotLight boolean to the Shader	
-				GLint bDoNotLight_Colour_ULocID = glGetUniformLocation(shaderID, "bDoNotLight");
-				if (itMeshes->second->m_bDoNotLight)
-					glUniform1f(bDoNotLight_Colour_ULocID, (GLfloat)GL_TRUE);
-				else
-					glUniform1f(bDoNotLight_Colour_ULocID, (GLfloat)GL_FALSE);
-
-				// Pass the Model we want to draw
-				glBindVertexArray(itMeshes->second->m_parentModel->VAO_ID);
-				glDrawElements(GL_TRIANGLES,
-							   itMeshes->second->m_parentModel->numberOfIndices,
-							   GL_UNSIGNED_INT,
-							   (void*)0);
-				glBindVertexArray(0);
-
-				// Display Bounding Box
-				if (itMeshes->second->m_displayBoundingBox) {
-					// Cube 1x1x1, centered on origin
-					GLfloat vertices[] = {
-					  -0.5, -0.5, -0.5, 1.0,
-					   0.5, -0.5, -0.5, 1.0,
-					   0.5,  0.5, -0.5, 1.0,
-					  -0.5,  0.5, -0.5, 1.0,
-					  -0.5, -0.5,  0.5, 1.0,
-					   0.5, -0.5,  0.5, 1.0,
-					   0.5,  0.5,  0.5, 1.0,
-					  -0.5,  0.5,  0.5, 1.0,
-					};
-					GLuint vbo_vertices;
-					glGenBuffers(1, &vbo_vertices);
-					glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
-					glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-					glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-					GLushort elements[] = {
-						0, 1, 2, 3,
-						4, 5, 6, 7,
-						0, 4, 1, 5, 2, 6, 3, 7
-					};
-					GLuint ibo_elements;
-					glGenBuffers(1, &ibo_elements);
-					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
-					glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
-					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-					cModel* parentModel = itMeshes->second->m_parentModel;
-					glm::vec3 size = glm::vec3(parentModel->max_x - parentModel->min_x, 
-											   parentModel->max_y - parentModel->min_y, 
-											   parentModel->max_z - parentModel->min_z);
-					glm::vec3 center = glm::vec3((parentModel->min_x + parentModel->max_x) / 2, 
-												 (parentModel->min_y + parentModel->max_y) / 2, 
-												 (parentModel->min_z + parentModel->max_z) / 2);
-					glm::mat4 transform = glm::translate(glm::mat4(1), center) * glm::scale(glm::mat4(1), size);
-
-					// Use Colour vCol
-					glUniform1f(bUseRGBA_Colour_ULocID, (GLfloat)GL_TRUE);
-					if (g_ProjectManager->m_selectedScene->m_name == "5.Patterns MidTerm" &&
-						g_ProjectManager->m_GameLoopState == RUNNING) {
-						size_t pos = itMeshes->second->m_meshName.find(" ");
-						std::string token;
-						int robotID;
-						iRobot* theRobot;
-						if (pos != std::string::npos) {
-							token = itMeshes->second->m_meshName.substr(0, pos);
-							if (token == "Robot") {
-								robotID = std::stoi(itMeshes->second->m_meshName.substr(pos, pos + 2));
-								theRobot = g_robotFactory->getRobot(robotID-1);
-								if (theRobot->getWeaponName() == "Laser") {
-									glUniform4f(RGBA_Colour_ULocID, 0.0f, 1.0f, 0.0f, 1.0f);
-								} else if (theRobot->getWeaponName() == "Bomb") {
-									glUniform4f(RGBA_Colour_ULocID, 1.0f, 0.0f, 0.0f, 1.0f);
-								} else if (theRobot->getWeaponName() == "Bullet") {
-									glUniform4f(RGBA_Colour_ULocID, 0.0f, 0.0f, 1.0f, 1.0f);
-								}
-							}
-						}
-					} else {
-						// Set White BoundingBox
-						glUniform4f(RGBA_Colour_ULocID, 1.0f, 1.0f, 1.0f, 1.0f);
-					}
-					// Do Not Light the BB
-					glUniform1f(bDoNotLight_Colour_ULocID, (GLfloat)GL_TRUE);
-
-					/* Apply object's transformation matrix */
-					glm::mat4 m = matModel * transform;
-					glUniformMatrix4fv(mModel_location, 1, GL_FALSE, glm::value_ptr(m));
-
-					GLint attribute_v_coord = glGetAttribLocation(g_ProjectManager->m_VAOManager->m_shaderID, "vPos");
-					glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
-					glEnableVertexAttribArray(attribute_v_coord);
-					glVertexAttribPointer(
-						attribute_v_coord,  // attribute
-						4,                  // number of elements per vertex, here (x,y,z,w)
-						GL_FLOAT,           // the type of each element
-						GL_FALSE,           // take our values as-is
-						0,                  // no extra data between each position
-						0                   // offset of first element
-					);
-
-					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
-					glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, 0);
-					glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, (GLvoid*)(4 * sizeof(GLushort)));
-					glDrawElements(GL_LINES, 8, GL_UNSIGNED_SHORT, (GLvoid*)(8 * sizeof(GLushort)));
-					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-					glDisableVertexAttribArray(attribute_v_coord);
-					glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-					glDeleteBuffers(1, &vbo_vertices);
-					glDeleteBuffers(1, &ibo_elements);
-
-					glLineWidth(2);
-
-				}
+				g_ProjectManager->DrawObject(pCurrentMeshObject,
+											 shaderID, 
+											//::g_pTextureManager,
+											 mModel_location, 
+											 mModelInverseTransform_location);
+				
 			}
 			// Iterates through all lights
 			std::map<std::string, cLight*>::iterator itLights 

@@ -1,6 +1,9 @@
 #include <pugixml/pugixml.hpp>
 #include <iostream>
 
+#include <glm/gtc/matrix_transform.hpp> 
+#include <glm/gtc/type_ptr.hpp> // glm::value_ptr
+
 #include "cProjectManager.h"
 #include "cMeshObject.h"
 
@@ -225,6 +228,31 @@ bool cProjectManager::LoadScene(std::string name) {
 				// Adds the newly created Light to the Scene Map of Lights
 				newScene->m_mLights.try_emplace(newLight->m_friendlyName, newLight);
 			}
+			// Gets MeshRelationship Node
+			pugi::xml_node meshRelationship = sceneNode.child("meshRelationship");
+			// Checks if it exists
+			if (meshRelationship != NULL) {
+				// Iterates through each parent
+				for (pugi::xml_node meshReParent = meshRelationship.child("parent");
+									meshReParent;
+									meshReParent = meshReParent.next_sibling("parent")) {
+					// Grabs the Parent mesh
+					cMeshObject* meshParentObj = newScene->m_mMeshes.find(meshReParent.attribute("id").as_string())->second;
+					// Iterates through each child
+					for (pugi::xml_node meshReChild = meshReParent.child("child");
+										meshReChild;
+										meshReChild = meshReChild.next_sibling("child")) {
+						std::string childMeshName = meshReChild.attribute("id").as_string();
+						// Grabs the Child mesh
+						cMeshObject* meshChildObj = newScene->m_mMeshes.find(childMeshName)->second;
+						// Associeted the Parent mesh with the Child
+						meshParentObj->vecChildMeshes.push_back(meshChildObj);
+						// Removes it from the scene mesh list
+						newScene->m_mMeshes.erase(newScene->m_mMeshes.find(childMeshName));
+					}
+				}
+			}
+			
 			// Load UniformLocations for new Scene and set them on each light that's going to be used
 			if(newScene->m_mLights.size() > 0)
 				m_lightManager->LoadLightUniformLocations(m_VAOManager->m_shaderID, &newScene->m_mLights);
@@ -403,6 +431,186 @@ bool cProjectManager::SaveSelectedScene() {
 	}
 	graphicsLibrary.save_file(PROJECT_SAVE_FILE);
 	return true;
+}
+
+void cProjectManager::DrawObject(cMeshObject* pCurrentMeshObject, GLuint shaderID, GLint mModel_location, GLint mModelInverseTransform_location, glm::mat4x4 parentModel) {
+	glCullFace(GL_BACK);
+	glEnable(GL_DEPTH_TEST);
+
+	glm::mat4x4 matModel = parentModel;
+	// Apply Position Transformation
+	glm::mat4 matTranslation = glm::translate(glm::mat4(1.0f), pCurrentMeshObject->m_position);
+	// Apply Rotation Transformation
+	glm::mat4 matRoationZ = glm::rotate(glm::mat4(1.0f), pCurrentMeshObject->m_rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+	glm::mat4 matRoationY = glm::rotate(glm::mat4(1.0f), pCurrentMeshObject->m_rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
+	glm::mat4 matRoationX = glm::rotate(glm::mat4(1.0f), pCurrentMeshObject->m_rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+	// Scale the object
+	float uniformScale = pCurrentMeshObject->m_scale;
+	glm::mat4 matScale = glm::scale(glm::mat4(1.0f), glm::vec3(uniformScale, uniformScale, uniformScale));
+	// Applying all these transformations to the Model
+	matModel = matModel * matTranslation;
+	matModel = matModel * matRoationX;
+	matModel = matModel * matRoationY;
+	matModel = matModel * matRoationZ;
+	matModel = matModel * matScale;
+
+	// Pass all the matrices to the Shader
+	glUniformMatrix4fv(mModel_location, 1, GL_FALSE, glm::value_ptr(matModel));
+
+	// Inverse transpose of a 4x4 matrix removes the right column and lower row
+	// Leaving only the rotation (the upper left 3x3 matrix values)
+	glm::mat4 mModelInverseTransform = glm::inverse(glm::transpose(matModel));
+	glUniformMatrix4fv(mModelInverseTransform_location, 1, GL_FALSE, glm::value_ptr(mModelInverseTransform));
+
+	// Wireframe Check
+	if (pCurrentMeshObject->m_isWireframe)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	else
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	// Pass Colours to the Shader
+	GLint RGBA_Colour_ULocID = glGetUniformLocation(shaderID, "RGBA_Colour");
+	glUniform4f(RGBA_Colour_ULocID, pCurrentMeshObject->m_RGBA_colour.r,
+									pCurrentMeshObject->m_RGBA_colour.g,
+									pCurrentMeshObject->m_RGBA_colour.b,
+									pCurrentMeshObject->m_RGBA_colour.w);
+	// Pass the UseRGB boolean to the Shader
+	GLint bUseRGBA_Colour_ULocID = glGetUniformLocation(shaderID, "bUseRGBA_Colour");
+	if (pCurrentMeshObject->m_bUse_RGBA_colour)
+		glUniform1f(bUseRGBA_Colour_ULocID, (GLfloat)GL_TRUE);
+	else
+		glUniform1f(bUseRGBA_Colour_ULocID, (GLfloat)GL_FALSE);
+
+	// Pass DoNotLight boolean to the Shader	
+	GLint bDoNotLight_Colour_ULocID = glGetUniformLocation(shaderID, "bDoNotLight");
+	if (pCurrentMeshObject->m_bDoNotLight)
+		glUniform1f(bDoNotLight_Colour_ULocID, (GLfloat)GL_TRUE);
+	else
+		glUniform1f(bDoNotLight_Colour_ULocID, (GLfloat)GL_FALSE);
+
+	// Pass the Model we want to draw
+	glBindVertexArray(pCurrentMeshObject->m_parentModel->VAO_ID);
+	glDrawElements(GL_TRIANGLES,
+		pCurrentMeshObject->m_parentModel->numberOfIndices,
+		GL_UNSIGNED_INT,
+		(void*)0);
+	glBindVertexArray(0);
+
+	// Display Bounding Box
+	if (pCurrentMeshObject->m_displayBoundingBox) {
+		// Cube 1x1x1, centered on origin
+		GLfloat vertices[] = {
+		  -0.5, -0.5, -0.5, 1.0,
+		   0.5, -0.5, -0.5, 1.0,
+		   0.5,  0.5, -0.5, 1.0,
+		  -0.5,  0.5, -0.5, 1.0,
+		  -0.5, -0.5,  0.5, 1.0,
+		   0.5, -0.5,  0.5, 1.0,
+		   0.5,  0.5,  0.5, 1.0,
+		  -0.5,  0.5,  0.5, 1.0,
+		};
+		GLuint vbo_vertices;
+		glGenBuffers(1, &vbo_vertices);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		GLushort elements[] = {
+			0, 1, 2, 3,
+			4, 5, 6, 7,
+			0, 4, 1, 5, 2, 6, 3, 7
+		};
+		GLuint ibo_elements;
+		glGenBuffers(1, &ibo_elements);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+		cModel* parentModel = pCurrentMeshObject->m_parentModel;
+		glm::vec3 size = glm::vec3(parentModel->max_x - parentModel->min_x,
+								   parentModel->max_y - parentModel->min_y,
+								   parentModel->max_z - parentModel->min_z);
+		glm::vec3 center = glm::vec3((parentModel->min_x + parentModel->max_x) / 2,
+									 (parentModel->min_y + parentModel->max_y) / 2,
+									 (parentModel->min_z + parentModel->max_z) / 2);
+		glm::mat4 transform = glm::translate(glm::mat4(1), center) * glm::scale(glm::mat4(1), size);
+
+		// Use Colour vCol
+		glUniform1f(bUseRGBA_Colour_ULocID, (GLfloat)GL_TRUE);
+		if (this->m_selectedScene->m_name == "5.Patterns MidTerm" &&
+			this->m_GameLoopState == RUNNING) {
+			/*size_t pos = pCurrentMeshObject->m_meshName.find(" ");
+			std::string token;
+			int robotID;
+			iRobot* theRobot;
+			if (pos != std::string::npos) {
+				token = pCurrentMeshObject->m_meshName.substr(0, pos);
+				if (token == "Robot") {
+					robotID = std::stoi(pCurrentMeshObject->m_meshName.substr(pos, pos + 2));
+					theRobot = g_robotFactory->getRobot(robotID - 1);
+					if (theRobot->getWeaponName() == "Laser") {
+						glUniform4f(RGBA_Colour_ULocID, 0.0f, 1.0f, 0.0f, 1.0f);
+					} else if (theRobot->getWeaponName() == "Bomb") {
+						glUniform4f(RGBA_Colour_ULocID, 1.0f, 0.0f, 0.0f, 1.0f);
+					} else if (theRobot->getWeaponName() == "Bullet") {
+						glUniform4f(RGBA_Colour_ULocID, 0.0f, 0.0f, 1.0f, 1.0f);
+					}
+				}
+			}*/
+		} else {
+			// Set White BoundingBox
+			glUniform4f(RGBA_Colour_ULocID, 1.0f, 1.0f, 1.0f, 1.0f);
+		}
+		// Do Not Light the BB
+		glUniform1f(bDoNotLight_Colour_ULocID, (GLfloat)GL_TRUE);
+
+		/* Apply object's transformation matrix */
+		glm::mat4 m = matModel * transform;
+		glUniformMatrix4fv(mModel_location, 1, GL_FALSE, glm::value_ptr(m));
+
+		GLint attribute_v_coord = glGetAttribLocation(this->m_VAOManager->m_shaderID, "vPos");
+		glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
+		glEnableVertexAttribArray(attribute_v_coord);
+		glVertexAttribPointer(
+			attribute_v_coord,  // attribute
+			4,                  // number of elements per vertex, here (x,y,z,w)
+			GL_FLOAT,           // the type of each element
+			GL_FALSE,           // take our values as-is
+			0,                  // no extra data between each position
+			0                   // offset of first element
+		);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
+		glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, 0);
+		glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, (GLvoid*)(4 * sizeof(GLushort)));
+		glDrawElements(GL_LINES, 8, GL_UNSIGNED_SHORT, (GLvoid*)(8 * sizeof(GLushort)));
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+		glDisableVertexAttribArray(attribute_v_coord);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		glDeleteBuffers(1, &vbo_vertices);
+		glDeleteBuffers(1, &ibo_elements);
+
+		glLineWidth(2);
+
+	}
+
+	// Draw all the children
+	for (std::vector< cMeshObject* >::iterator itCurrentMesh = pCurrentMeshObject->vecChildMeshes.begin();
+		itCurrentMesh != pCurrentMeshObject->vecChildMeshes.end();
+		itCurrentMesh++) {
+		cMeshObject* pCurrentCHILDMeshObject = *itCurrentMesh;        // * is the iterator access thing
+
+	   // All the drawing code has been moved to the DrawObject function
+		DrawObject(pCurrentCHILDMeshObject,
+				   shaderID, 
+				   //pTextureManager,
+				   mModel_location, 
+				   mModelInverseTransform_location, 
+				   matModel);
+
+	}
 }
 
 bool cProjectManager::LoadSaveFile() {

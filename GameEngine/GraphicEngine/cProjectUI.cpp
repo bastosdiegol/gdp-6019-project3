@@ -117,6 +117,20 @@ void cProjectUI::renderSceneUI() {
 					this->isMeshSelected = true;
 					this->isLightSelected = false;
 				}
+				// Iterates through all child models
+				for (int childIndex = 0;
+					childIndex < itMesh->second->vecChildMeshes.size();
+					childIndex++) {
+					ImGui::Indent();
+					ImGui::Bullet();
+					if (ImGui::SmallButton(itMesh->second->vecChildMeshes[childIndex]->m_meshName.c_str())) {
+						m_projectManager->m_selectedMesh = itMesh->second->vecChildMeshes[childIndex];
+						// Internal Bool-Switch for RenderingUI
+						this->isMeshSelected = true;
+						this->isLightSelected = false;
+					}
+					ImGui::Unindent();
+				}
 			}
 			//ImGui::TreePop();
 			// Iterates through all lights

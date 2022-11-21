@@ -1460,6 +1460,41 @@
 				<boundingBox value="false" />
 			</mesh>
 		</model>
+		<model path="assets/ISO_Shphere.ply" title="Ball">
+			<mesh id="Ball1">
+				<position x="7" y="0.2" z="1" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0" g="1" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="true" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+			<mesh id="Ball2">
+				<position x="-7" y="0.2" z="1" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0" g="1" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="true" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+			<mesh id="Ball3">
+				<position x="0" y="0" z="2.2" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0" g="1" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="true" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+		</model>
 		<light id="Light 01" onoff="1" showmodel="false">
 			<position x="500" y="500" z="0" w="1" />
 			<diffuse x="0.872548997" y="0.872548997" z="0.872548997" w="1" />
@@ -1469,5 +1504,12 @@
 			<param1 x="2" y="20" z="100" w="1" />
 			<param2 x="1" y="0" z="0" w="1" />
 		</light>
+		<meshRelationship>
+			<parent id="Glider">
+				<child id="Ball1" />
+				<child id="Ball2" />
+				<child id="Ball3" />
+			</parent>
+		</meshRelationship>
 	</scene>
 </graphicsLibrary>

@@ -2,6 +2,7 @@
 #include <string>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
+#include <vector>
 
 #include "cModel.h"
 #include "iMovable.h"
@@ -23,6 +24,8 @@ public:
 	bool			m_bDoNotLight;
 	bool			m_bIsVisible;
 	bool			m_displayBoundingBox;
+
+	std::vector< cMeshObject* > vecChildMeshes;
 
 	glm::vec3	getGLMPosition();
 	Vector3		getVECPosition();
