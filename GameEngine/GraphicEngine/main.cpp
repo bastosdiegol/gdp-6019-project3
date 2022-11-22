@@ -21,6 +21,7 @@
 #include "PatternsMidtermCommons.h"
 #include "GraphicsMidtermCommons.h"
 #include "PhysicsProjectTwoCommons.h"
+#include "MediaProjectTwoCommons.h"
 
 #ifdef _DEBUG
 #define DEBUG_LOG_ENABLED
@@ -32,6 +33,7 @@
 #define DEBUG_PRINT(x)
 #endif
 
+GLFWwindow* window;
 // Global Camera Eye that will be pointing to the Selected Scene Camera
 glm::vec3* g_cameraEye;
 // Global Camera Eye that will be pointing to the Selected Scene Target
@@ -114,6 +116,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_RIGHT) {
 		g_cameraTarget->x -= MOVE_SPEED;
 	}
+	if (key == GLFW_KEY_ESCAPE) {
+		g_ProjectManager->m_GameLoopState = SHUTING_DOWN;
+	}
 }
 
 static void error_callback(int error, const char* description) {
@@ -137,7 +142,7 @@ int main(int argc, char* argv[]) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
 	// Create window
-	GLFWwindow* window = glfwCreateWindow(1280, 720, "Game Engine", nullptr, nullptr);
+	window = glfwCreateWindow(1280, 720, "Game Engine", nullptr, nullptr);
 	if (!window) {
 		glfwTerminate();
 		exit(EXIT_FAILURE);
@@ -260,6 +265,8 @@ int main(int argc, char* argv[]) {
 				patternsMidTermGameLoop();
 			else if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
 				PhysicsProjectTwoGameLoop();
+			else if (g_ProjectManager->m_selectedScene->m_name == "7.Media Proj#2")
+				MediaProjectTwoGameLoop();
 		}
 
 		// If new Scene

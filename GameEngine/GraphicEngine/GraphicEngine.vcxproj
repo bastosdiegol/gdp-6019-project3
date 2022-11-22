@@ -190,6 +190,7 @@
     <ClInclude Include="imgui\imstb_rectpack.h" />
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
+    <ClInclude Include="MediaProjectTwoCommons.h" />
     <ClInclude Include="PatternsMidtermCommons.h" />
     <ClInclude Include="PhysicsProjectTwoCommons.h" />
   </ItemGroup>
@@ -197,6 +198,9 @@
     <None Include="assets\shaders\fragmentShader01.glsl" />
     <None Include="assets\shaders\vertexShader01.glsl" />
     <None Include="imgui.ini" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="media_proj_2_sounds.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

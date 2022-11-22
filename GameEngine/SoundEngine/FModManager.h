@@ -4,6 +4,7 @@
 #include <FMOD/fmod_errors.h>
 #include <map>
 #include <string>
+#include <glm/vec3.hpp>
 
 #include "ChannelGroup.h"
 #include "Sound.h"
@@ -85,9 +86,11 @@ public:
 	void removeDSPEffect(const std::string& name, const FMOD_DSP_TYPE& dsp_type);
 
 	// Loads all sounds available from XML File
-	void loadSoundsFromFile();
+	void loadSoundsFromFile(const std::string filePath);
 	// Play a sound on a specified channel group
 	void playSound(const std::string& sound_name, const std::string& channel_group_name);
+	// Play a sound on a specified channel group
+	void playSound(const std::string& sound_name, glm::vec3 position, float max_distance);
 	// Stop all the sounds on a specified channel group
 	void stopSound(const std::string& channel_group_name);
 	// Sets bool pause on a specified channel group
@@ -101,10 +104,16 @@ public:
 	// Gets the length of a sound
 	void getSoundLength(const std::string& sound_name);
 
+	// Updates the Listener position
+	bool tick(const glm::vec3& camera_position);
+	// Updates the sound position
+	bool update3DSoundPosition(FMOD::Channel* channel, const glm::vec3 position);
+	// Returns a Sound object
+	Sound* getSound(const std::string& sound_name);
+
 
 private:
 	const int			MAX_CHANNELS = 255;
-	const std::string	SOUND_FILE	 = "sounds.xml";
 	bool				m_isUsingUncompressedSound;
 
 	FMOD_RESULT							 m_result;			// Variable to check Erros

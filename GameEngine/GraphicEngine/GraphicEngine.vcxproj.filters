@@ -179,6 +179,9 @@
     <ClInclude Include="iMovable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MediaProjectTwoCommons.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\fragmentShader01.glsl">
@@ -190,5 +193,10 @@
     <None Include="imgui.ini">
       <Filter>Resource Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="media_proj_2_sounds.xml">
+      <Filter>Resource Files</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

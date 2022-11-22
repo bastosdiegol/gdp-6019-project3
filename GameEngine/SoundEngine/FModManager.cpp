@@ -470,17 +470,17 @@ void FModManager::removeDSPEffect(const std::string& name, const FMOD_DSP_TYPE& 
 	}
 }
 
-void FModManager::loadSoundsFromFile() {
+void FModManager::loadSoundsFromFile(const std::string filePath) {
 	DEBUG_PRINT("FModManager::loadSounds()\n");
 	// Create a document object
 	pugi::xml_document soundlibrary;
 	// Load a xml file into the object
-	pugi::xml_parse_result result = soundlibrary.load_file(SOUND_FILE.c_str());
+	pugi::xml_parse_result result = soundlibrary.load_file(filePath.c_str());
 	if (!result) {
-		std::cout << "FModManager error: Failed to load file named #" << SOUND_FILE << std::endl;
+		std::cout << "FModManager error: Failed to load file named #" << filePath << std::endl;
 		return;
 	}
-	DEBUG_PRINT("Successfully loaded file named #%s\n", SOUND_FILE.c_str());	
+	DEBUG_PRINT("Successfully loaded file named #%s\n", filePath.c_str());
 
 	// Gets all nodes of sound inside the soundlibrary
 	pugi::xml_node sounds = soundlibrary.child("soundlibrary");
@@ -514,7 +514,7 @@ void FModManager::loadSoundsFromFile() {
 		// Calls FMOD createSound according with the type of the sound
 		if (newSound->m_type == "music") {
 			// Calls the FMOD function to create the new sound with mode LOOP - BGM
-			m_result = m_system->createSound(newSound->m_path.c_str(), FMOD_LOOP_NORMAL, nullptr, &newSound->m_sound);
+			m_result = m_system->createSound(newSound->m_path.c_str(), FMOD_LOOP_NORMAL | FMOD_3D | FMOD_DEFAULT, nullptr, &newSound->m_sound);
 		} else if (newSound->m_type == "fx") {
 			// Calls the FMOD function to create the new sound with mode DEFAULT - FX
 			m_result = m_system->createSound(newSound->m_path.c_str(), FMOD_DEFAULT, nullptr, &newSound->m_sound);
@@ -549,6 +549,49 @@ void FModManager::playSound(const std::string& sound_name, const std::string& ch
 
 	m_result = m_system->playSound(itSound->second->m_sound, itChannel->second->m_group, true, &itSound->second->m_channel);
 	// Checks the result
+	if (m_result != FMOD_OK) {
+		std::cout << "fmod error: #" << m_result << "-" << FMOD_ErrorString(m_result) << std::endl;
+		return;
+	}
+
+	m_result = itSound->second->m_channel->setPaused(false);
+	if (m_result != FMOD_OK) {
+		std::cout << "fmod error: #" << m_result << "-" << FMOD_ErrorString(m_result) << std::endl;
+		return;
+	}
+
+}
+
+void FModManager::playSound(const std::string& sound_name, glm::vec3 position, float max_distance) {
+	DEBUG_PRINT("FModManager::playSound(%s)\n", sound_name.c_str());
+
+	// Tries to find the sound
+	std::map<std::string, Sound*>::iterator itSound = m_sounds.find(sound_name);
+	if (itSound == m_sounds.end() ) {
+		std::cout << "FModManager error: Couldn't find the Sound named #" << sound_name << std::endl;
+		return;
+	}
+
+	m_result = m_system->playSound(itSound->second->m_sound, nullptr, true, &itSound->second->m_channel);
+	// Checks the result
+	if (m_result != FMOD_OK) {
+		std::cout << "fmod error: #" << m_result << "-" << FMOD_ErrorString(m_result) << std::endl;
+		return;
+	}
+
+	FMOD_VECTOR fmod_sound_position;
+	fmod_sound_position.x = position.x;
+	fmod_sound_position.y = position.y;
+	fmod_sound_position.z = position.z;
+
+	m_result = itSound->second->m_channel->set3DAttributes(&fmod_sound_position, nullptr);
+	// Checks the result
+	if (m_result != FMOD_OK) {
+		std::cout << "fmod error: #" << m_result << "-" << FMOD_ErrorString(m_result) << std::endl;
+		return;
+	}
+
+	m_result = itSound->second->m_channel->set3DMinMaxDistance(max_distance, 10000.0f);
 	if (m_result != FMOD_OK) {
 		std::cout << "fmod error: #" << m_result << "-" << FMOD_ErrorString(m_result) << std::endl;
 		return;
@@ -635,7 +678,7 @@ void FModManager::setSoundCurrentFrequency(const std::string& sound_name, float 
 }
 
 void FModManager::getSoundCurrentFrequency(const std::string& sound_name) {
-	DEBUG_PRINT("FModManager::getSoundCurrentFrequency(%s)\n", sound_name.c_str());
+	//DEBUG_PRINT("FModManager::getSoundCurrentFrequency(%s)\n", sound_name.c_str());
 	// Tries to find the sound
 	std::map<std::string, Sound*>::iterator itSound = m_sounds.find(sound_name);
 
@@ -668,5 +711,54 @@ void FModManager::getSoundLength(const std::string& sound_name) {
 		itSound->second->m_lenght = 0;
 		return;
 	}
+}
+
+bool FModManager::tick(const glm::vec3& camera_position) {
+
+	FMOD_VECTOR fmod_camera_position;
+	fmod_camera_position.x = camera_position.x;
+	fmod_camera_position.y = camera_position.y;
+	fmod_camera_position.z = camera_position.z;
+
+	m_result = m_system->set3DListenerAttributes(0, &fmod_camera_position, nullptr, nullptr, nullptr);
+	if (m_result != FMOD_OK) {
+		std::cout << "fmod error: #" << m_result << "-" << FMOD_ErrorString(m_result) << std::endl;
+		return false;
+	}
+
+	m_result = m_system->update();
+	if (m_result != FMOD_OK) {
+		std::cout << "fmod error: #" << m_result << "-" << FMOD_ErrorString(m_result) << std::endl;
+		return false;
+	}
+
+	return m_result;
+}
+
+bool FModManager::update3DSoundPosition(FMOD::Channel* channel, const glm::vec3 position) {
+	FMOD_VECTOR fmod_position;
+	fmod_position.x = position.x;
+	fmod_position.y = position.y;
+	fmod_position.z = position.z;
+
+	m_result = channel->set3DAttributes(&fmod_position, nullptr);
+	if (m_result != FMOD_OK) {
+		std::cout << "fmod error: #" << m_result << "-" << FMOD_ErrorString(m_result) << std::endl;
+		return false;
+	}
+
+	return m_result;
+}
+
+Sound* FModManager::getSound(const std::string& sound_name) {
+	// Tries to find the sound
+	std::map<std::string, Sound*>::iterator itSound = m_sounds.find(sound_name);
+
+	if (itSound == m_sounds.end()) {
+		std::cout << "FModManager error: Couldn't find the Sound named #" << sound_name << std::endl;
+		return nullptr;
+	}
+
+	return itSound->second;
 }
 
