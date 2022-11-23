@@ -44,11 +44,16 @@ void mediaProjectTwoStartingUp() {
 	// Load all sounds from the XML File
 	g_FModManager->loadSoundsFromFile(SOUND_FILE);
 	// Attaching sounds to meshes
-	attachSoundToMesh("Dragon Rib", "Darkness");
-	attachSoundToMesh("Brazier 01", "Fire");
-	attachSoundToMesh("Brazier 02", "Fire");
-	attachSoundToMesh("Barrel",	"Drips");
-	attachSoundToMesh("Window Wall", "Wind");
+	attachSoundToMesh("Dragon Jaw",			"Devil");
+	attachSoundToMesh("Dragon Rib",			"Devil");
+	attachSoundToMesh("Dragon Tail",		"Devil");
+	attachSoundToMesh("Brazier 01",			"Fire");
+	attachSoundToMesh("Brazier 02",			"Resonance");
+	attachSoundToMesh("Barrel",				"Drips");
+	attachSoundToMesh("Window Wall",		"Wind");
+	attachSoundToMesh("Wall T1 03",			"Wind");
+	attachSoundToMesh("Light Pillar 01",	"Starlight");
+	attachSoundToMesh("Light Pillar 02",	"Darkness");
 
 	g_ProjectManager->m_GameLoopState = GameState::RUNNING;
 }
@@ -56,11 +61,14 @@ void mediaProjectTwoStartingUp() {
 void mediaProjectTwoNewGame() {
 	g_ProjectManager->m_selectedScene->m_cameraEye = glm::vec3(0.0f, 10.0f, -46.0f);
 	g_ProjectManager->m_selectedScene->m_cameraTarget = glm::vec3(0.0f, 5.0f, 0.0f);
+	g_ProjectManager->m_selectedScene->m_mMeshes.find("Ball1")->second->m_position = glm::vec3(0.0f, 0.0f, -50.0f);
 	g_ProjectManager->m_GameLoopState = GameState::RUNNING;
 }
 
 void mediaProjectTwoRunning(){
-	g_FModManager->tick(g_ProjectManager->m_selectedScene->m_cameraEye);
+	cMeshObject* controllableChar = g_ProjectManager->m_selectedScene->m_mMeshes.find("Ball1")->second;
+	if(controllableChar != nullptr)
+		g_FModManager->tick(controllableChar->m_position);
 }
 
 void mediaProjectTwoShutdown(){
@@ -82,7 +90,7 @@ bool attachSoundToMesh(std::string meshName, std::string soundName) {
 	// Grabs the Sound
 	Sound* pSound = g_FModManager->getSound(soundName);
 	// Play the Sound
-	g_FModManager->playSound(soundName, meshObj->m_position, 0.01f);
+	g_FModManager->play3DSound(soundName, meshObj->m_position, 0.05f);
 	// Attach the Sound Channel to the Mesh
 	meshObj->attached_sound = pSound->m_channel;
 

@@ -90,7 +90,7 @@ public:
 	// Play a sound on a specified channel group
 	void playSound(const std::string& sound_name, const std::string& channel_group_name);
 	// Play a sound on a specified channel group
-	void playSound(const std::string& sound_name, glm::vec3 position, float max_distance);
+	void play3DSound(const std::string& sound_name, glm::vec3 position, float max_distance);
 	// Stop all the sounds on a specified channel group
 	void stopSound(const std::string& channel_group_name);
 	// Sets bool pause on a specified channel group
@@ -105,11 +105,13 @@ public:
 	void getSoundLength(const std::string& sound_name);
 
 	// Updates the Listener position
-	bool tick(const glm::vec3& camera_position);
+	bool tick(const glm::vec3& controllable_position);
 	// Updates the sound position
 	bool update3DSoundPosition(FMOD::Channel* channel, const glm::vec3 position);
 	// Returns a Sound object
 	Sound* getSound(const std::string& sound_name);
+	// Sets FMOD to use XYZ instead of Meters
+	bool setUseXYZ();
 
 
 private:

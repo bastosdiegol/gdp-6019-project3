@@ -53,6 +53,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	{
 		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
 			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(MOVE_SPEED, 0.0f, 0.0f));
+		else if (g_ProjectManager->m_selectedScene->m_name == "7.Media Proj#2")
+			g_ProjectManager->m_selectedScene->m_mMeshes.find("Ball1")->second->m_position.x += MOVE_SPEED;
 		else {
 			g_cameraEye->x += MOVE_SPEED;
 			g_cameraTarget->x += MOVE_SPEED;
@@ -63,6 +65,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	{
 		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
 			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(-MOVE_SPEED, 0.0f, 0.0f));
+		else if (g_ProjectManager->m_selectedScene->m_name == "7.Media Proj#2")
+			g_ProjectManager->m_selectedScene->m_mMeshes.find("Ball1")->second->m_position.x -= MOVE_SPEED;
 		else {
 			g_cameraEye->x -= MOVE_SPEED;
 			g_cameraTarget->x -= MOVE_SPEED;
@@ -72,6 +76,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	{
 		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
 			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(0.0f, 0.0f, MOVE_SPEED));
+		else if (g_ProjectManager->m_selectedScene->m_name == "7.Media Proj#2")
+			g_ProjectManager->m_selectedScene->m_mMeshes.find("Ball1")->second->m_position.z += MOVE_SPEED;
 		else {
 			g_cameraEye->z += MOVE_SPEED;
 			g_cameraTarget->z += MOVE_SPEED;
@@ -81,6 +87,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	{
 		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
 			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(0.0f, 0.0f, -MOVE_SPEED));
+		else if (g_ProjectManager->m_selectedScene->m_name == "7.Media Proj#2")
+			g_ProjectManager->m_selectedScene->m_mMeshes.find("Ball1")->second->m_position.z -= MOVE_SPEED;
 		else {
 			g_cameraEye->z -= MOVE_SPEED;
 			g_cameraTarget->z -= MOVE_SPEED;
@@ -90,7 +98,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	{
 		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
 			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(0.0f, -MOVE_SPEED, 0.0f));
-		else {
+		else if (g_ProjectManager->m_selectedScene->m_name == "7.Media Proj#2") {
+		} else {
 			g_cameraEye->y -= MOVE_SPEED;
 			g_cameraTarget->y -= MOVE_SPEED;
 		}
@@ -99,7 +108,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	{
 		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
 			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(0.0f, MOVE_SPEED, 0.0f));
-		else {
+		else if (g_ProjectManager->m_selectedScene->m_name == "7.Media Proj#2") {
+		} else {
 			g_cameraEye->y += MOVE_SPEED;
 			g_cameraTarget->y += MOVE_SPEED;
 		}
@@ -204,9 +214,9 @@ int main(int argc, char* argv[]) {
 
 	// Sets initial volume for master channel to 20%
 	// WARNING: DO NOT PASS VOLUME VALUE ABOVE 1.0f
-	g_FModManager->setChannelGroupVolume("ch0 master", 0.7f);
-	g_FModManager->setChannelGroupVolume("ch1 music", 0.15f);
-	g_FModManager->setChannelGroupVolume("ch2 fx", 0.7f);
+	g_FModManager->setChannelGroupVolume("ch0 master", 1.0f);
+	g_FModManager->setChannelGroupVolume("ch1 music", 1.0f);
+	g_FModManager->setChannelGroupVolume("ch2 fx", 1.0f);
 
 	// Load all sounds from the XML File
 	//g_FModManager->loadSoundsFromFile();

@@ -268,6 +268,7 @@ bool cProjectManager::LoadScene(std::string name) {
 	}
 	// Sets new Scene bool
 	isNewScene = true;
+	m_isGameLoopEnabled = true;
 	return true;
 }
 

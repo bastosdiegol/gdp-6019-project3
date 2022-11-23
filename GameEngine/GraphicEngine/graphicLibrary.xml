@@ -1512,7 +1512,7 @@
 			</parent>
 		</meshRelationship>
 	</scene>
-	<scene title="7.Media Proj#2" camEyeX="0" camEyeY="10" camEyeZ="-46" camTarX="0" camTarY="5" camTarZ="0">
+	<scene title="7.Media Proj#2" camEyeX="0" camEyeY="200" camEyeZ="-2" camTarX="0" camTarY="175" camTarZ="0">
 		<model path="assets/room/SM_Env_Tiles_09.ply" title="Tile">
 			<mesh id="Tile 01">
 				<position x="0" y="0" z="0" />
@@ -1986,7 +1986,7 @@
 				<scale value="7.5" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
-				<visible value="true" />
+				<visible value="false" />
 			</mesh>
 			<mesh id="Roof 02">
 				<position x="0" y="14.6999998" z="7" />
@@ -1996,7 +1996,7 @@
 				<scale value="7.5" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
-				<visible value="true" />
+				<visible value="false" />
 			</mesh>
 			<mesh id="Roof 03">
 				<position x="-37" y="14.6999998" z="44" />
@@ -2006,7 +2006,7 @@
 				<scale value="7.5" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
-				<visible value="true" />
+				<visible value="false" />
 			</mesh>
 			<mesh id="Roof 04">
 				<position x="0" y="14.6999998" z="44" />
@@ -2016,7 +2016,7 @@
 				<scale value="7.5" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
-				<visible value="true" />
+				<visible value="false" />
 			</mesh>
 			<mesh id="Roof 05">
 				<position x="-37" y="14.6999998" z="81" />
@@ -2026,7 +2026,7 @@
 				<scale value="7.5" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
-				<visible value="true" />
+				<visible value="false" />
 			</mesh>
 			<mesh id="Roof 06">
 				<position x="0" y="14.6999998" z="81" />
@@ -2036,7 +2036,7 @@
 				<scale value="7.5" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
-				<visible value="true" />
+				<visible value="false" />
 			</mesh>
 		</model>
 		<model path="assets/dragon/SM_Env_Bone_Skull_01.ply" title="Dragon Skull">
@@ -2219,6 +2219,19 @@
 				<isWireframe value="false" />
 				<doNotLight value="false" />
 				<visible value="true" />
+			</mesh>
+		</model>
+		<model path="assets/ISO_Shphere.ply" title="Ball">
+			<mesh id="Ball1">
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0" g="1" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="true" />
+				<visible value="true" />
+				<boundingBox value="false" />
 			</mesh>
 		</model>
 		<light id="Light 01" onoff="1" showmodel="false">

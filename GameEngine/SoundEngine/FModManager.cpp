@@ -6,6 +6,7 @@
 #ifdef _DEBUG
 #define DEBUG_LOG_ENABLED
 #endif
+#include <glm/geometric.hpp>
 #ifdef DEBUG_LOG_ENABLED
 #define DEBUG_PRINT(x, ...) printf(x, __VA_ARGS__)
 #else
@@ -562,7 +563,7 @@ void FModManager::playSound(const std::string& sound_name, const std::string& ch
 
 }
 
-void FModManager::playSound(const std::string& sound_name, glm::vec3 position, float max_distance) {
+void FModManager::play3DSound(const std::string& sound_name, glm::vec3 position, float max_distance) {
 	DEBUG_PRINT("FModManager::playSound(%s)\n", sound_name.c_str());
 
 	// Tries to find the sound
@@ -591,7 +592,7 @@ void FModManager::playSound(const std::string& sound_name, glm::vec3 position, f
 		return;
 	}
 
-	m_result = itSound->second->m_channel->set3DMinMaxDistance(max_distance, 10000.0f);
+	m_result = itSound->second->m_channel->set3DMinMaxDistance(max_distance, FLT_MAX);
 	if (m_result != FMOD_OK) {
 		std::cout << "fmod error: #" << m_result << "-" << FMOD_ErrorString(m_result) << std::endl;
 		return;
@@ -713,14 +714,24 @@ void FModManager::getSoundLength(const std::string& sound_name) {
 	}
 }
 
-bool FModManager::tick(const glm::vec3& camera_position) {
+bool FModManager::tick(const glm::vec3& controllable_position) {
 
-	FMOD_VECTOR fmod_camera_position;
-	fmod_camera_position.x = camera_position.x;
-	fmod_camera_position.y = camera_position.y;
-	fmod_camera_position.z = camera_position.z;
+	FMOD_VECTOR fmod_controllable_position;
+	fmod_controllable_position.x = controllable_position.x;
+	fmod_controllable_position.y = controllable_position.y;
+	fmod_controllable_position.z = controllable_position.z;
 
-	m_result = m_system->set3DListenerAttributes(0, &fmod_camera_position, nullptr, nullptr, nullptr);
+	FMOD_VECTOR fmod_controllable_foward;
+	fmod_controllable_foward.x = 0.0f;
+	fmod_controllable_foward.y = 0.0f;
+	fmod_controllable_foward.z = -1.0f;
+
+	FMOD_VECTOR upVector;
+	upVector.x = 0.0f;
+	upVector.y = 1.0f;
+	upVector.z = 0.0f;
+
+	m_result = m_system->set3DListenerAttributes(0, &fmod_controllable_position, nullptr, &fmod_controllable_foward, &upVector);
 	if (m_result != FMOD_OK) {
 		std::cout << "fmod error: #" << m_result << "-" << FMOD_ErrorString(m_result) << std::endl;
 		return false;
@@ -762,3 +773,8 @@ Sound* FModManager::getSound(const std::string& sound_name) {
 	return itSound->second;
 }
 
+bool FModManager::setUseXYZ() {
+	//m_system->set3DSettings();
+	//m_system->set3DListenerAttributes();
+	return false;
+}
