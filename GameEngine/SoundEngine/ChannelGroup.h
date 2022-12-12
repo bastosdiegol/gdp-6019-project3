@@ -11,7 +11,7 @@ public:
 	ChannelGroup(FMOD::ChannelGroup* channel_group);
 	// Destructor
 	~ChannelGroup();
-private:
+//private:
 	FMOD::ChannelGroup* m_group; // FMOD Channel Group
     float m_volume;
 	float m_pan;				// Pan variable

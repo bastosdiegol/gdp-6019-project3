@@ -114,7 +114,7 @@ public:
 	bool setUseXYZ();
 
 
-private:
+//private:
 	const int			MAX_CHANNELS = 255;
 	bool				m_isUsingUncompressedSound;
 
@@ -124,6 +124,6 @@ private:
 	std::map<std::string, Sound*>		 m_sounds;			// Map Tree of Sounds
 	std::map<FMOD_DSP_TYPE, FMOD::DSP*>	 m_dsp;				// Map Tree of Digital Sound Processors
 
-	//friend class SoundUI; // We will allow SoundUI to access these private variables above
+	friend class SoundUI; // We will allow SoundUI to access these private variables above
 };
 

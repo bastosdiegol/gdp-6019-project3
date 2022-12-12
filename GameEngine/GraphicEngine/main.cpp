@@ -32,6 +32,7 @@
 #else
 #define DEBUG_PRINT(x)
 #endif
+#include "SoundUI.h"
 
 GLFWwindow* window;
 // Global Camera Eye that will be pointing to the Selected Scene Camera
@@ -202,6 +203,7 @@ int main(int argc, char* argv[]) {
 	// Creates my Project Manager UI - ImGui Window
 	cProjectUI g_projectUI(g_ProjectManager);
 
+
 	// Creates my FMod Manager - Using uncompressed files (false)
 	g_FModManager = new FModManager(FMOD_INIT_NORMAL, false);
 	// Creates Channel Groups
@@ -218,8 +220,10 @@ int main(int argc, char* argv[]) {
 	g_FModManager->setChannelGroupVolume("ch1 music", 1.0f);
 	g_FModManager->setChannelGroupVolume("ch2 fx", 1.0f);
 
-	// Load all sounds from the XML File
-	//g_FModManager->loadSoundsFromFile();
+	g_FModManager->loadDSPs();
+
+	// Creates pointer to SoundUI
+	SoundUI* soundUI = new SoundUI(g_FModManager);
 
 	// ImGui Window Color
 	//ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
@@ -275,8 +279,10 @@ int main(int argc, char* argv[]) {
 				patternsMidTermGameLoop();
 			else if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
 				PhysicsProjectTwoGameLoop();
-			else if (g_ProjectManager->m_selectedScene->m_name == "7.Media Proj#2")
+			else if (g_ProjectManager->m_selectedScene->m_name == "7.Media Proj#2") {
 				MediaProjectTwoGameLoop();
+				soundUI->render();
+			}
 		}
 
 		// If new Scene
@@ -395,6 +401,7 @@ int main(int argc, char* argv[]) {
 	delete g_ProjectManager;
 	delete g_PhysicsSystem;
 	delete g_FModManager;
+	delete soundUI;
 
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
