@@ -6,6 +6,7 @@
 #include "cScene.h"
 #include "cVAOManager.h"
 #include "cLightManager.h"
+#include "cBasicTextureManager.h"
 
 #define PROJECT_SAVE_FILE "graphicLibrary.xml"
 
@@ -34,6 +35,7 @@ public:
 	GameState					m_GameLoopState;
 	cVAOManager*				m_VAOManager;
 	cLightManager*				m_lightManager;
+	cBasicTextureManager*		m_textureManager;
 	/// <summary>
 	/// Default Constructor - also Loads Save File
 	/// </summary>

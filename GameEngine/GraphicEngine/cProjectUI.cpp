@@ -203,7 +203,10 @@ void cProjectUI::renderMeshUI() {
 		}
 		ImGui::Text("Scale");
 		// Scale Slider
-		ImGui::DragFloat("##Scale", &m_projectManager->m_selectedMesh->m_scale, 0.01f, 0.0f, 0.0f, "%.2f");
+		float scaleUI = m_projectManager->m_selectedMesh->m_scale.x;
+		if (ImGui::DragFloat("##Scale", &scaleUI, 0.01f, 0.0f, 0.0f, "%.2f")) {
+			m_projectManager->m_selectedMesh->m_scale = glm::vec3(scaleUI);
+		}
 		// RGB Checkbox
 		ImGui::Text("Use RGB?"); ImGui::SameLine();
 		ImGui::Checkbox("##RGB?", &m_projectManager->m_selectedMesh->m_bUse_RGBA_colour);

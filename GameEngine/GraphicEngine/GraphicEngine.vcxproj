@@ -145,6 +145,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="C24BitBMPpixel.cpp" />
+    <ClCompile Include="cBasicTextureManager.cpp" />
     <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cLightHelper.cpp" />
     <ClCompile Include="cLightManager.cpp" />
@@ -156,6 +158,7 @@
     <ClCompile Include="cScene.cpp" />
     <ClCompile Include="cShader.cpp" />
     <ClCompile Include="cShaderManager.cpp" />
+    <ClCompile Include="CTextureFromBMP.cpp" />
     <ClCompile Include="cVAOManager.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="imgui\imgui-knobs.cpp" />
@@ -170,6 +173,9 @@
     <ClCompile Include="SoundUI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="C24BitBMPpixel.h" />
+    <ClInclude Include="cBasicTextureManager.h" />
+    <ClInclude Include="CTextureFromBMP.h" />
     <ClInclude Include="imgui\IconsFontaudio.h" />
     <ClInclude Include="imgui\imgui-knobs.h" />
     <ClInclude Include="iMovable.h" />
@@ -205,6 +211,7 @@
     <None Include="imgui.ini" />
   </ItemGroup>
   <ItemGroup>
+    <Xml Include="graphicLibrary.xml" />
     <Xml Include="media_proj_2_sounds.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

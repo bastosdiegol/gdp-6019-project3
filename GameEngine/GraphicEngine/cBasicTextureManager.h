@@ -4,7 +4,9 @@
 #include <string>
 #include <map>
 #include "CTextureFromBMP.h"
-#include "../globalOpenGL.h"
+#include <glad/glad.h>
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
 
 class cBasicTextureManager
 {

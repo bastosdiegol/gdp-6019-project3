@@ -24,6 +24,8 @@ cProjectManager::cProjectManager(GLuint shaderID) {
 	}
 	m_VAOManager = new cVAOManager(shaderID);
 	m_lightManager = new cLightManager();
+	m_textureManager = new cBasicTextureManager();
+	m_textureManager->SetBasePath("assets/textures");
 	isNewScene = false;
 	m_selectedScene = nullptr;
 	m_selectedMesh = nullptr;
@@ -151,7 +153,7 @@ bool cProjectManager::LoadScene(std::string name) {
 														  1);
 					meshInfo = meshInfo.next_sibling();
 					// Reads Scale
-					newMeshObj->m_scale = meshInfo.attribute("value").as_float();
+					newMeshObj->m_scale = glm::vec3(meshInfo.attribute("value").as_float());
 					meshInfo = meshInfo.next_sibling();
 					// Reads isWireframe
 					newMeshObj->m_isWireframe = meshInfo.attribute("value").as_bool();
@@ -164,6 +166,66 @@ bool cProjectManager::LoadScene(std::string name) {
 					meshInfo = meshInfo.next_sibling();
 					// Reads isVisible
 					newMeshObj->m_displayBoundingBox = meshInfo.attribute("value").as_bool();
+
+					// Checks for Textures now
+					std::string errorString = "";
+					if (newMeshObj->m_meshName == "Skybox") {
+						newMeshObj->m_numOfTexturesLoaded = 6;
+					
+						// Reads all skybox textures
+						meshInfo = meshInfo.next_sibling();
+						newMeshObj->textures[0] = meshInfo.attribute("filename").value(); // Positive X
+						meshInfo = meshInfo.next_sibling();
+						newMeshObj->textures[1] = meshInfo.attribute("filename").value(); // Negative X
+						meshInfo = meshInfo.next_sibling();
+						newMeshObj->textures[2] = meshInfo.attribute("filename").value(); // Positive Y
+						meshInfo = meshInfo.next_sibling();
+						newMeshObj->textures[3] = meshInfo.attribute("filename").value(); // Negative Y
+						meshInfo = meshInfo.next_sibling();
+						newMeshObj->textures[4] = meshInfo.attribute("filename").value(); // Positive Z
+						meshInfo = meshInfo.next_sibling();
+						newMeshObj->textures[5] = meshInfo.attribute("filename").value(); // Negative Z
+						
+						if(!m_textureManager->CreateCubeTextureFromBMPFiles(newMeshObj->m_meshName,
+																			newMeshObj->textures[0],
+																			newMeshObj->textures[1],
+																			newMeshObj->textures[2],
+																			newMeshObj->textures[3],
+																			newMeshObj->textures[4],
+																			newMeshObj->textures[5],
+																			true, errorString) ){
+							DEBUG_PRINT("ERROR: Didn't load the cube map. \n%s\n", errorString.c_str());
+						} else {
+							DEBUG_PRINT("Skybox Texture loaded!\n");
+						}
+					} else {
+						meshInfo = meshInfo.next_sibling();
+						while (!meshInfo.empty()) {
+							if (std::string("discardTexture").compare(meshInfo.name()) == 0) {
+								newMeshObj->textures[7] = meshInfo.attribute("filename").value();
+								newMeshObj->useDiscardTexture = true;
+								if (!m_textureManager->Create2DTextureFromBMPFile(newMeshObj->textures[7])) {
+									DEBUG_PRINT("ERROR: Didn't load discard texture of model %s.\n", newMeshObj->m_meshName.c_str());
+								} else {
+									DEBUG_PRINT("Discard Texture loaded!\n");
+								}
+							} else {
+								newMeshObj->textures[newMeshObj->m_numOfTexturesLoaded] = meshInfo.attribute("filename").value();
+								newMeshObj->textureRatios[newMeshObj->m_numOfTexturesLoaded] = 1.0f;
+								if (m_textureManager->getTextureIDFromName(newMeshObj->textures[newMeshObj->m_numOfTexturesLoaded]) == 0) {
+									if (!m_textureManager->Create2DTextureFromBMPFile(newMeshObj->textures[newMeshObj->m_numOfTexturesLoaded])) {
+										DEBUG_PRINT("ERROR: Didn't load texture number %d of model %s.\n", newMeshObj->m_numOfTexturesLoaded, newMeshObj->m_meshName.c_str());
+									} else {
+										DEBUG_PRINT("Texture loaded!\n");
+									}
+								} else {
+									DEBUG_PRINT("Texture already loaded!\n");
+								}
+							}
+							newMeshObj->m_numOfTexturesLoaded++;
+							meshInfo = meshInfo.next_sibling();
+						}
+					}
 
 					// Adds the newly created Mesh to the Scene Map of Meshes
 					newScene->m_mMeshes.try_emplace(newMeshObj->m_meshName, newMeshObj);
@@ -357,7 +419,7 @@ bool cProjectManager::SaveSelectedScene() {
 					meshInfoNode.attribute("a").set_value(itMesh->second->m_RGBA_colour.a);
 					meshInfoNode = meshInfoNode.next_sibling();
 					// Sets Scale
-					meshInfoNode.attribute("value").set_value(itMesh->second->m_scale);
+					meshInfoNode.attribute("value").set_value(itMesh->second->m_scale.x);
 					meshInfoNode = meshInfoNode.next_sibling();
 					// Sets Wireframe
 					meshInfoNode.attribute("value").set_value(itMesh->second->m_isWireframe);
@@ -435,8 +497,33 @@ bool cProjectManager::SaveSelectedScene() {
 }
 
 void cProjectManager::DrawObject(cMeshObject* pCurrentMeshObject, GLuint shaderID, GLint mModel_location, GLint mModelInverseTransform_location, glm::mat4x4 parentModel) {
+	// Don't draw any "back facing" triangles
 	glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
+	// Turn on depth buffer test at draw time
 	glEnable(GL_DEPTH_TEST);
+
+	GLint bIsFlameObject_UniformLocation = glGetUniformLocation(shaderID, "bIsFlameObject");
+	glUniform1f(bIsFlameObject_UniformLocation, (GLfloat)GL_FALSE);
+	//        glDepthFunc(GL_LESS); // We'll talk about this when we talk about the stencil buffer
+	glDepthMask(GL_TRUE);
+
+	// Texture Things
+	// Checks if we are using discard
+	GLint bUseDiscardTexture_UniformLocation = glGetUniformLocation(shaderID, "bUseDiscardTexture");
+	if (pCurrentMeshObject->useDiscardTexture) {
+		glUniform1f(bUseDiscardTexture_UniformLocation, (GLfloat)GL_TRUE);
+
+		std::string texture7Name = pCurrentMeshObject->textures[7];
+		GLuint texture07Number = m_textureManager->getTextureIDFromName(texture7Name);
+		GLuint texture07Unit = 7;			// Texture unit go from 0 to 79
+		glActiveTexture(texture07Unit + GL_TEXTURE0);	// GL_TEXTURE0 = 33984
+		glBindTexture(GL_TEXTURE_2D, texture07Number);
+		GLint texture7_UL = glGetUniformLocation(shaderID, "texture7");
+		glUniform1i(texture7_UL, texture07Unit);
+	} else {
+		glUniform1f(bUseDiscardTexture_UniformLocation, (GLfloat)GL_FALSE);
+	}
 
 	glm::mat4x4 matModel = parentModel;
 	// Apply Position Transformation
@@ -446,8 +533,8 @@ void cProjectManager::DrawObject(cMeshObject* pCurrentMeshObject, GLuint shaderI
 	glm::mat4 matRoationY = glm::rotate(glm::mat4(1.0f), pCurrentMeshObject->m_rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
 	glm::mat4 matRoationX = glm::rotate(glm::mat4(1.0f), pCurrentMeshObject->m_rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
 	// Scale the object
-	float uniformScale = pCurrentMeshObject->m_scale;
-	glm::mat4 matScale = glm::scale(glm::mat4(1.0f), glm::vec3(uniformScale, uniformScale, uniformScale));
+	glm::vec3 uniformScale = pCurrentMeshObject->m_scale;
+	glm::mat4 matScale = glm::scale(glm::mat4(1.0f), glm::vec3(uniformScale.x, uniformScale.y, uniformScale.z));
 	// Applying all these transformations to the Model
 	matModel = matModel * matTranslation;
 	matModel = matModel * matRoationX;
@@ -468,6 +555,24 @@ void cProjectManager::DrawObject(cMeshObject* pCurrentMeshObject, GLuint shaderI
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	else
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	// Turn on alpha transparency for everything
+	// Maybe: if ( alpha < 1.0 ) ...
+	if (pCurrentMeshObject->m_RGBA_colour.w < 1) {
+		glEnable(GL_BLEND);
+		// Basic alpha transparency:
+		// 0.5 --> 0.5 what was already on the colour buffer 
+		//       + 0.5 of this object being drawn
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
+
+	// Copy specular object colour and power. 
+	GLint specularColour_ULocID = glGetUniformLocation(shaderID, "specularColour");
+
+	glUniform4f(specularColour_ULocID,
+		pCurrentMeshObject->m_specular_colour_and_power.r,
+		pCurrentMeshObject->m_specular_colour_and_power.g,
+		pCurrentMeshObject->m_specular_colour_and_power.b,
+		pCurrentMeshObject->m_specular_colour_and_power.w);
 
 	// Pass Colours to the Shader
 	GLint RGBA_Colour_ULocID = glGetUniformLocation(shaderID, "RGBA_Colour");
@@ -488,6 +593,51 @@ void cProjectManager::DrawObject(cMeshObject* pCurrentMeshObject, GLuint shaderI
 		glUniform1f(bDoNotLight_Colour_ULocID, (GLfloat)GL_TRUE);
 	else
 		glUniform1f(bDoNotLight_Colour_ULocID, (GLfloat)GL_FALSE);
+	
+	if (pCurrentMeshObject->m_meshName != "Skybox") {
+		GLuint textureNumber;
+		GLuint textureUnit;
+		GLint texture_UL;
+		for (int i = 0; i < pCurrentMeshObject->m_numOfTexturesLoaded; i++) {
+			// Set up the texture on this model
+			textureNumber = m_textureManager->getTextureIDFromName(pCurrentMeshObject->textures[i]);
+			// Choose the texture Unit I want
+			textureUnit = i;	// Texture unit go from 0 to 79
+			glActiveTexture(textureUnit + GL_TEXTURE0);	// GL_TEXTURE0 = 33984
+
+			// Pick the texture 
+			// 1. make it "active" (binding)
+			// 2. Attatches it the current ACTIVE TEXTURE UNIT
+			glBindTexture(GL_TEXTURE_2D, textureNumber);
+
+			std::string textureTag = "texture" + std::to_string(i);
+			texture_UL = glGetUniformLocation(shaderID, textureTag.c_str());
+			glUniform1i(texture_UL, textureUnit);
+		}
+	} else {
+		// The cube map textures
+		// uniform samplerCube skyboxTexture;
+		GLuint cubeMapTextureNumber = m_textureManager->getTextureIDFromName("Skybox");
+		GLuint texture30Unit = 30;			// Texture unit go from 0 to 79
+		glActiveTexture(texture30Unit + GL_TEXTURE0);	// GL_TEXTURE0 = 33984
+		glBindTexture(GL_TEXTURE_CUBE_MAP, cubeMapTextureNumber);
+		GLint skyboxTexture_UL = glGetUniformLocation(shaderID, "skyboxTexture");
+		glUniform1i(skyboxTexture_UL, texture30Unit);
+	}
+
+	GLint texRatio_0_3 = glGetUniformLocation(shaderID, "texRatio_0_3");
+	glUniform4f(texRatio_0_3,
+		pCurrentMeshObject->textureRatios[0],
+		pCurrentMeshObject->textureRatios[1],
+		pCurrentMeshObject->textureRatios[2],
+		pCurrentMeshObject->textureRatios[3]);
+
+	GLint texRatio_4_7 = glGetUniformLocation(shaderID, "texRatio_4_7");
+	glUniform4f(texRatio_4_7,
+		pCurrentMeshObject->textureRatios[4],
+		pCurrentMeshObject->textureRatios[5],
+		pCurrentMeshObject->textureRatios[6],
+		pCurrentMeshObject->textureRatios[7]);
 
 	// Pass the Model we want to draw
 	glBindVertexArray(pCurrentMeshObject->m_parentModel->VAO_ID);
@@ -569,7 +719,7 @@ void cProjectManager::DrawObject(cMeshObject* pCurrentMeshObject, GLuint shaderI
 		glm::mat4 m = matModel * transform;
 		glUniformMatrix4fv(mModel_location, 1, GL_FALSE, glm::value_ptr(m));
 
-		GLint attribute_v_coord = glGetAttribLocation(this->m_VAOManager->m_shaderID, "vPos");
+		GLint attribute_v_coord = glGetAttribLocation(this->m_VAOManager->m_shaderID, "vPosition");
 		glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
 		glEnableVertexAttribArray(attribute_v_coord);
 		glVertexAttribPointer(

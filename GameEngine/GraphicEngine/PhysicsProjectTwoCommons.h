@@ -63,13 +63,13 @@ void physicsProjectTwoStartingUp() {
 		if (itMesh != g_ProjectManager->m_selectedScene->m_mMeshes.end()) {
 			Vector3 pos = itMesh->second->m_position;
 			// Creates the initial shape for the Plane
-			iShape* ball = new Sphere(Point(0.0f, 0.0f, 0.0f), itMesh->second->m_scale);
+			iShape* ball = new Sphere(Point(0.0f, 0.0f, 0.0f), itMesh->second->m_scale.x);
 			// Adds the plane shape to the physics system
 			physObj = g_PhysicsSystem->CreatePhysicsObject(itMesh->second, ball);
 			// Now we gonna add "Child" Spheres for collision at the mesh extremes
 			for (int i = 0; i < itMesh->second->vecChildMeshes.size(); i++) {
 				// Creates "child" sphere
-				ball = new Sphere(Point(0.0f, 0.0f, 0.0f), itMesh->second->vecChildMeshes[i]->m_scale);
+				ball = new Sphere(Point(0.0f, 0.0f, 0.0f), itMesh->second->vecChildMeshes[i]->m_scale.x);
 				// Adds the child shape to the physics system
 				physObj = g_PhysicsSystem->CreatePhysicsObject(itMesh->second->vecChildMeshes[i], ball);
 				// These child object won't be moving, but following the main physic object

@@ -75,10 +75,14 @@ cModel* cVAOManager::PrepareNewModel(std::string friendlyName, std::string fileP
 		newModel->pVertices[index].r = m_plyReader->pTheModelArray[index].red;
 		newModel->pVertices[index].g = m_plyReader->pTheModelArray[index].green;
 		newModel->pVertices[index].b = m_plyReader->pTheModelArray[index].blue;
+		newModel->pVertices[index].a = m_plyReader->pTheModelArray[index].alpha;
 
 		newModel->pVertices[index].nx = m_plyReader->pTheModelArray[index].nx;
 		newModel->pVertices[index].ny = m_plyReader->pTheModelArray[index].ny;
 		newModel->pVertices[index].nz = m_plyReader->pTheModelArray[index].nz;
+
+		newModel->pVertices[index].u0 = m_plyReader->pTheModelArray[index].texture_u;
+		newModel->pVertices[index].v0 = m_plyReader->pTheModelArray[index].texture_v;
 
 	}
 	// Sets Number of Triangles
@@ -198,29 +202,76 @@ bool cVAOManager::LoadModelIntoVAO(cModel* modelObj) {
 		GL_STATIC_DRAW);
 
 	// Set the vertex attributes.
-	GLint vpos_location = glGetAttribLocation(m_shaderID, "vPos");
-	GLint vcol_location = glGetAttribLocation(m_shaderID, "vCol");
+	GLint vpos_location = glGetAttribLocation(m_shaderID, "vPosition");
+	GLint vcol_location = glGetAttribLocation(m_shaderID, "vColour");
 	GLint vNormal_location = glGetAttribLocation(m_shaderID, "vNormal");
 
 	// Set the vertex attributes for this shader
 	// Position
 	glEnableVertexAttribArray(vpos_location);
-	glVertexAttribPointer(vpos_location, 3,
+	glVertexAttribPointer(vpos_location, 4,
 		GL_FLOAT, GL_FALSE,
 		sizeof(sVertex),
 		(void*)offsetof(sVertex, x));
+
 	// Color
 	glEnableVertexAttribArray(vcol_location);
-	glVertexAttribPointer(vcol_location, 3,
+	glVertexAttribPointer(vcol_location, 4,
 		GL_FLOAT, GL_FALSE,
 		sizeof(sVertex),
 		(void*)offsetof(sVertex, r));
+
 	// Normals
 	glEnableVertexAttribArray(vNormal_location);
-	glVertexAttribPointer(vNormal_location, 3,
+	glVertexAttribPointer(vNormal_location, 4,
 		GL_FLOAT, GL_FALSE,
 		sizeof(sVertex),
 		(void*)offsetof(sVertex, nx));
+
+	//in vec4 vUVx2;			
+	GLint vUVx2_location = glGetAttribLocation(m_shaderID, "vUVx2");
+	glEnableVertexAttribArray(vUVx2_location);
+	glVertexAttribPointer(vUVx2_location,
+		4, GL_FLOAT,
+		GL_FALSE,
+		sizeof(sVertex),						// Stride	(number of bytes)
+		(void*)offsetof(sVertex, u0));		// Offset the member variable
+
+	//in vec4 vTangent;			
+	GLint vTangent_location = glGetAttribLocation(m_shaderID, "vTangent");
+	glEnableVertexAttribArray(vTangent_location);
+	glVertexAttribPointer(vTangent_location,
+		4, GL_FLOAT,
+		GL_FALSE,
+		sizeof(sVertex),						// Stride	(number of bytes)
+		(void*)offsetof(sVertex, tx));		// Offset the member variable
+
+	//in vec4 vBiNormal;		
+	GLint vBiNormal_location = glGetAttribLocation(m_shaderID, "vBiNormal");
+	glEnableVertexAttribArray(vBiNormal_location);
+	glVertexAttribPointer(vBiNormal_location,
+		4, GL_FLOAT,
+		GL_FALSE,
+		sizeof(sVertex),						// Stride	(number of bytes)
+		(void*)offsetof(sVertex, bx));		// Offset the member variable
+
+	//in vec4 vBoneID;			
+	GLint vBoneID_location = glGetAttribLocation(m_shaderID, "vBoneID");
+	glEnableVertexAttribArray(vBoneID_location);
+	glVertexAttribPointer(vBoneID_location,
+		4, GL_FLOAT,
+		GL_FALSE,
+		sizeof(sVertex),						// Stride	(number of bytes)
+		(void*)offsetof(sVertex, vBoneID[0]));		// Offset the member variable
+
+	//in vec4 vBoneWeight;		
+	GLint vBoneWeight_location = glGetAttribLocation(m_shaderID, "vBoneWeight");
+	glEnableVertexAttribArray(vBoneWeight_location);
+	glVertexAttribPointer(vBoneWeight_location,
+		4, GL_FLOAT,
+		GL_FALSE,
+		sizeof(sVertex),						// Stride	(number of bytes)
+		(void*)offsetof(sVertex, vBoneWeight[0]));		// Offset the member variable
 
 	// Now that all the parts are set up, set the VAO to zero
 	glBindVertexArray(0);
@@ -230,6 +281,11 @@ bool cVAOManager::LoadModelIntoVAO(cModel* modelObj) {
 	glDisableVertexAttribArray(vpos_location);
 	glDisableVertexAttribArray(vcol_location);
 	glDisableVertexAttribArray(vNormal_location);
+	glDisableVertexAttribArray(vUVx2_location);
+	glDisableVertexAttribArray(vTangent_location);
+	glDisableVertexAttribArray(vBiNormal_location);
+	glDisableVertexAttribArray(vBoneID_location);
+	glDisableVertexAttribArray(vBoneWeight_location);
 
 	return true;
 }

@@ -40,6 +40,12 @@
     <Filter Include="Source Files\light">
       <UniqueIdentifier>{4279e909-7324-42be-b2af-e2eedbe3829a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\textures">
+      <UniqueIdentifier>{80e3b15c-c85e-4247-b33e-b2506953677d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\textures">
+      <UniqueIdentifier>{7654ac69-92ea-4fca-9d18-6262ded0f451}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -110,6 +116,15 @@
     </ClCompile>
     <ClCompile Include="imgui\imgui-knobs.cpp">
       <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="C24BitBMPpixel.cpp">
+      <Filter>Source Files\textures</Filter>
+    </ClCompile>
+    <ClCompile Include="cBasicTextureManager.cpp">
+      <Filter>Source Files\textures</Filter>
+    </ClCompile>
+    <ClCompile Include="CTextureFromBMP.cpp">
+      <Filter>Source Files\textures</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -197,6 +212,15 @@
     <ClInclude Include="imgui\imgui-knobs.h">
       <Filter>Header Files\imgui</Filter>
     </ClInclude>
+    <ClInclude Include="C24BitBMPpixel.h">
+      <Filter>Header Files\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="cBasicTextureManager.h">
+      <Filter>Header Files\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="CTextureFromBMP.h">
+      <Filter>Header Files\textures</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\fragmentShader01.glsl">
@@ -211,6 +235,9 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="media_proj_2_sounds.xml">
+      <Filter>Resource Files</Filter>
+    </Xml>
+    <Xml Include="graphicLibrary.xml">
       <Filter>Resource Files</Filter>
     </Xml>
   </ItemGroup>

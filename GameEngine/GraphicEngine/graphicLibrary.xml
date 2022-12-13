@@ -2280,4 +2280,692 @@
 			<param2 x="1" y="0" z="0" w="1" />
 		</light>
 	</scene>
+	<scene title="8.Final Exam" camEyeX="0" camEyeY="200" camEyeZ="166.699997" camTarX="0" camTarY="0.5" camTarZ="0">
+		<model path="assets/island_seed_6977_output_xyz_n_rgba_uv.ply" title="Plane">
+			<mesh id="Plane">
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="desert-sand-rocks-landscape-wallpaper.bmp" />
+			</mesh>
+		</model>
+		<model path="assets/polygon_dungeons/SM_Env_Dwarf_Floor_28.ply" title="Tile">
+			<mesh id="Room1Tile01">
+				<position x="-70" y="0.5" z="-60" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room1Tile02">
+				<position x="0" y="0" z="500" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room1Tile03">
+				<position x="0" y="0" z="1000" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room1Tile04">
+				<position x="500" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room1Tile05">
+				<position x="500" y="0" z="500" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room1Tile06">
+				<position x="500" y="0" z="1000" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room1Tile07">
+				<position x="-500" y="0.5" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room1Tile08">
+				<position x="-500" y="0.5" z="500" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room1Tile09">
+				<position x="-500" y="0.5" z="1000" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room1Tile10">
+				<position x="1000" y="0.5" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room1Tile11">
+				<position x="1000" y="0.5" z="500" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room1Tile12">
+				<position x="1000" y="0.5" z="1000" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room1Tile13">
+				<position x="-1000" y="0.5" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room1Tile14">
+				<position x="-1000" y="0.5" z="500" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room1Tile15">
+				<position x="-1000" y="0.5" z="1000" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room1CorridorLeft">
+				<position x="-85" y="0.5" z="-60" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room1CorridorRight">
+				<position x="-55" y="0.5" z="-60" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile01">
+				<position x="-90" y="0.5" z="-60" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile02">
+				<position x="-90" y="0.5" z="-55" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile03">
+				<position x="-90" y="0.5" z="-50" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile04">
+				<position x="-95" y="0.5" z="-60" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile05">
+				<position x="-95" y="0.5" z="-55" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile06">
+				<position x="-95" y="0.5" z="-50" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile07">
+				<position x="-105" y="0.5" z="-60" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile08">
+				<position x="-105" y="0.5" z="-55" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile09">
+				<position x="-105" y="0.5" z="-50" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile10">
+				<position x="-110" y="0.5" z="-60" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile11">
+				<position x="-110" y="0.5" z="-55" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile12">
+				<position x="-110" y="0.5" z="-50" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile13">
+				<position x="-115" y="0.5" z="-60" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile14">
+				<position x="-115" y="0.5" z="-55" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile15">
+				<position x="-115" y="0.5" z="-50" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile16">
+				<position x="-120" y="0.5" z="-60" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile17">
+				<position x="-120" y="0.5" z="-55" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile18">
+				<position x="-120" y="0.5" z="-50" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile19">
+				<position x="-90" y="0.5" z="-65" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile20">
+				<position x="-90" y="0.5" z="-70" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile21">
+				<position x="-95" y="0.5" z="-65" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile22">
+				<position x="-95" y="0.5" z="-70" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile23">
+				<position x="-100" y="0.5" z="-65" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile24">
+				<position x="-100" y="0.5" z="-70" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile25">
+				<position x="-105" y="0.5" z="-65" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile26">
+				<position x="-105" y="0.5" z="-70" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile27">
+				<position x="-110" y="0.5" z="-65" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile28">
+				<position x="-110" y="0.5" z="-70" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile29">
+				<position x="-115" y="0.5" z="-65" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile30">
+				<position x="-115" y="0.5" z="-70" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile31">
+				<position x="-120" y="0.5" z="-65" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile32">
+				<position x="-120" y="0.5" z="-70" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile33">
+				<position x="-100" y="0.5" z="-60" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile34">
+				<position x="-100" y="0.5" z="-55" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+			<mesh id="Room2Tile35">
+				<position x="-100" y="0.5" z="-50" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="0.01" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="Dungeons_2_Texture_01_A.bmp" />
+			</mesh>
+		</model>
+		<model path="assets/Sphere_for_Skybox_Inverted_Normals.ply" title="Skybox">
+			<mesh id="Skybox">
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="0" g="1" b="1" a="1" />
+				<scale value="7500" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<posX filename="TropicalSunnyDayRight2048.bmp" />
+				<negX filename="TropicalSunnyDayLeft2048.bmp" />
+				<posY filename="TropicalSunnyDayUp2048.bmp" />
+				<negY filename="TropicalSunnyDayDown2048.bmp" />
+				<posZ filename="TropicalSunnyDayBack2048.bmp" />
+				<negZ filename="TropicalSunnyDayFront2048.bmp" />
+			</mesh>
+		</model>
+		<light id="Light 01" onoff="1" showmodel="false">
+			<position x="-11.5" y="5.30000019" z="-26.5" w="1" />
+			<diffuse x="1" y="1" z="1" w="1" />
+			<specular r="1" g="1" b="1" a="1" />
+			<attenuation x="1" y="1.5" z="9.99999975e-06" w="1" />
+			<direction x="0" y="-1" z="0" w="1" />
+			<param1 x="2" y="10" z="20" w="1" />
+			<param2 x="1" y="0" z="0" w="1" />
+		</light>
+		<meshRelationship>
+			<parent id="Room1Tile01">
+				<child id="Room1Tile02" />
+				<child id="Room1Tile03" />
+				<child id="Room1Tile04" />
+				<child id="Room1Tile05" />
+				<child id="Room1Tile06" />
+				<child id="Room1Tile07" />
+				<child id="Room1Tile08" />
+				<child id="Room1Tile09" />
+				<child id="Room1Tile10" />
+				<child id="Room1Tile11" />
+				<child id="Room1Tile12" />
+				<child id="Room1Tile13" />
+				<child id="Room1Tile14" />
+				<child id="Room1Tile15" />
+			</parent>
+		</meshRelationship>
+	</scene>
 </graphicsLibrary>
