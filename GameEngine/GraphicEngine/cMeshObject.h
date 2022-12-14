@@ -35,6 +35,7 @@ public:
 	float textureRatios[8];
 	int m_numOfTexturesLoaded;
 	bool useDiscardTexture;
+	bool isTextureImposter;
 
 	glm::vec3	getGLMPosition();
 	Vector3		getVECPosition();

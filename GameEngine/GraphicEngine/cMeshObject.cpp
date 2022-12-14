@@ -31,6 +31,7 @@ cMeshObject::cMeshObject(cModel* parent) {
 	this->textureRatios[5] = 0.0f;
 	this->textureRatios[6] = 0.0f;
 	this->textureRatios[7] = 0.0f;
+	this->isTextureImposter = false;
 }
 
 cMeshObject::~cMeshObject() {

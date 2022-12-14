@@ -150,7 +150,7 @@ bool cProjectManager::LoadScene(std::string name) {
 					newMeshObj->m_RGBA_colour = glm::vec4(meshInfo.attribute("r").as_float(),
 														  meshInfo.attribute("g").as_float(),
 														  meshInfo.attribute("b").as_float(),
-														  1);
+														  meshInfo.attribute("a").as_float());
 					meshInfo = meshInfo.next_sibling();
 					// Reads Scale
 					newMeshObj->m_scale = glm::vec3(meshInfo.attribute("value").as_float());
@@ -210,6 +210,9 @@ bool cProjectManager::LoadScene(std::string name) {
 									DEBUG_PRINT("Discard Texture loaded!\n");
 								}
 							} else {
+								if (newMeshObj->m_parentModel->meshName == "Fire") {
+									newMeshObj->isTextureImposter = true;
+								}
 								newMeshObj->textures[newMeshObj->m_numOfTexturesLoaded] = meshInfo.attribute("filename").value();
 								newMeshObj->textureRatios[newMeshObj->m_numOfTexturesLoaded] = 1.0f;
 								if (m_textureManager->getTextureIDFromName(newMeshObj->textures[newMeshObj->m_numOfTexturesLoaded]) == 0) {
@@ -497,34 +500,7 @@ bool cProjectManager::SaveSelectedScene() {
 }
 
 void cProjectManager::DrawObject(cMeshObject* pCurrentMeshObject, GLuint shaderID, GLint mModel_location, GLint mModelInverseTransform_location, glm::mat4x4 parentModel) {
-	// Don't draw any "back facing" triangles
-	glCullFace(GL_BACK);
-	glEnable(GL_CULL_FACE);
-	// Turn on depth buffer test at draw time
-	glEnable(GL_DEPTH_TEST);
-
-	GLint bIsFlameObject_UniformLocation = glGetUniformLocation(shaderID, "bIsFlameObject");
-	glUniform1f(bIsFlameObject_UniformLocation, (GLfloat)GL_FALSE);
-	//        glDepthFunc(GL_LESS); // We'll talk about this when we talk about the stencil buffer
-	glDepthMask(GL_TRUE);
-
-	// Texture Things
-	// Checks if we are using discard
-	GLint bUseDiscardTexture_UniformLocation = glGetUniformLocation(shaderID, "bUseDiscardTexture");
-	if (pCurrentMeshObject->useDiscardTexture) {
-		glUniform1f(bUseDiscardTexture_UniformLocation, (GLfloat)GL_TRUE);
-
-		std::string texture7Name = pCurrentMeshObject->textures[7];
-		GLuint texture07Number = m_textureManager->getTextureIDFromName(texture7Name);
-		GLuint texture07Unit = 7;			// Texture unit go from 0 to 79
-		glActiveTexture(texture07Unit + GL_TEXTURE0);	// GL_TEXTURE0 = 33984
-		glBindTexture(GL_TEXTURE_2D, texture07Number);
-		GLint texture7_UL = glGetUniformLocation(shaderID, "texture7");
-		glUniform1i(texture7_UL, texture07Unit);
-	} else {
-		glUniform1f(bUseDiscardTexture_UniformLocation, (GLfloat)GL_FALSE);
-	}
-
+	
 	glm::mat4x4 matModel = parentModel;
 	// Apply Position Transformation
 	glm::mat4 matTranslation = glm::translate(glm::mat4(1.0f), pCurrentMeshObject->m_position);
@@ -542,208 +518,253 @@ void cProjectManager::DrawObject(cMeshObject* pCurrentMeshObject, GLuint shaderI
 	matModel = matModel * matRoationZ;
 	matModel = matModel * matScale;
 
-	// Pass all the matrices to the Shader
-	glUniformMatrix4fv(mModel_location, 1, GL_FALSE, glm::value_ptr(matModel));
-
-	// Inverse transpose of a 4x4 matrix removes the right column and lower row
-	// Leaving only the rotation (the upper left 3x3 matrix values)
-	glm::mat4 mModelInverseTransform = glm::inverse(glm::transpose(matModel));
-	glUniformMatrix4fv(mModelInverseTransform_location, 1, GL_FALSE, glm::value_ptr(mModelInverseTransform));
-
-	// Wireframe Check
-	if (pCurrentMeshObject->m_isWireframe)
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	else
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	// Turn on alpha transparency for everything
-	// Maybe: if ( alpha < 1.0 ) ...
-	if (pCurrentMeshObject->m_RGBA_colour.w < 1) {
-		glEnable(GL_BLEND);
-		// Basic alpha transparency:
-		// 0.5 --> 0.5 what was already on the colour buffer 
-		//       + 0.5 of this object being drawn
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	}
-
-	// Copy specular object colour and power. 
-	GLint specularColour_ULocID = glGetUniformLocation(shaderID, "specularColour");
-
-	glUniform4f(specularColour_ULocID,
-		pCurrentMeshObject->m_specular_colour_and_power.r,
-		pCurrentMeshObject->m_specular_colour_and_power.g,
-		pCurrentMeshObject->m_specular_colour_and_power.b,
-		pCurrentMeshObject->m_specular_colour_and_power.w);
-
-	// Pass Colours to the Shader
-	GLint RGBA_Colour_ULocID = glGetUniformLocation(shaderID, "RGBA_Colour");
-	glUniform4f(RGBA_Colour_ULocID, pCurrentMeshObject->m_RGBA_colour.r,
-									pCurrentMeshObject->m_RGBA_colour.g,
-									pCurrentMeshObject->m_RGBA_colour.b,
-									pCurrentMeshObject->m_RGBA_colour.w);
-	// Pass the UseRGB boolean to the Shader
-	GLint bUseRGBA_Colour_ULocID = glGetUniformLocation(shaderID, "bUseRGBA_Colour");
-	if (pCurrentMeshObject->m_bUse_RGBA_colour)
-		glUniform1f(bUseRGBA_Colour_ULocID, (GLfloat)GL_TRUE);
-	else
-		glUniform1f(bUseRGBA_Colour_ULocID, (GLfloat)GL_FALSE);
-
-	// Pass DoNotLight boolean to the Shader	
-	GLint bDoNotLight_Colour_ULocID = glGetUniformLocation(shaderID, "bDoNotLight");
-	if (pCurrentMeshObject->m_bDoNotLight)
-		glUniform1f(bDoNotLight_Colour_ULocID, (GLfloat)GL_TRUE);
-	else
-		glUniform1f(bDoNotLight_Colour_ULocID, (GLfloat)GL_FALSE);
+	if (pCurrentMeshObject->m_bIsVisible) {
 	
-	if (pCurrentMeshObject->m_meshName != "Skybox") {
-		GLuint textureNumber;
-		GLuint textureUnit;
-		GLint texture_UL;
-		for (int i = 0; i < pCurrentMeshObject->m_numOfTexturesLoaded; i++) {
-			// Set up the texture on this model
-			textureNumber = m_textureManager->getTextureIDFromName(pCurrentMeshObject->textures[i]);
-			// Choose the texture Unit I want
-			textureUnit = i;	// Texture unit go from 0 to 79
-			glActiveTexture(textureUnit + GL_TEXTURE0);	// GL_TEXTURE0 = 33984
+		// Don't draw any "back facing" triangles
+		glCullFace(GL_BACK);
+		glEnable(GL_CULL_FACE);
+		// Turn on depth buffer test at draw time
+		glEnable(GL_DEPTH_TEST);
 
-			// Pick the texture 
-			// 1. make it "active" (binding)
-			// 2. Attatches it the current ACTIVE TEXTURE UNIT
-			glBindTexture(GL_TEXTURE_2D, textureNumber);
 
-			std::string textureTag = "texture" + std::to_string(i);
-			texture_UL = glGetUniformLocation(shaderID, textureTag.c_str());
-			glUniform1i(texture_UL, textureUnit);
-		}
-	} else {
-		// The cube map textures
-		// uniform samplerCube skyboxTexture;
-		GLuint cubeMapTextureNumber = m_textureManager->getTextureIDFromName("Skybox");
-		GLuint texture30Unit = 30;			// Texture unit go from 0 to 79
-		glActiveTexture(texture30Unit + GL_TEXTURE0);	// GL_TEXTURE0 = 33984
-		glBindTexture(GL_TEXTURE_CUBE_MAP, cubeMapTextureNumber);
-		GLint skyboxTexture_UL = glGetUniformLocation(shaderID, "skyboxTexture");
-		glUniform1i(skyboxTexture_UL, texture30Unit);
-	}
-
-	GLint texRatio_0_3 = glGetUniformLocation(shaderID, "texRatio_0_3");
-	glUniform4f(texRatio_0_3,
-		pCurrentMeshObject->textureRatios[0],
-		pCurrentMeshObject->textureRatios[1],
-		pCurrentMeshObject->textureRatios[2],
-		pCurrentMeshObject->textureRatios[3]);
-
-	GLint texRatio_4_7 = glGetUniformLocation(shaderID, "texRatio_4_7");
-	glUniform4f(texRatio_4_7,
-		pCurrentMeshObject->textureRatios[4],
-		pCurrentMeshObject->textureRatios[5],
-		pCurrentMeshObject->textureRatios[6],
-		pCurrentMeshObject->textureRatios[7]);
-
-	// Pass the Model we want to draw
-	glBindVertexArray(pCurrentMeshObject->m_parentModel->VAO_ID);
-	glDrawElements(GL_TRIANGLES,
-		pCurrentMeshObject->m_parentModel->numberOfIndices,
-		GL_UNSIGNED_INT,
-		(void*)0);
-	glBindVertexArray(0);
-
-	// Display Bounding Box
-	if (pCurrentMeshObject->m_displayBoundingBox) {
-		// Cube 1x1x1, centered on origin
-		GLfloat vertices[] = {
-		  -0.5, -0.5, -0.5, 1.0,
-		   0.5, -0.5, -0.5, 1.0,
-		   0.5,  0.5, -0.5, 1.0,
-		  -0.5,  0.5, -0.5, 1.0,
-		  -0.5, -0.5,  0.5, 1.0,
-		   0.5, -0.5,  0.5, 1.0,
-		   0.5,  0.5,  0.5, 1.0,
-		  -0.5,  0.5,  0.5, 1.0,
-		};
-		GLuint vbo_vertices;
-		glGenBuffers(1, &vbo_vertices);
-		glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-		GLushort elements[] = {
-			0, 1, 2, 3,
-			4, 5, 6, 7,
-			0, 4, 1, 5, 2, 6, 3, 7
-		};
-		GLuint ibo_elements;
-		glGenBuffers(1, &ibo_elements);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-		cModel* parentModel = pCurrentMeshObject->m_parentModel;
-		glm::vec3 size = glm::vec3(parentModel->max_x - parentModel->min_x,
-								   parentModel->max_y - parentModel->min_y,
-								   parentModel->max_z - parentModel->min_z);
-		glm::vec3 center = glm::vec3((parentModel->min_x + parentModel->max_x) / 2,
-									 (parentModel->min_y + parentModel->max_y) / 2,
-									 (parentModel->min_z + parentModel->max_z) / 2);
-		glm::mat4 transform = glm::translate(glm::mat4(1), center) * glm::scale(glm::mat4(1), size);
-
-		// Use Colour vCol
-		glUniform1f(bUseRGBA_Colour_ULocID, (GLfloat)GL_TRUE);
-		if (this->m_selectedScene->m_name == "5.Patterns MidTerm" &&
-			this->m_GameLoopState == RUNNING) {
-			/*size_t pos = pCurrentMeshObject->m_meshName.find(" ");
-			std::string token;
-			int robotID;
-			iRobot* theRobot;
-			if (pos != std::string::npos) {
-				token = pCurrentMeshObject->m_meshName.substr(0, pos);
-				if (token == "Robot") {
-					robotID = std::stoi(pCurrentMeshObject->m_meshName.substr(pos, pos + 2));
-					theRobot = g_robotFactory->getRobot(robotID - 1);
-					if (theRobot->getWeaponName() == "Laser") {
-						glUniform4f(RGBA_Colour_ULocID, 0.0f, 1.0f, 0.0f, 1.0f);
-					} else if (theRobot->getWeaponName() == "Bomb") {
-						glUniform4f(RGBA_Colour_ULocID, 1.0f, 0.0f, 0.0f, 1.0f);
-					} else if (theRobot->getWeaponName() == "Bullet") {
-						glUniform4f(RGBA_Colour_ULocID, 0.0f, 0.0f, 1.0f, 1.0f);
-					}
-				}
-			}*/
+		GLint bIsFlameObject_UniformLocation = glGetUniformLocation(shaderID, "bIsFlameObject");
+		if (pCurrentMeshObject->isTextureImposter) {
+			glUniform1f(bIsFlameObject_UniformLocation, (GLfloat)GL_TRUE);
+			glDepthMask(GL_FALSE);
 		} else {
-			// Set White BoundingBox
-			glUniform4f(RGBA_Colour_ULocID, 1.0f, 1.0f, 1.0f, 1.0f);
+			glUniform1f(bIsFlameObject_UniformLocation, (GLfloat)GL_FALSE);
+			glDepthMask(GL_TRUE);
 		}
-		// Do Not Light the BB
-		glUniform1f(bDoNotLight_Colour_ULocID, (GLfloat)GL_TRUE);
 
-		/* Apply object's transformation matrix */
-		glm::mat4 m = matModel * transform;
-		glUniformMatrix4fv(mModel_location, 1, GL_FALSE, glm::value_ptr(m));
+		// Texture Things
+		// Checks if we are using discard
+		GLint bUseDiscardTexture_UniformLocation = glGetUniformLocation(shaderID, "bUseDiscardTexture");
+		if (pCurrentMeshObject->useDiscardTexture) {
+			glUniform1f(bUseDiscardTexture_UniformLocation, (GLfloat)GL_TRUE);
 
-		GLint attribute_v_coord = glGetAttribLocation(this->m_VAOManager->m_shaderID, "vPosition");
-		glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
-		glEnableVertexAttribArray(attribute_v_coord);
-		glVertexAttribPointer(
-			attribute_v_coord,  // attribute
-			4,                  // number of elements per vertex, here (x,y,z,w)
-			GL_FLOAT,           // the type of each element
-			GL_FALSE,           // take our values as-is
-			0,                  // no extra data between each position
-			0                   // offset of first element
-		);
+			std::string texture7Name = pCurrentMeshObject->textures[7];
+			GLuint texture07Number = m_textureManager->getTextureIDFromName(texture7Name);
+			GLuint texture07Unit = 7;			// Texture unit go from 0 to 79
+			glActiveTexture(texture07Unit + GL_TEXTURE0);	// GL_TEXTURE0 = 33984
+			glBindTexture(GL_TEXTURE_2D, texture07Number);
+			GLint texture7_UL = glGetUniformLocation(shaderID, "texture7");
+			glUniform1i(texture7_UL, texture07Unit);
+		} else {
+			glUniform1f(bUseDiscardTexture_UniformLocation, (GLfloat)GL_FALSE);
+		}
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
-		glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, 0);
-		glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, (GLvoid*)(4 * sizeof(GLushort)));
-		glDrawElements(GL_LINES, 8, GL_UNSIGNED_SHORT, (GLvoid*)(8 * sizeof(GLushort)));
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		// Pass all the matrices to the Shader
+		glUniformMatrix4fv(mModel_location, 1, GL_FALSE, glm::value_ptr(matModel));
 
-		glDisableVertexAttribArray(attribute_v_coord);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		// Inverse transpose of a 4x4 matrix removes the right column and lower row
+		// Leaving only the rotation (the upper left 3x3 matrix values)
+		glm::mat4 mModelInverseTransform = glm::inverse(glm::transpose(matModel));
+		glUniformMatrix4fv(mModelInverseTransform_location, 1, GL_FALSE, glm::value_ptr(mModelInverseTransform));
 
-		glDeleteBuffers(1, &vbo_vertices);
-		glDeleteBuffers(1, &ibo_elements);
+		// Wireframe Check
+		if (pCurrentMeshObject->m_isWireframe)
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		else
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		// Turn on alpha transparency for everything
+		// Maybe: if ( alpha < 1.0 ) ...
+		if (pCurrentMeshObject->m_RGBA_colour.w < 1) {
+			glEnable(GL_BLEND);
+			// Basic alpha transparency:
+			// 0.5 --> 0.5 what was already on the colour buffer 
+			//       + 0.5 of this object being drawn
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		}
 
-		glLineWidth(2);
+		// Copy specular object colour and power. 
+		GLint specularColour_ULocID = glGetUniformLocation(shaderID, "specularColour");
+
+		glUniform4f(specularColour_ULocID,
+			pCurrentMeshObject->m_specular_colour_and_power.r,
+			pCurrentMeshObject->m_specular_colour_and_power.g,
+			pCurrentMeshObject->m_specular_colour_and_power.b,
+			pCurrentMeshObject->m_specular_colour_and_power.w);
+
+		// Pass Colours to the Shader
+		GLint RGBA_Colour_ULocID = glGetUniformLocation(shaderID, "RGBA_Colour");
+		glUniform4f(RGBA_Colour_ULocID, pCurrentMeshObject->m_RGBA_colour.r,
+										pCurrentMeshObject->m_RGBA_colour.g,
+										pCurrentMeshObject->m_RGBA_colour.b,
+										pCurrentMeshObject->m_RGBA_colour.w);
+		// Pass the UseRGB boolean to the Shader
+		GLint bUseRGBA_Colour_ULocID = glGetUniformLocation(shaderID, "bUseRGBA_Colour");
+		if (pCurrentMeshObject->m_bUse_RGBA_colour)
+			glUniform1f(bUseRGBA_Colour_ULocID, (GLfloat)GL_TRUE);
+		else
+			glUniform1f(bUseRGBA_Colour_ULocID, (GLfloat)GL_FALSE);
+
+		// Pass DoNotLight boolean to the Shader	
+		GLint bDoNotLight_Colour_ULocID = glGetUniformLocation(shaderID, "bDoNotLight");
+		if (pCurrentMeshObject->m_bDoNotLight)
+			glUniform1f(bDoNotLight_Colour_ULocID, (GLfloat)GL_TRUE);
+		else
+			glUniform1f(bDoNotLight_Colour_ULocID, (GLfloat)GL_FALSE);
+	
+		if (pCurrentMeshObject->m_meshName != "Skybox") {
+			GLuint textureNumber;
+			GLuint textureUnit;
+			GLint texture_UL;
+
+			// Sets the skybox bool to false
+			GLint isSkyboxObject = glGetUniformLocation(shaderID, "bIsSkyboxObject");
+			glUniform1i(isSkyboxObject, (GLfloat)GL_FALSE);
+
+			for (int i = 0; i < pCurrentMeshObject->m_numOfTexturesLoaded; i++) {
+				// Set up the texture on this model
+				textureNumber = m_textureManager->getTextureIDFromName(pCurrentMeshObject->textures[i]);
+				// Choose the texture Unit I want
+				textureUnit = i;	// Texture unit go from 0 to 79
+				glActiveTexture(textureUnit + GL_TEXTURE0);	// GL_TEXTURE0 = 33984
+
+				// Pick the texture 
+				// 1. make it "active" (binding)
+				// 2. Attatches it the current ACTIVE TEXTURE UNIT
+				glBindTexture(GL_TEXTURE_2D, textureNumber);
+
+				std::string textureTag = "texture" + std::to_string(i);
+				texture_UL = glGetUniformLocation(shaderID, textureTag.c_str());
+				glUniform1i(texture_UL, textureUnit);
+			}
+		} else {
+			// The cube map textures
+			// uniform samplerCube skyboxTexture;
+			GLint isSkyboxObject = glGetUniformLocation(shaderID, "bIsSkyboxObject");
+			glUniform1i(isSkyboxObject, (GLfloat)GL_TRUE);
+
+			GLuint cubeMapTextureNumber = m_textureManager->getTextureIDFromName("Skybox");
+			GLuint texture30Unit = 30;			// Texture unit go from 0 to 79
+			glActiveTexture(texture30Unit + GL_TEXTURE0);	// GL_TEXTURE0 = 33984
+			glBindTexture(GL_TEXTURE_CUBE_MAP, cubeMapTextureNumber);
+			GLint skyboxTexture_UL = glGetUniformLocation(shaderID, "skyboxTexture");
+			glUniform1i(skyboxTexture_UL, texture30Unit);
+		}
+
+		GLint texRatio_0_3 = glGetUniformLocation(shaderID, "texRatio_0_3");
+		glUniform4f(texRatio_0_3,
+			pCurrentMeshObject->textureRatios[0],
+			pCurrentMeshObject->textureRatios[1],
+			pCurrentMeshObject->textureRatios[2],
+			pCurrentMeshObject->textureRatios[3]);
+
+		GLint texRatio_4_7 = glGetUniformLocation(shaderID, "texRatio_4_7");
+		glUniform4f(texRatio_4_7,
+			pCurrentMeshObject->textureRatios[4],
+			pCurrentMeshObject->textureRatios[5],
+			pCurrentMeshObject->textureRatios[6],
+			pCurrentMeshObject->textureRatios[7]);
+
+		// Pass the Model we want to draw
+		glBindVertexArray(pCurrentMeshObject->m_parentModel->VAO_ID);
+		glDrawElements(GL_TRIANGLES,
+			pCurrentMeshObject->m_parentModel->numberOfIndices,
+			GL_UNSIGNED_INT,
+			(void*)0);
+		glBindVertexArray(0);
+
+		// Display Bounding Box
+		if (pCurrentMeshObject->m_displayBoundingBox) {
+			// Cube 1x1x1, centered on origin
+			GLfloat vertices[] = {
+			  -0.5, -0.5, -0.5, 1.0,
+			   0.5, -0.5, -0.5, 1.0,
+			   0.5,  0.5, -0.5, 1.0,
+			  -0.5,  0.5, -0.5, 1.0,
+			  -0.5, -0.5,  0.5, 1.0,
+			   0.5, -0.5,  0.5, 1.0,
+			   0.5,  0.5,  0.5, 1.0,
+			  -0.5,  0.5,  0.5, 1.0,
+			};
+			GLuint vbo_vertices;
+			glGenBuffers(1, &vbo_vertices);
+			glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+			GLushort elements[] = {
+				0, 1, 2, 3,
+				4, 5, 6, 7,
+				0, 4, 1, 5, 2, 6, 3, 7
+			};
+			GLuint ibo_elements;
+			glGenBuffers(1, &ibo_elements);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+			cModel* parentModel = pCurrentMeshObject->m_parentModel;
+			glm::vec3 size = glm::vec3(parentModel->max_x - parentModel->min_x,
+									   parentModel->max_y - parentModel->min_y,
+									   parentModel->max_z - parentModel->min_z);
+			glm::vec3 center = glm::vec3((parentModel->min_x + parentModel->max_x) / 2,
+										 (parentModel->min_y + parentModel->max_y) / 2,
+										 (parentModel->min_z + parentModel->max_z) / 2);
+			glm::mat4 transform = glm::translate(glm::mat4(1), center) * glm::scale(glm::mat4(1), size);
+
+			// Use Colour vCol
+			glUniform1f(bUseRGBA_Colour_ULocID, (GLfloat)GL_TRUE);
+			if (this->m_selectedScene->m_name == "5.Patterns MidTerm" &&
+				this->m_GameLoopState == RUNNING) {
+				/*size_t pos = pCurrentMeshObject->m_meshName.find(" ");
+				std::string token;
+				int robotID;
+				iRobot* theRobot;
+				if (pos != std::string::npos) {
+					token = pCurrentMeshObject->m_meshName.substr(0, pos);
+					if (token == "Robot") {
+						robotID = std::stoi(pCurrentMeshObject->m_meshName.substr(pos, pos + 2));
+						theRobot = g_robotFactory->getRobot(robotID - 1);
+						if (theRobot->getWeaponName() == "Laser") {
+							glUniform4f(RGBA_Colour_ULocID, 0.0f, 1.0f, 0.0f, 1.0f);
+						} else if (theRobot->getWeaponName() == "Bomb") {
+							glUniform4f(RGBA_Colour_ULocID, 1.0f, 0.0f, 0.0f, 1.0f);
+						} else if (theRobot->getWeaponName() == "Bullet") {
+							glUniform4f(RGBA_Colour_ULocID, 0.0f, 0.0f, 1.0f, 1.0f);
+						}
+					}
+				}*/
+			} else {
+				// Set White BoundingBox
+				glUniform4f(RGBA_Colour_ULocID, 1.0f, 1.0f, 1.0f, 1.0f);
+			}
+			// Do Not Light the BB
+			glUniform1f(bDoNotLight_Colour_ULocID, (GLfloat)GL_TRUE);
+
+			/* Apply object's transformation matrix */
+			glm::mat4 m = matModel * transform;
+			glUniformMatrix4fv(mModel_location, 1, GL_FALSE, glm::value_ptr(m));
+
+			GLint attribute_v_coord = glGetAttribLocation(this->m_VAOManager->m_shaderID, "vPosition");
+			glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
+			glEnableVertexAttribArray(attribute_v_coord);
+			glVertexAttribPointer(
+				attribute_v_coord,  // attribute
+				4,                  // number of elements per vertex, here (x,y,z,w)
+				GL_FLOAT,           // the type of each element
+				GL_FALSE,           // take our values as-is
+				0,                  // no extra data between each position
+				0                   // offset of first element
+			);
+
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
+			glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, 0);
+			glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, (GLvoid*)(4 * sizeof(GLushort)));
+			glDrawElements(GL_LINES, 8, GL_UNSIGNED_SHORT, (GLvoid*)(8 * sizeof(GLushort)));
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+			glDisableVertexAttribArray(attribute_v_coord);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+			glDeleteBuffers(1, &vbo_vertices);
+			glDeleteBuffers(1, &ibo_elements);
+
+			glLineWidth(2);
+
+		}
 
 	}
 

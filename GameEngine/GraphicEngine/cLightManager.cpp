@@ -108,6 +108,42 @@ void cLightManager::LoadLightUniformLocations(unsigned int shaderID, std::map<st
 	} else {
 		return;
 	}
+	itLight++;
+	if(itLight != p_mapOfLights->end()){
+		itLight->second->position_UniformLocation	= glGetUniformLocation(shaderID, "theLights[7].position");
+		itLight->second->diffuse_UniformLocation	= glGetUniformLocation(shaderID, "theLights[7].diffuse");
+		itLight->second->specular_UniformLocation	= glGetUniformLocation(shaderID, "theLights[7].specular");
+		itLight->second->atten_UniformLocation		= glGetUniformLocation(shaderID, "theLights[7].atten");
+		itLight->second->direction_UniformLocation	= glGetUniformLocation(shaderID, "theLights[7].direction");
+		itLight->second->param1_UniformLocation		= glGetUniformLocation(shaderID, "theLights[7].param1");
+		itLight->second->param2_UniformLocation		= glGetUniformLocation(shaderID, "theLights[7].param2");
+	} else {
+		return;
+	}
+	itLight++;
+	if(itLight != p_mapOfLights->end()){
+		itLight->second->position_UniformLocation	= glGetUniformLocation(shaderID, "theLights[8].position");
+		itLight->second->diffuse_UniformLocation	= glGetUniformLocation(shaderID, "theLights[8].diffuse");
+		itLight->second->specular_UniformLocation	= glGetUniformLocation(shaderID, "theLights[8].specular");
+		itLight->second->atten_UniformLocation		= glGetUniformLocation(shaderID, "theLights[8].atten");
+		itLight->second->direction_UniformLocation	= glGetUniformLocation(shaderID, "theLights[8].direction");
+		itLight->second->param1_UniformLocation		= glGetUniformLocation(shaderID, "theLights[8].param1");
+		itLight->second->param2_UniformLocation		= glGetUniformLocation(shaderID, "theLights[8].param2");
+	} else {
+		return;
+	}
+	itLight++;
+	if(itLight != p_mapOfLights->end()){
+		itLight->second->position_UniformLocation	= glGetUniformLocation(shaderID, "theLights[9].position");
+		itLight->second->diffuse_UniformLocation	= glGetUniformLocation(shaderID, "theLights[9].diffuse");
+		itLight->second->specular_UniformLocation	= glGetUniformLocation(shaderID, "theLights[9].specular");
+		itLight->second->atten_UniformLocation		= glGetUniformLocation(shaderID, "theLights[9].atten");
+		itLight->second->direction_UniformLocation	= glGetUniformLocation(shaderID, "theLights[9].direction");
+		itLight->second->param1_UniformLocation		= glGetUniformLocation(shaderID, "theLights[9].param1");
+		itLight->second->param2_UniformLocation		= glGetUniformLocation(shaderID, "theLights[9].param2");
+	} else {
+		return;
+	}
 }
 
 void cLightManager::CopyLightInformationToShader(unsigned int shaderID, std::map<std::string, cLight*>* p_mapOfLights) {

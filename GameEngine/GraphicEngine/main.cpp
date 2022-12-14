@@ -325,8 +325,8 @@ int main(int argc, char* argv[]) {
 				cMeshObject* pCurrentMeshObject = itMeshes->second;
 
 				// Skip this meshe if not visible
-				if (!pCurrentMeshObject->m_bIsVisible)
-					continue;
+				//if (!pCurrentMeshObject->m_bIsVisible)
+				//	continue;
 
 				g_ProjectManager->DrawObject(pCurrentMeshObject,
 											 shaderID, 
