@@ -15,6 +15,8 @@
 #include <cRobotFactory.h>
 #include <cRobot.h>
 #include "PhysicsSystem.h"
+#include <FModManager.h>
+#include "SoundUI.h"
 //#include "cLightHelper.h"
 
 // Scene Main Loops, Globals and Functions
@@ -22,17 +24,16 @@
 #include "GraphicsMidtermCommons.h"
 #include "PhysicsProjectTwoCommons.h"
 #include "MediaProjectTwoCommons.h"
+#include "FinalExamCommons.h"
 
 #ifdef _DEBUG
 #define DEBUG_LOG_ENABLED
 #endif
-#include <FModManager.h>
 #ifdef DEBUG_LOG_ENABLED
 #define DEBUG_PRINT(x, ...) printf(x, __VA_ARGS__)
 #else
 #define DEBUG_PRINT(x)
 #endif
-#include "SoundUI.h"
 
 GLFWwindow* window;
 // Global Camera Eye that will be pointing to the Selected Scene Camera
@@ -50,7 +51,7 @@ iMovable* controllableActor;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	const float MOVE_SPEED = 1.0f;
-	if (key == GLFW_KEY_A)     // Left
+	if (key == GLFW_KEY_A && action == GLFW_PRESS)     // Left
 	{
 		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
 			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(MOVE_SPEED, 0.0f, 0.0f));
@@ -62,7 +63,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 
 	}
-	if (key == GLFW_KEY_D)     // Right
+	if (key == GLFW_KEY_D && action == GLFW_PRESS)     // Right
 	{
 		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
 			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(-MOVE_SPEED, 0.0f, 0.0f));
@@ -73,7 +74,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			g_cameraTarget->x -= MOVE_SPEED;
 		}
 	}
-	if (key == GLFW_KEY_W)     // Forward
+	if (key == GLFW_KEY_W && action == GLFW_PRESS)     // Forward
 	{
 		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
 			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(0.0f, 0.0f, MOVE_SPEED));
@@ -84,7 +85,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			g_cameraTarget->z += MOVE_SPEED;
 		}
 	}
-	if (key == GLFW_KEY_S)     // Backwards
+	if (key == GLFW_KEY_S && action == GLFW_PRESS)     // Backwards
 	{
 		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
 			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(0.0f, 0.0f, -MOVE_SPEED));
@@ -95,7 +96,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			g_cameraTarget->z -= MOVE_SPEED;
 		}
 	}
-	if (key == GLFW_KEY_Q)     // Down
+	if (key == GLFW_KEY_Q && action == GLFW_PRESS)     // Down
 	{
 		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
 			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(0.0f, -MOVE_SPEED, 0.0f));
@@ -105,7 +106,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			g_cameraTarget->y -= MOVE_SPEED;
 		}
 	}
-	if (key == GLFW_KEY_E)     // Up
+	if (key == GLFW_KEY_E && action == GLFW_PRESS)     // Up
 	{
 		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
 			g_PhysicsSystem->m_PhysicsObjects[1]->ApplyForce(Vector3(0.0f, MOVE_SPEED, 0.0f));
@@ -115,17 +116,23 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			g_cameraTarget->y += MOVE_SPEED;
 		}
 	}
-	if (key == GLFW_KEY_UP) {
+	if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
 		g_cameraTarget->z += MOVE_SPEED;
 	}
-	if (key == GLFW_KEY_DOWN) {
+	if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
 		g_cameraTarget->z -= MOVE_SPEED;
 	}
-	if (key == GLFW_KEY_LEFT) {
+	if (key == GLFW_KEY_LEFT && action == GLFW_PRESS) {
 		g_cameraTarget->x += MOVE_SPEED;
 	}
-	if (key == GLFW_KEY_RIGHT) {
+	if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS) {
 		g_cameraTarget->x -= MOVE_SPEED;
+	}
+	if (key == GLFW_KEY_F6 && action == GLFW_PRESS) {
+		nextBeholder();
+	}
+	if (key == GLFW_KEY_F7 && action == GLFW_PRESS) {
+		findClosestTargets();
 	}
 	if (key == GLFW_KEY_ESCAPE) {
 		g_ProjectManager->m_GameLoopState = SHUTING_DOWN;
@@ -235,6 +242,8 @@ int main(int argc, char* argv[]) {
 	GLint mProjection_location				= glGetUniformLocation(shaderID, "mProjection");
 	GLint mModelInverseTransform_location	= glGetUniformLocation(shaderID, "mModelInverseTranspose");
 
+	g_ProjectManager->LoadScene("8.Final Exam");
+
 	while (!glfwWindowShouldClose(window)) {
 
 		//DrawConcentricDebugLightObjects();
@@ -282,6 +291,8 @@ int main(int argc, char* argv[]) {
 			else if (g_ProjectManager->m_selectedScene->m_name == "7.Media Proj#2") {
 				MediaProjectTwoGameLoop();
 				soundUI->render();
+			} else if (g_ProjectManager->m_selectedScene->m_name == "8.Final Exam") {
+				FinalExamGameLoop();
 			}
 		}
 

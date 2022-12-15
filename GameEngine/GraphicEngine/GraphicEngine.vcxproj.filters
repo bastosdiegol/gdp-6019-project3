@@ -221,6 +221,9 @@
     <ClInclude Include="CTextureFromBMP.h">
       <Filter>Header Files\textures</Filter>
     </ClInclude>
+    <ClInclude Include="FinalExamCommons.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\fragmentShader01.glsl">

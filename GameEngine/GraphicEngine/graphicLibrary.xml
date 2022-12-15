@@ -2280,7 +2280,7 @@
 			<param2 x="1" y="0" z="0" w="1" />
 		</light>
 	</scene>
-	<scene title="8.Final Exam" camEyeX="-68.8000031" camEyeY="55" camEyeZ="37.7999992" camTarX="-69" camTarY="20.2000008" camTarZ="-61.2000008">
+	<scene title="8.Final Exam" camEyeX="-70.8000031" camEyeY="32" camEyeZ="5.80000305" camTarX="-70.75" camTarY="12.1999998" camTarZ="-61.8450012">
 		<model path="assets/island_seed_6977_output_xyz_n_rgba_uv.ply" title="Plane">
 			<mesh id="Plane">
 				<position x="0" y="0" z="0" />
@@ -2323,8 +2323,8 @@
 				<texture filename="Beholder_Base_color.bmp" />
 			</mesh>
 			<mesh id="Patrol Beholder1">
-				<position x="-93" y="1.60000002" z="-48" />
-				<rotate x="0" y="3.1500001" z="0" />
+				<position x="-83.1929092" y="1.60000002" z="-44.003479" />
+				<rotate x="0" y="5.05791426" z="0" />
 				<useColor value="false" />
 				<color r="1" g="0" b="0" a="1" />
 				<scale value="0.5" />
@@ -2335,8 +2335,8 @@
 				<texture filename="Beholder_Base_color.bmp" />
 			</mesh>
 			<mesh id="Patrol Beholder2">
-				<position x="-58" y="1.60000002" z="-62" />
-				<rotate x="0" y="3.1500001" z="0" />
+				<position x="-44.0047569" y="1.60000002" z="-61.8199196" />
+				<rotate x="0" y="7.4174571" z="0" />
 				<useColor value="false" />
 				<color r="1" g="0" b="0" a="1" />
 				<scale value="0.5" />
@@ -2347,8 +2347,8 @@
 				<texture filename="Beholder_Base_color.bmp" />
 			</mesh>
 			<mesh id="Patrol Beholder3">
-				<position x="-53" y="1.60000002" z="-48" />
-				<rotate x="0" y="3.1500001" z="0" />
+				<position x="-44.0086975" y="1.60000002" z="-47.8195953" />
+				<rotate x="0" y="7.27434874" z="0" />
 				<useColor value="false" />
 				<color r="1" g="0" b="0" a="1" />
 				<scale value="0.5" />
@@ -2429,39 +2429,105 @@
 				<boundingBox value="false" />
 			</mesh>
 		</model>
-		<model path="assets/polygon_dungeons/Cristals1.ply" title="Crystal1">
+		<model path="assets/polygon_dungeons/SM_Env_Crystals_Cluster_Large_01.ply" title="Crystal1">
 			<mesh id="Z.Crystal1">
-				<position x="-86.25" y="0.5" z="-47.5999985" />
-				<rotate x="0" y="-0.5" z="0" />
+				<position x="-86.25" y="0.5" z="-46.5999985" />
+				<rotate x="0" y="0" z="0" />
 				<useColor value="true" />
 				<color r="0" g="1" b="0" a="0.5" />
-				<scale value="0.300000012" />
+				<scale value="0.00300000003" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+			<mesh id="Z.Crystal1-2">
+				<position x="-87.8499985" y="0.5" z="-46.5999985" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0" g="1" b="0" a="0.5" />
+				<scale value="0.00300000003" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+			<mesh id="Z.Crystal1-3">
+				<position x="-86.8499985" y="0.5" z="-45.0999985" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0" g="1" b="0" a="0.5" />
+				<scale value="0.00300000003" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
 				<visible value="true" />
 				<boundingBox value="false" />
 			</mesh>
 		</model>
-		<model path="assets/polygon_dungeons/Cristals2.ply" title="Crystal2">
+		<model path="assets/polygon_dungeons/SM_Env_Crystals_Cluster_Large_02.ply" title="Crystal2">
 			<mesh id="Z.Crystal2">
 				<position x="-47.1500015" y="0.5" z="-74.5999985" />
-				<rotate x="0" y="-0.5" z="0" />
+				<rotate x="0" y="0" z="0" />
 				<useColor value="true" />
 				<color r="1" g="0" b="0" a="0.5" />
-				<scale value="0.300000012" />
+				<scale value="0.00300000003" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+			<mesh id="Z.Crystal2-2">
+				<position x="-46.25" y="0.5" z="-73.1999969" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="1" g="0" b="0" a="0.5" />
+				<scale value="0.00300000003" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+			<mesh id="Z.Crystal2-3">
+				<position x="-45.8499985" y="0.5" z="-74.5999985" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="1" g="0" b="0" a="0.5" />
+				<scale value="0.00300000003" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
 				<visible value="true" />
 				<boundingBox value="false" />
 			</mesh>
 		</model>
-		<model path="assets/polygon_dungeons/Cristals4.ply" title="Crystal3">
+		<model path="assets/polygon_dungeons/SM_Env_Crystals_Cluster_Large_03.ply" title="Crystal3">
 			<mesh id="Z.Crystal3">
 				<position x="-55.25" y="0.5" z="-59.2000008" />
-				<rotate x="0" y="-0.5" z="0" />
+				<rotate x="0" y="0" z="0" />
 				<useColor value="true" />
 				<color r="0" g="1" b="1" a="0.5" />
-				<scale value="0.300000012" />
+				<scale value="0.00300000003" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+			<mesh id="Z.Crystal3-2">
+				<position x="-53.8499985" y="0.5" z="-59.2000008" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0" g="1" b="1" a="0.5" />
+				<scale value="0.00300000003" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+			<mesh id="Z.Crystal3-3">
+				<position x="-54.5499992" y="0.5" z="-61.0999985" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0" g="1" b="1" a="0.5" />
+				<scale value="0.00300000003" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
 				<visible value="true" />
@@ -2469,60 +2535,60 @@
 			</mesh>
 		</model>
 		<model path="assets/imposter/Quad_x3_2_sided_axis_aligned_imposter.ply" title="Fire">
-			<mesh id="Flame1">
-				<position x="-68.75" y="0.75" z="-59.5" />
+			<mesh id="Z.Flame1">
+				<position x="-68.75" y="2.4000001" z="-59.75" />
 				<rotate x="0" y="0" z="0" />
 				<useColor value="false" />
 				<color r="1" g="0" b="0" a="0" />
-				<scale value="0.75" />
+				<scale value="0.5" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
 				<visible value="true" />
 				<boundingBox value="false" />
 				<texture filename="flameball.bmp" />
 			</mesh>
-			<mesh id="Flame2">
-				<position x="-43" y="0.75" z="-58.7999992" />
+			<mesh id="Z.Flame2">
+				<position x="-43" y="2.4000001" z="-58.7999992" />
 				<rotate x="0" y="0" z="0" />
 				<useColor value="false" />
 				<color r="1" g="0" b="0" a="0" />
-				<scale value="0.75" />
+				<scale value="0.5" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
 				<visible value="true" />
 				<boundingBox value="false" />
 				<texture filename="flameball.bmp" />
 			</mesh>
-			<mesh id="Flame3">
-				<position x="-94.5" y="0.75" z="-58.7999992" />
+			<mesh id="Z.Flame3">
+				<position x="-94.5" y="2.4000001" z="-58.7999992" />
 				<rotate x="0" y="0" z="0" />
 				<useColor value="false" />
 				<color r="1" g="0" b="0" a="0" />
-				<scale value="0.75" />
+				<scale value="0.5" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
 				<visible value="true" />
 				<boundingBox value="false" />
 				<texture filename="flameball.bmp" />
 			</mesh>
-			<mesh id="Flame4">
-				<position x="-48.75" y="0.75" z="-46.25" />
+			<mesh id="Z.Flame4">
+				<position x="-48.75" y="2.4000001" z="-42.8499985" />
 				<rotate x="0" y="0" z="0" />
 				<useColor value="false" />
 				<color r="1" g="0" b="0" a="0" />
-				<scale value="0.75" />
+				<scale value="0.5" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
 				<visible value="true" />
 				<boundingBox value="false" />
 				<texture filename="flameball.bmp" />
 			</mesh>
-			<mesh id="Flame5">
-				<position x="-48.75" y="0.75" z="-73.75" />
+			<mesh id="Z.Flame5">
+				<position x="-48.75" y="2.4000001" z="-74.6999969" />
 				<rotate x="0" y="0" z="0" />
 				<useColor value="false" />
 				<color r="1" g="0" b="0" a="0" />
-				<scale value="0.75" />
+				<scale value="0.5" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
 				<visible value="true" />
@@ -2530,61 +2596,61 @@
 				<texture filename="flameball.bmp" />
 			</mesh>
 		</model>
-		<model path="assets/polygon_dungeons/SM_Prop_Dwarf_Torch_06.ply" title="Brazier">
-			<mesh id="Brazier1">
-				<position x="-68.75" y="0.5" z="-59.5" />
-				<rotate x="0" y="-0.5" z="0" />
+		<model path="assets/polygon_dungeons/SM_Prop_Dwarf_Torch_03.ply" title="Torch">
+			<mesh id="ZZ.Torch1">
+				<position x="-68.75" y="2.20000005" z="-59.8450012" />
+				<rotate x="0" y="3.14159989" z="0" />
 				<useColor value="false" />
-				<color r="1" g="0" b="0" a="1" />
-				<scale value="0.00999999978" />
+				<color r="0.397058845" g="0.397058845" b="0.397058845" a="1" />
+				<scale value="0.0199999996" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
 				<visible value="true" />
 				<boundingBox value="false" />
 				<texture filename="Dungeons_2_Texture_01_A.bmp" />
 			</mesh>
-			<mesh id="Brazier2">
-				<position x="-43" y="0.5" z="-58.7999992" />
-				<rotate x="0" y="0" z="0" />
+			<mesh id="ZZ.Torch2">
+				<position x="-42.6800003" y="2.20000005" z="-58.7999992" />
+				<rotate x="0" y="1.57079995" z="0" />
 				<useColor value="false" />
 				<color r="1" g="0" b="0" a="1" />
-				<scale value="0.00999999978" />
+				<scale value="0.0199999996" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
 				<visible value="true" />
 				<boundingBox value="false" />
 				<texture filename="Dungeons_2_Texture_01_A.bmp" />
 			</mesh>
-			<mesh id="Brazier3">
-				<position x="-94.5" y="0.5" z="-58.7999992" />
-				<rotate x="0" y="0" z="0" />
+			<mesh id="ZZ.Torch3">
+				<position x="-94.8700027" y="2.20000005" z="-58.7999992" />
+				<rotate x="0" y="-1.57079995" z="0" />
 				<useColor value="false" />
 				<color r="1" g="0" b="0" a="1" />
-				<scale value="0.00999999978" />
+				<scale value="0.0199999996" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
 				<visible value="true" />
 				<boundingBox value="false" />
 				<texture filename="Dungeons_2_Texture_01_A.bmp" />
 			</mesh>
-			<mesh id="Brazier4">
-				<position x="-48.75" y="0.5" z="-46.25" />
+			<mesh id="ZZ.Torch4">
+				<position x="-48.75" y="2.20000005" z="-42.6500015" />
 				<rotate x="0" y="0" z="0" />
 				<useColor value="false" />
 				<color r="1" g="0" b="0" a="1" />
-				<scale value="0.00999999978" />
+				<scale value="0.0199999996" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
 				<visible value="true" />
 				<boundingBox value="false" />
 				<texture filename="Dungeons_2_Texture_01_A.bmp" />
 			</mesh>
-			<mesh id="Brazier5">
-				<position x="-48.75" y="0.5" z="-73.75" />
-				<rotate x="0" y="0" z="0" />
+			<mesh id="ZZ.Torch5">
+				<position x="-48.75" y="2.20000005" z="-74.8499985" />
+				<rotate x="0" y="3.14159989" z="0" />
 				<useColor value="false" />
 				<color r="1" g="0" b="0" a="1" />
-				<scale value="0.00999999978" />
+				<scale value="0.0199999996" />
 				<isWireframe value="false" />
 				<doNotLight value="false" />
 				<visible value="true" />
@@ -5744,7 +5810,7 @@
 			<param2 x="1" y="0" z="0" w="1" />
 		</light>
 		<light id="BrazierLight01" onoff="1" showmodel="false">
-			<position x="-68.75" y="0.75" z="-59.5" w="1" />
+			<position x="-68.75" y="2.4000001" z="-59.6549988" w="1" />
 			<diffuse x="0.975490212" y="0.439223737" z="0.387327015" w="1" />
 			<specular r="1" g="0.701268673" b="0.274509788" a="1" />
 			<attenuation x="2.0999999" y="0.100000001" z="5.95000982" w="1" />
@@ -5753,7 +5819,7 @@
 			<param2 x="1" y="0" z="0" w="1" />
 		</light>
 		<light id="BrazierLight02" onoff="1" showmodel="false">
-			<position x="-43" y="0.75" z="-58.7999992" w="1" />
+			<position x="-43" y="2.4000001" z="-58.7999992" w="1" />
 			<diffuse x="0.975490212" y="0.439223737" z="0.387327015" w="1" />
 			<specular r="1" g="0.701268673" b="0.274509788" a="1" />
 			<attenuation x="2.0999999" y="0.100000001" z="5.95000982" w="1" />
@@ -5762,7 +5828,7 @@
 			<param2 x="1" y="0" z="0" w="1" />
 		</light>
 		<light id="BrazierLight03" onoff="1" showmodel="false">
-			<position x="-94.5" y="0.75" z="-58.7999992" w="1" />
+			<position x="-94.5" y="2.4000001" z="-58.7999992" w="1" />
 			<diffuse x="0.975490212" y="0.439223737" z="0.387327015" w="1" />
 			<specular r="1" g="0.701268673" b="0.274509788" a="1" />
 			<attenuation x="2.0999999" y="0.100000001" z="5.95000982" w="1" />
@@ -5771,7 +5837,7 @@
 			<param2 x="1" y="0" z="0" w="1" />
 		</light>
 		<light id="BrazierLight04" onoff="1" showmodel="false">
-			<position x="-48.75" y="0.75" z="-46.25" w="1" />
+			<position x="-48.75" y="2.4000001" z="-42.8499985" w="1" />
 			<diffuse x="0.975490212" y="0.439223737" z="0.387327015" w="1" />
 			<specular r="1" g="0.701268673" b="0.274509788" a="1" />
 			<attenuation x="2.0999999" y="0.100000001" z="5.95000982" w="1" />
@@ -5780,7 +5846,7 @@
 			<param2 x="1" y="0" z="0" w="1" />
 		</light>
 		<light id="BrazierLight05" onoff="1" showmodel="false">
-			<position x="-48.75" y="0.75" z="-73.75" w="1" />
+			<position x="-48.75" y="2.4" z="-73.75" w="1" />
 			<diffuse x="0.975490212" y="0.439223737" z="0.387327015" w="1" />
 			<specular r="1" g="0.701268673" b="0.274509788" a="1" />
 			<attenuation x="2.0999999" y="0.100000001" z="5.95000982" w="1" />

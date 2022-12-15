@@ -176,6 +176,7 @@
     <ClInclude Include="C24BitBMPpixel.h" />
     <ClInclude Include="cBasicTextureManager.h" />
     <ClInclude Include="CTextureFromBMP.h" />
+    <ClInclude Include="FinalExamCommons.h" />
     <ClInclude Include="imgui\IconsFontaudio.h" />
     <ClInclude Include="imgui\imgui-knobs.h" />
     <ClInclude Include="iMovable.h" />
