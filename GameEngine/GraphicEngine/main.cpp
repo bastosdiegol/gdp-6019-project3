@@ -241,8 +241,9 @@ int main(int argc, char* argv[]) {
 	GLint mView_location					= glGetUniformLocation(shaderID, "mView");
 	GLint mProjection_location				= glGetUniformLocation(shaderID, "mProjection");
 	GLint mModelInverseTransform_location	= glGetUniformLocation(shaderID, "mModelInverseTranspose");
-
-	g_ProjectManager->LoadScene("8.Final Exam");
+	
+	g_ProjectManager->LoadScene("9.Physics Proj#3");
+	//g_ProjectManager->LoadScene("8.Final Exam");
 
 	while (!glfwWindowShouldClose(window)) {
 

@@ -2295,6 +2295,25 @@
 				<texture filename="desert-sand-rocks-landscape-wallpaper.bmp" />
 			</mesh>
 		</model>
+		<model path="assets/Sphere_for_Skybox_Inverted_Normals.ply" title="Skybox">
+			<mesh id="Skybox">
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="0" g="1" b="1" a="1" />
+				<scale value="7500" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<posX filename="SpaceBox_right1_posX.bmp" />
+				<negX filename="SpaceBox_left2_negX.bmp" />
+				<posY filename="SpaceBox_top3_posY.bmp" />
+				<negY filename="SpaceBox_bottom4_negY.bmp" />
+				<posZ filename="SpaceBox_front5_posZ.bmp" />
+				<negZ filename="SpaceBox_back6_negZ.bmp" />
+			</mesh>
+		</model>
 		<model path="assets/UV_Sphere_Cylindrical_UIV_Projection_.ply" title="Moon">
 			<mesh id="Moon">
 				<position x="-70" y="35" z="-500" />
@@ -5772,25 +5791,6 @@
 				<texture filename="Dungeons_2_Texture_01_A.bmp" />
 			</mesh>
 		</model>
-		<model path="assets/Sphere_for_Skybox_Inverted_Normals.ply" title="Skybox">
-			<mesh id="Skybox">
-				<position x="0" y="0" z="0" />
-				<rotate x="0" y="0" z="0" />
-				<useColor value="false" />
-				<color r="0" g="1" b="1" a="1" />
-				<scale value="7500" />
-				<isWireframe value="false" />
-				<doNotLight value="false" />
-				<visible value="true" />
-				<boundingBox value="false" />
-				<posX filename="SpaceBox_right1_posX.bmp" />
-				<negX filename="SpaceBox_left2_negX.bmp" />
-				<posY filename="SpaceBox_top3_posY.bmp" />
-				<negY filename="SpaceBox_bottom4_negY.bmp" />
-				<posZ filename="SpaceBox_front5_posZ.bmp" />
-				<negZ filename="SpaceBox_back6_negZ.bmp" />
-			</mesh>
-		</model>
 		<light id="Light 01" onoff="1" showmodel="false">
 			<position x="-11.5" y="5.30000019" z="0" w="1" />
 			<diffuse x="0.5" y="0.5" z="0.5" w="1" />
@@ -6143,5 +6143,80 @@
 				<child id="Patrol Beholder Cone3" />
 			</parent>
 		</meshRelationship>
+	</scene>
+	<scene title="9.Physics Proj#3" camEyeX="32" camEyeY="10" camEyeZ="32" camTarX="0" camTarY="0" camTarZ="0">
+		<model path="assets/physics_proj3/plane.ply" title="Plane">
+			<mesh id="Plane">
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="TexturesCom_FloorsCheckerboard0027_17_seamless_S.bmp" />
+			</mesh>
+		</model>
+		<model path="assets/physics_proj3/wall.ply" title="Wall">
+			<mesh id="Wall1">
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="colored-brick-wall-2.bmp" />
+			</mesh>
+			<mesh id="Wall2">
+				<position x="0" y="0" z="64" />
+				<rotate x="0" y="1.57079995" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="colored-brick-wall-2.bmp" />
+			</mesh>
+			<mesh id="Wall3">
+				<position x="64" y="0" z="64" />
+				<rotate x="0" y="3.14159012" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="colored-brick-wall-2.bmp" />
+			</mesh>
+			<mesh id="Wall4">
+				<position x="64" y="0" z="0" />
+				<rotate x="0" y="4.71238995" z="0" />
+				<useColor value="false" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+				<texture filename="colored-brick-wall-2.bmp" />
+			</mesh>
+		</model>
+		<light id="Light 01" onoff="1" showmodel="false">
+			<position x="-11.5" y="5.30000019" z="0" w="1" />
+			<diffuse x="0.5" y="0.5" z="0.5" w="1" />
+			<specular r="1" g="1" b="1" a="1" />
+			<attenuation x="1" y="1.5" z="9.99999975e-06" w="1" />
+			<direction x="0" y="-1" z="0" w="1" />
+			<param1 x="2" y="10" z="20" w="1" />
+			<param2 x="1" y="0" z="0" w="1" />
+		</light>
 	</scene>
 </graphicsLibrary>
