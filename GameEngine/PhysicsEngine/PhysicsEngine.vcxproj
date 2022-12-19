@@ -151,6 +151,7 @@
     <ClInclude Include="PhysicsUtils.h" />
     <ClInclude Include="Shapes.h" />
     <ClInclude Include="Spring.h" />
+    <ClInclude Include="Time.h" />
     <ClInclude Include="Vector3.h" />
   </ItemGroup>
   <ItemGroup>

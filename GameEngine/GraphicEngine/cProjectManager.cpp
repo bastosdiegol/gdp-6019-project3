@@ -212,17 +212,6 @@ bool cProjectManager::LoadScene(std::string name) {
 							} else {
 								if (newMeshObj->m_parentModel->meshName == "Fire") {
 									newMeshObj->isTextureImposter = true;
-								} else if(newMeshObj->m_parentModel->meshName == "Crystal1" ||
-										  newMeshObj->m_parentModel->meshName == "Crystal2" ||
-										  newMeshObj->m_parentModel->meshName == "Crystal3"){
-									cMeshObject* skybox = m_selectedScene->m_mMeshes.find("Patrol Beholder1")->second;
-									newMeshObj->m_numOfTexturesLoaded = 6;
-									newMeshObj->textures[0] = skybox->textures[0];
-									newMeshObj->textures[1] = skybox->textures[1];
-									newMeshObj->textures[2] = skybox->textures[2];
-									newMeshObj->textures[3] = skybox->textures[3];
-									newMeshObj->textures[4] = skybox->textures[4];
-									newMeshObj->textures[5] = skybox->textures[5];
 								}
 								newMeshObj->textures[newMeshObj->m_numOfTexturesLoaded] = meshInfo.attribute("filename").value();
 								newMeshObj->textureRatios[newMeshObj->m_numOfTexturesLoaded] = 1.0f;
@@ -616,10 +605,7 @@ void cProjectManager::DrawObject(cMeshObject* pCurrentMeshObject, GLuint shaderI
 		else
 			glUniform1f(bDoNotLight_Colour_ULocID, (GLfloat)GL_FALSE);
 	
-		if (pCurrentMeshObject->m_meshName == "Skybox"     || 
-			pCurrentMeshObject->m_parentModel->meshName == "Crystal1" ||
-			pCurrentMeshObject->m_parentModel->meshName == "Crystal2" ||
-			pCurrentMeshObject->m_parentModel->meshName == "Crystal3") {
+		if (pCurrentMeshObject->m_meshName == "Skybox") {
 
 			// The cube map textures
 			// uniform samplerCube skyboxTexture;

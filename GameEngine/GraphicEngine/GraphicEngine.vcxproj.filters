@@ -224,6 +224,9 @@
     <ClInclude Include="FinalExamCommons.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="PhysicsProjThreeCommons.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\fragmentShader01.glsl">

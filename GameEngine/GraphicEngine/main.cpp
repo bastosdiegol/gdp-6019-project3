@@ -25,6 +25,7 @@
 #include "PhysicsProjectTwoCommons.h"
 #include "MediaProjectTwoCommons.h"
 #include "FinalExamCommons.h"
+#include "PhysicsProjThreeCommons.h"
 
 #ifdef _DEBUG
 #define DEBUG_LOG_ENABLED
@@ -49,8 +50,18 @@ FModManager* g_FModManager;
 // Movable Actor
 iMovable* controllableActor;
 
+// Mouse variables
+bool g_isClicked = false;
+double g_MouseStaticPosX = 400;
+double g_MouseStaticPosY = 400;
+
+Vector3 g_forwardVector;
+Vector3 g_rightVector;
+
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	const float MOVE_SPEED = 1.0f;
+
 	if (key == GLFW_KEY_A && action == GLFW_PRESS)     // Left
 	{
 		if (g_ProjectManager->m_selectedScene->m_name == "6.Physics Proj#2")
@@ -139,6 +150,51 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 }
 
+void key_callback_physics_proj(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	const float MOVE_SPEED = 1.0f;
+	const float dt = 0.1f;
+
+	if (key == GLFW_KEY_A && (action == GLFW_REPEAT || action == GLFW_PRESS))     // Left
+	{
+		*g_cameraEye -= g_rightVector.GetGLM() * MOVE_SPEED * dt;
+	}
+	if (key == GLFW_KEY_D && (action == GLFW_REPEAT || action == GLFW_PRESS))     // Right
+	{
+		*g_cameraEye += g_rightVector.GetGLM() * MOVE_SPEED * dt;
+	}
+	if (key == GLFW_KEY_W && (action == GLFW_REPEAT || action == GLFW_PRESS))     // Forward
+	{
+		*g_cameraEye += g_forwardVector.GetGLM() * MOVE_SPEED * dt;
+	}
+	if (key == GLFW_KEY_S && (action == GLFW_REPEAT || action == GLFW_PRESS))     // Backwards
+	{
+		*g_cameraEye -= g_forwardVector.GetGLM() * MOVE_SPEED * dt;
+	}
+	//if (key == GLFW_KEY_Q && action == GLFW_PRESS)     // Down
+	//{
+	//	
+	//}
+	//if (key == GLFW_KEY_E && action == GLFW_PRESS)     // Up
+	//{
+	//	
+	//}
+	if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
+		g_cameraTarget->z += MOVE_SPEED;
+	}
+	if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
+		g_cameraTarget->z -= MOVE_SPEED;
+	}
+	if (key == GLFW_KEY_LEFT && action == GLFW_PRESS) {
+		g_cameraTarget->x += MOVE_SPEED;
+	}
+	if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS) {
+		g_cameraTarget->x -= MOVE_SPEED;
+	}
+	if (key == GLFW_KEY_ESCAPE) {
+		g_ProjectManager->m_GameLoopState = SHUTING_DOWN;
+	}
+}
+
 static void error_callback(int error, const char* description) {
 	fprintf(stderr, "Glfw Error %d: %s\n", error, description);
 }
@@ -165,7 +221,7 @@ int main(int argc, char* argv[]) {
 		glfwTerminate();
 		exit(EXIT_FAILURE);
 	}
-	glfwSetKeyCallback(window, key_callback);
+	glfwSetKeyCallback(window, key_callback_physics_proj);
 	glfwMakeContextCurrent(window);
 	if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
 		return 2;
@@ -294,6 +350,8 @@ int main(int argc, char* argv[]) {
 				soundUI->render();
 			} else if (g_ProjectManager->m_selectedScene->m_name == "8.Final Exam") {
 				FinalExamGameLoop();
+			} else if (g_ProjectManager->m_selectedScene->m_name == "9.Physics Proj#3") {
+				PhysicsProjThreeGameLoop();
 			}
 		}
 

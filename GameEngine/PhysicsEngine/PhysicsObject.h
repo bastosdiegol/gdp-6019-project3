@@ -20,10 +20,10 @@ public:
 		if (mass <= 0) {
 			m_IsStatic = true;
 			invMass = -1.f;
+		} else {
+			m_IsStatic = false;
+			invMass = 1.f / mass;
 		}
-
-		m_IsStatic = false;
-		invMass = 1.f / mass;
 	}
 
 	void Integrate(float dt);

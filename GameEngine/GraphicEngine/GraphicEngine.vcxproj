@@ -204,6 +204,7 @@
     <ClInclude Include="MediaProjectTwoCommons.h" />
     <ClInclude Include="PatternsMidtermCommons.h" />
     <ClInclude Include="PhysicsProjectTwoCommons.h" />
+    <ClInclude Include="PhysicsProjThreeCommons.h" />
     <ClInclude Include="SoundUI.h" />
   </ItemGroup>
   <ItemGroup>

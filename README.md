@@ -1,6 +1,6 @@
-# Media Fundamentals Project 2
+# Graphics and Game Engine Final Exam Presentation
 
-This solution was created using Visual Studio Community 2019 Version 16 Toolset v142.
+This solution was created using Visual Studio Community 2022 Version 17 Toolset v143.
 
 The project is currently configured to be build in Debug and Release mode, both on x64 architecture.
 
@@ -9,7 +9,5 @@ Currently you can only run this project through Visual Studio Solution.
 There's console output with information about the application only when using Debug Configuration.
 
 The user inputs expected when using the application are:
-- Press WASD to move the controllable small green sphere.
-- Press ESCAPE to close the application.
-- Press Enable Game Loop on ImGui UI to enable the game logic for current project. (Optional)
-- Use the ImGui UI to make any changes to the currenty scene. (Optional)
+- Press F6 to let the camera move towards a Patroling Beholder.
+  You can keep pressing F6 if you want the camera to move towards another Patroling Beholder.

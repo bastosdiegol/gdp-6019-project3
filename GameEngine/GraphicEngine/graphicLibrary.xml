@@ -6144,8 +6144,8 @@
 			</parent>
 		</meshRelationship>
 	</scene>
-	<scene title="9.Physics Proj#3" camEyeX="32" camEyeY="10" camEyeZ="32" camTarX="0" camTarY="0" camTarZ="0">
-		<model path="assets/physics_proj3/plane.ply" title="Plane">
+	<scene title="9.Physics Proj#3" camEyeX="2" camEyeY="150" camEyeZ="2" camTarX="32" camTarY="5" camTarZ="32">
+		<model path="assets/physics_proj3/newPlane.ply" title="Plane">
 			<mesh id="Plane">
 				<position x="0" y="0" z="0" />
 				<rotate x="0" y="0" z="0" />
@@ -6159,7 +6159,7 @@
 				<texture filename="TexturesCom_FloorsCheckerboard0027_17_seamless_S.bmp" />
 			</mesh>
 		</model>
-		<model path="assets/physics_proj3/wall.ply" title="Wall">
+		<model path="assets/physics_proj3/newWall.ply" title="Wall1">
 			<mesh id="Wall1">
 				<position x="0" y="0" z="0" />
 				<rotate x="0" y="0" z="0" />
@@ -6172,9 +6172,11 @@
 				<boundingBox value="false" />
 				<texture filename="colored-brick-wall-2.bmp" />
 			</mesh>
+		</model>
+		<model path="assets/physics_proj3/newWall2.ply" title="Wall2">
 			<mesh id="Wall2">
-				<position x="0" y="0" z="64" />
-				<rotate x="0" y="1.57079995" z="0" />
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
 				<useColor value="false" />
 				<color r="1" g="0" b="0" a="1" />
 				<scale value="1" />
@@ -6184,9 +6186,11 @@
 				<boundingBox value="false" />
 				<texture filename="colored-brick-wall-2.bmp" />
 			</mesh>
+		</model>
+		<model path="assets/physics_proj3/newWall3.ply" title="Wall3">
 			<mesh id="Wall3">
-				<position x="64" y="0" z="64" />
-				<rotate x="0" y="3.14159012" z="0" />
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
 				<useColor value="false" />
 				<color r="1" g="0" b="0" a="1" />
 				<scale value="1" />
@@ -6196,9 +6200,11 @@
 				<boundingBox value="false" />
 				<texture filename="colored-brick-wall-2.bmp" />
 			</mesh>
+		</model>
+		<model path="assets/physics_proj3/newWall4.ply" title="Wall4">
 			<mesh id="Wall4">
-				<position x="64" y="0" z="0" />
-				<rotate x="0" y="4.71238995" z="0" />
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
 				<useColor value="false" />
 				<color r="1" g="0" b="0" a="1" />
 				<scale value="1" />
@@ -6207,6 +6213,128 @@
 				<visible value="true" />
 				<boundingBox value="false" />
 				<texture filename="colored-brick-wall-2.bmp" />
+			</mesh>
+		</model>
+		<model path="assets/physics_proj3/cone.ply" title="Cone">
+			<mesh id="Cone">
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0.82745" g="0.82745" b="0.82745" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+		</model>
+		<model path="assets/physics_proj3/cube.ply" title="Cube">
+			<mesh id="Cube">
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0.82745" g="0.82745" b="0.82745" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+		</model>
+		<model path="assets/physics_proj3/cylinder.ply" title="Cylinder">
+			<mesh id="Cylinder">
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0.82745" g="0.82745" b="0.82745" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+		</model>
+		<model path="assets/physics_proj3/largebox.ply" title="LargeBox">
+			<mesh id="LargeBox">
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0.82745" g="0.82745" b="0.82745" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+		</model>
+		<model path="assets/physics_proj3/sphere.ply" title="Sphere">
+			<mesh id="Sphere">
+				<position x="0" y="0" z="0" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="0.82745" g="0.82745" b="0.82745" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="false" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+		</model>
+		<model path="assets/ISO_Shphere.ply" title="TargetBall">
+			<mesh id="Ball1">
+				<position x="5" y="2" z="5" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="true" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+			<mesh id="Ball2">
+				<position x="5" y="2" z="60" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="true" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+			<mesh id="Ball3">
+				<position x="60" y="2" z="5" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="true" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+			<mesh id="Ball4">
+				<position x="60" y="2" z="60" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="true" />
+				<visible value="true" />
+				<boundingBox value="false" />
+			</mesh>
+			<mesh id="Ball5">
+				<position x="32" y="2" z="60" />
+				<rotate x="0" y="0" z="0" />
+				<useColor value="true" />
+				<color r="1" g="0" b="0" a="1" />
+				<scale value="1" />
+				<isWireframe value="false" />
+				<doNotLight value="true" />
+				<visible value="true" />
+				<boundingBox value="false" />
 			</mesh>
 		</model>
 		<light id="Light 01" onoff="1" showmodel="false">
