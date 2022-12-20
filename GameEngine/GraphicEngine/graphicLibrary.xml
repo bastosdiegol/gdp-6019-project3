@@ -6144,7 +6144,7 @@
 			</parent>
 		</meshRelationship>
 	</scene>
-	<scene title="9.Physics Proj#3" camEyeX="2" camEyeY="150" camEyeZ="2" camTarX="32" camTarY="5" camTarZ="32">
+	<scene title="9.Physics Proj#3" camEyeX="2" camEyeY="5" camEyeZ="2" camTarX="32" camTarY="5" camTarZ="32">
 		<model path="assets/physics_proj3/newPlane.ply" title="Plane">
 			<mesh id="Plane">
 				<position x="0" y="0" z="0" />

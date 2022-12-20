@@ -150,6 +150,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 }
 
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+		g_isClicked = true;
+}
+
 void key_callback_physics_proj(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	const float MOVE_SPEED = 1.0f;
 	const float dt = 0.1f;
@@ -216,11 +221,12 @@ int main(int argc, char* argv[]) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
 	// Create window
-	window = glfwCreateWindow(1280, 720, "Game Engine", nullptr, nullptr);
+	window = glfwCreateWindow(1200, 800, "Game Engine", nullptr, nullptr);
 	if (!window) {
 		glfwTerminate();
 		exit(EXIT_FAILURE);
 	}
+	glfwSetMouseButtonCallback(window, mouse_button_callback);
 	glfwSetKeyCallback(window, key_callback_physics_proj);
 	glfwMakeContextCurrent(window);
 	if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {

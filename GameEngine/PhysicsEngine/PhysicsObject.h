@@ -36,6 +36,7 @@ public:
 	inline const Vector3& GetPosition() const {	return position; }
 	inline const Vector3& GetVelocity() const {	return velocity; }
 	inline const Vector3& GetAcceleration() const {	return acceleration; }
+	inline const Vector3& GetForce() const { return force; }
 
 	BoundingBox*	pBoundingBox;
 	iShape*			pShape;
